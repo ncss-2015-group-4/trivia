@@ -1,2 +1,2 @@
 # trivia
-A scoial trivia website
+A social trivia website
