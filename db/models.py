@@ -57,6 +57,9 @@ class TriviaQuestion:
         ...
         return cls(qid, question, 0, 0, category)
 
+    def flag(self):
+        return Flag.create(self.id)
+
 
 class Category:
     def __init__(self, id, name):
