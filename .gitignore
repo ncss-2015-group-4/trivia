@@ -52,3 +52,9 @@ docs/_build/
 
 # PyBuilder
 target/
+
+#vim
+*.sw?
+
+#SQLite3 databases
+db/*.db
