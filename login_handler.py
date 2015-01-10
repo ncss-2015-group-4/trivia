@@ -1,4 +1,5 @@
-import hasher
+from hasher.hasher import hasher
+from db.models import User
 
 def login_handler(request):
     request.write("""<!DOCTYPE html>
@@ -28,7 +29,9 @@ def login_handler_post(request):
        return
     print(username)
     #gets a returned hash password from db
-    pWord = 'password'
-    print(password)
+    userData = User.find_by_username(username)
+    pWord = userData.password_hash
     if pWord = hasher.hash(password):
         request.redirect("/")
+
+
