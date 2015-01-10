@@ -1,3 +1,4 @@
+
 EASY = 1
 MEDIUM = 2
 HARD = 3
@@ -20,7 +21,7 @@ def difficulty(people_answers):
 				sum += HARD
 		else:
 			if person == BEGINNER:
-				sum += MEDIUM
+				sum += MEDIUM	
 			elif person == INTERMEDIATE:
 				sum += HARD
 			elif person == EXPERT:
@@ -32,9 +33,40 @@ def difficulty(people_answers):
 		return "Medium"
 	elif 3 < average:
 		return "Hard"
+
+def skill_level(questions_answers):
+	''' This is findind the skill level of a user. 
+	questions_answers is a list of the questions the user has answered and if they got it right or wrong. '''
+	total = 0
+	for question, correct in questions_answers:
+		if correct:
+			if question == EASY:
+				total += 1
+			elif question == MEDIUM:
+				total += 2
+			elif question == HARD:
+				total += 3
+		else:
+			if question == EASY:
+				total -= 3
+			elif question == MEDIUM:
+				total -= 2
+			elif question == HARD:
+				total -= 1
+	final = total/len(questions_answers)
+	if 0 <= final < 2:
+		return 'Beginner'
+	elif 2 <= final < 3:
+		return 'Intermediate'	
+	elif 3 < final:
+		return 'Expert'
 	
+						
 if __name__ == '__main__':
 	print(difficulty([(INTERMEDIATE, True)]))
 	print(difficulty([(INTERMEDIATE, True), (BEGINNER, True)]))
 	print(difficulty([(BEGINNER, True), (INTERMEDIATE, True), (EXPERT, True)]))
+	
+	print(skill_level([(EASY, True)]))
+	print(skill_level([(EASY, True), (MEDIUM, True), (HARD, False)]))
 	
