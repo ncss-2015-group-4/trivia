@@ -1,5 +1,14 @@
+@font-face {
+    font-family: 'trashhandregular';
+    src: url('TrashHand-webfont.eot');
+    src: url('TrashHand-webfont.eot?#iefix') format('embedded-opentype'),
+         url('TrashHand-webfont.woff') format('woff'),
+         url('TrashHand-webfont.ttf') format('truetype'),
+         url('TrashHand-webfont.svg#trashhandregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
 
-
+}
 	
 	body {
 		font-family;
@@ -10,12 +19,15 @@
 	h1,h2,h3,h4,h5,h5 {
 			font-weight: bold;
 			text-align: center;
+			color: #0e1e26;;
 	}
 	
 	
 	h1{
+		font-family: trashhandregular;
 		line-height: 81px;
 		font-size: 54px;
+		color: #e5ae00;
 }
 
 	h2{
@@ -35,12 +47,19 @@
 		line-height: 24px;
 		margin-top: 11px;
 		text-align: center;
+		color: #0e1e26;
 }
 
 	a {
 		font-size: 16px;
-	text-align: center;		
+		text-align: center;	
 }
 
+	input{
+		background-color: #dcf1f3;
+}	
 
+	header{
+		background-color: #068bbc;
+}
 	
