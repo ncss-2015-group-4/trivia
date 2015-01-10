@@ -35,3 +35,5 @@ cur.execute("INSERT INTO flags VALUES(NULL,3);")
 cur.execute("INSERT INTO scores VALUES(1,2,20,19);")
 cur.execute("INSERT INTO scores VALUES(2,1,18,4);")
 cur.execute("INSERT INTO scores VALUES(3,1,20,20);")
+
+conn.commit()
