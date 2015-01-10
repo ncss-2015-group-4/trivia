@@ -4,19 +4,17 @@ import hasher
 import sqlite3
 
 class User:
-    def __init__(self, user_id, username, password_hash, email):
+    def __init__(self, user_id, username, email):
         self.id = user_id
         self.username = username
-        self.password_hash = password_hash
-		self.email = email
+        self.email = email
 
-    def authenticate(username, password):
-        #get pass from db where user = username
-        query = 'SELECT Username, Password FROM Users WHERE Username == '+username
-        #result = sql.queryDatabase(query)
-        #if hasher.hash(password) == result[1]:
-            #return True        
-        return False
+    @classmethod
+    def check_login(cls, username, password):
+        cur = conn.cursor()
+        cur.execute('SELECT username, password_hash FROM users WHERE username = ?', (username,))
+        result = cur.fetchone()
+        return hasher.hash(password) == result['password_hash']
     
     @classmethod
     def find_by_id(cls, id):
