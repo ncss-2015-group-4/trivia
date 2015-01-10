@@ -1,3 +1,5 @@
+import hasher
+
 def login_handler(request):
     request.write("""<!DOCTYPE html>
 <html>
@@ -25,5 +27,8 @@ def login_handler_post(request):
        request.redirect("/login")
        return
     print(username)
+    #gets a returned hash password from db
+    pWord = 'password'
     print(password)
-    request.redirect("/")
+    if pWord = hasher.hash(password):
+        request.redirect("/")
