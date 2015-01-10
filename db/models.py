@@ -1,5 +1,6 @@
 # The models for Trivia
 
+import hasher
 import sqlite3
 
 class User:
@@ -9,7 +10,11 @@ class User:
         self.password = password_hash
 
     def authenticate(username, password):
-        raise NotImplementedError()
+        #get pass from db where user = username
+        query = 'SELECT Username, Password FROM Users WHERE Username == '+username
+        #result = sql.queryDatabase(query)
+        #if hasher.hash(password) == result[1]:
+            #return True        
         return False
     
     @classmethod
@@ -118,11 +123,6 @@ class Score:
     @classmethod
     def find(cls, user_id, category_id):
         raise NotImplementedError()
-
-
-def hash_password(string):
-    raise NotImplementedError()
-    return string
 
 
 conn = sqlite3.connect('db/trivia.db')
