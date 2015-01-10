@@ -15,7 +15,7 @@ Email/Username:<br>
 <br>
 Password:<br>
 <input type="text" name="password">
-<input type="submit" value="Submit">
+<input type="submit" value="Log-in">
 </form>
 
 
@@ -25,12 +25,15 @@ Sign up here...
 
 <form>
 <form method="post">
-Email/Username:<br>
+Username:<br>
 <input type="text" name="username">
 <br>
 Password:<br>
 <input type="text" name="password">
-<input type="submit" value="Submit">
+<br>
+Email:<br>
+<input type="text" name="email">
+<input type="submit" value="Sign-up">
 </form>
 
 </body>
@@ -42,7 +45,7 @@ def login_handler_post(request):
     username = request.get_field("username")
     password = request.get_field("password")
     if username == None or username == '' or password == None or password == '':
-       request.redirect("/")
+       request.redirect("/login")
        return
     print(username)
     print(password)
