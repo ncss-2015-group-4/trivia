@@ -1,7 +1,7 @@
 # The models for Trivia
 
-import hasher
 import sqlite3
+import .hasher
 
 class User:
     def __init__(self, user_id, username, email):
