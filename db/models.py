@@ -18,26 +18,21 @@ class User:
     @classmethod
     def find_by_username(cls, username):
         raise NotImplementedError()
-        return cls(0, username, "pw", "email")
+        return cls(0)
 
     @classmethod
     def create(cls, username, password, email):
-        #get id from sql?
-        _id = 0
         raise NotImplementedError()
-        return cls(_id, username, hash_password(password), email)
+        return cls(0, username, hash_password(password), email)
 
     @classmethod
     def delete_by_id(cls, id):
         raise NotImplementedError()
-        #DELETE ROW WHERE id = ?
-
         return True
 
     @classmethod
     def delete_by_username(cls, username):
         raise NotImplementedError()
-        #DELETE ROW WHERE username = ?
         return True
 
 
@@ -104,6 +99,22 @@ class Answer:
 
     @classmethod
     def delete_by_id(cls, answer_id):
+        raise NotImplementedError()
+
+
+class Score:
+    def __init__(self, user_id, category_id, num_answered, num_correct):
+        self.id = user_id
+        self.category_id = category_id
+        self.num_answered = num_answered
+        self.num_correct = num_correct
+
+    @classmethod
+    def create(cls, user_id, category_id):
+        raise NotImplementedError()
+
+    @classmethod
+    def find(cls, user_id, category_id):
         raise NotImplementedError()
 
 
