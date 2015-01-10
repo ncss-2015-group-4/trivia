@@ -4,6 +4,8 @@ PROPERTY OF THE HOLY SOCIETY OF TEMPLATEIA. UNAUTHORISED EDITING WILL BE PROSECU
 This code parses the templates into python and html.
 The python code can then be evaluated and added to the html to be displayed by a web browser
 '''
+class ParseError(Exception):
+    pass
 
 class Node(object):
     def __init__(self, content):
@@ -28,10 +30,43 @@ class GroupNode(Node):
             result += node.eval(scope)
         return result
 
-def _parse_template(template, upto, parent):
-    #TODO
-    pass
+def parse_python_node(tokens):
+    output = ''
+    index = 0
+    for i, token in enumerate(tokens):
+        if token != '}':
+            output += token
+        else:
+            index = i
+            break
+    if tokens[index+1] != '}':
+        raise ParseError
+    node = PythonNode(output)
+    tokens = tokens[index+2:]
+    return (node, tokens)
 
-def parse_template(template):
-    return _parse_template(template, 0, None)
+def parse_text_node(tokens):
+    output = ''
+    index = 0
+    for i, token in enumerate(tokens):
+        if token != '{':
+            output += token
+        else:
+            index = i
+            break
+    else:
+        index = len(tokens)
+    node = TextNode(output)
+    tokens = tokens[index:]
+    return (node, tokens)
 
+def parse_group_node(tokens):
+    children = []
+    while tokens != '':
+        if tokens[0] != '{':
+            node, tokens = parse_text_node(tokens)
+            children.append(node)
+        else:
+            node, tokens = parse_python_node(tokens[2:])
+            children.append(node)
+    return GroupNode(children)      
