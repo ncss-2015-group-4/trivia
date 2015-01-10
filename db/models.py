@@ -42,12 +42,12 @@ class User:
 
 
 class TriviaQuestion:
-    def __init__(self, id, question, num_answered, num_correct, category_id):
+    def __init__(self, id, question, num_answered, num_correct, category):
         self.id = id
         self.question = question
         self.num_answered = num_answered
         self.num_correct = num_correct
-        self.category_id = category_id
+        self.category = category
 
     @classmethod
     def create(cls, question, category):
