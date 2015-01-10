@@ -55,3 +55,6 @@ target/
 
 #vim
 *.sw?
+
+#SQLite3 databases
+db/*.db

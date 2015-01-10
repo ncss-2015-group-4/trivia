@@ -1,12 +1,14 @@
 # The models for Trivia
 
+import hasher
 import sqlite3
 
 class User:
     def __init__(self, user_id, username, password_hash, email):
         self.id = user_id
         self.username = username
-        self.password = password_hash
+        self.password_hash = password_hash
+	self.email = email
 
     def authenticate(username, password):
         #get pass from db where user = username
@@ -18,7 +20,10 @@ class User:
     
     @classmethod
     def find_by_id(cls, id):
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM users ")
         raise NotImplementedError()
+        
         return cls()
 
     @classmethod
@@ -125,4 +130,7 @@ class Score:
 
 
 conn = sqlite3.connect('db/trivia.db')
+<<<<<<< HEAD
 print(conn)
+=======
+>>>>>>> origin/database
