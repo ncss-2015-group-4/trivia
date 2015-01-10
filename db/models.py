@@ -42,6 +42,11 @@ class User:
         raise NotImplementedError()
         return True
 
+    def set_email(self, new_email):
+        cur = conn.cursor()
+        cur.execute('UPDATE users SET email = ? WHERE uid = ?', (new_email, self.user_id))
+        self.email = self.new_email
+
 
 class TriviaQuestion:
     def __init__(self, question_id, question, num_answered, num_correct, category):
