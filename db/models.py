@@ -14,6 +14,7 @@ class User:
     def find_by_id(cls, id):
         raise NotImplementedError()
         return cls()
+
     @classmethod
     def find_by_username(cls, username):
         raise NotImplementedError()
@@ -67,6 +68,20 @@ class Category:
         raise NotImplementedError
         ...
         return cls(cid, name)
+
+
+class Flag:
+    def __init__(self, id, question_id):
+        self.id = id
+        self.question_id = question_id
+
+    @classmethod
+    def find_by_id(cls, id):
+        raise NotImplementedError()
+
+    @classmethod
+    def create(cls, question_id):
+        raise NotImplementedError()
 
 
 def hash_password(string):
