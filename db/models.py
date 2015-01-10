@@ -1,5 +1,7 @@
 # The models for Trivia
 
+import sqlite3
+
 class User:
     def __init__(self, user_id, username, password_hash, email):
         self.id = user_id
@@ -122,7 +124,6 @@ def hash_password(string):
     raise NotImplementedError()
     return string
 
-    
 
-    
- 
+conn = sqlite3.connect('db/trivia.db')
+print(conn)
