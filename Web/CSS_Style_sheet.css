@@ -14,43 +14,33 @@
 	
 	
 	h1{
-		line-height: 94.2px;
-		font-size: 60px;
+		line-height: 81px;
+		font-size: 54px;
 }
 
 	h2{
-		line-height: 47.1px;
-		font-size: 30px;
+		line-height: 54px;
+		font-size: 36px;
 }
 
 	h3{
-		line-height: 23.55px;
-		font-size: 15px;
+		line-height: 36px;
+		font-size: 24px;
 }
 
-	h4{
-		line-height: 12.56px;
-		font-size: 8px;
-}
-
-	h5{
-		line-height: 12.56px;
-		font-size: 8px;
-}
-
-	h6{
-		line-height: 12.56px;
-		font-size: 8px;S
-}
 
 	p{
 		margin-bottom: 11px;
-		font-size: 14px;
-		line-height: 22px;
+		font-size: 16px;
+		line-height: 24px;
 		margin-top: 11px;
 		text-align: center;
 }
 
+	a {
+		font-size: 16px;
+	text-align: center;		
+}
 
 
 	
