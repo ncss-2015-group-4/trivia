@@ -1,4 +1,4 @@
-from db.models import User
+#from db.models import User
 
 def login_handler(request):
     request.write("""<!DOCTYPE html>
