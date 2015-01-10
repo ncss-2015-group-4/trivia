@@ -6,8 +6,11 @@ def login_handler(request):
     request.write("""<!DOCTYPE html>
 <html>
 <body>
+
 <h1>
-oginlay inway erehay!!!
+Login in below -->
+</h1>
+
 <form method="post">
 Email/Username:<br>
 <input type="text" name="username">
@@ -16,7 +19,22 @@ Password:<br>
 <input type="text" name="password">
 <input type="submit" value="Submit">
 </form>
+
+
+<h1>
+Sign up here...
 </h1>
+
+<form>
+<form method="post">
+Email/Username:<br>
+<input type="text" name="username">
+<br>
+Password:<br>
+<input type="text" name="password">
+<input type="submit" value="Submit">
+</form>
+
 </body>
 </html>
 """)
@@ -35,7 +53,7 @@ def login_handler_post(request):
     if pWord == hasher.hash(password):
         userData = User.find_by_username(username)
         pWord = userData.password_hash
-        if pWord = hasher.hash(password):
+        if pWord == hasher.hash(password):
             request.redirect("/")
 
 
