@@ -30,8 +30,8 @@ def login_handler_post(request):
     print(username)
     #gets a returned hash password from db
     userData == User.find_by_username(username)
-    pWord == userData.password_hash
-    if pWord == hasher.hash(password):
+    password == userData.password_hash
+    if password == hasher.hash(password):
         request.redirect("/")
 
 
