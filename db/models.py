@@ -17,11 +17,9 @@ class User:
         return hasher.hash(password) == result['password_hash']
     
     @classmethod
-    def find_by_id(cls, id):
-        cursor = conn.cursor()
-        cursor.execute("SELECT * FROM users ")
+    def find_by_id(cls, user_id):
         raise NotImplementedError()
-        
+
         return cls()
 
     @classmethod
@@ -128,7 +126,3 @@ class Score:
 
 
 conn = sqlite3.connect('db/trivia.db')
-<<<<<<< HEAD
-print(conn)
-=======
->>>>>>> origin/database
