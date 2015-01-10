@@ -1,6 +1,4 @@
-from hasher.hasher import hasher
 from db.models import User
-import hasher.hasher  as hasher
 
 def login_handler(request):
     request.write("""<!DOCTYPE html>
@@ -55,5 +53,3 @@ def login_handler_post(request):
         pWord = userData.password_hash
         if pWord == hasher.hash(password):
             request.redirect("/")
-
-
