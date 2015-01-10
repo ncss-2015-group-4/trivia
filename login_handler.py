@@ -42,14 +42,16 @@ def login_handler_post(request):
     username = request.get_field("username")
     password = request.get_field("password")
     if username == None or username == '' or password == None or password == '':
-       request.redirect("/login")
+       request.redirect("/")
        return
     print(username)
+    print(password)
+    request.redirect("/")
     #gets a returned hash password from db
-    userData = User.find_by_username(username)
-    pWord = userData.password_hash
-    if pWord == hasher.hash(password):
-        userData = User.find_by_username(username)
-        pWord = userData.password_hash
-        if pWord == hasher.hash(password):
-            request.redirect("/")
+    #userData = User.find_by_username(username)
+    #pWord = userData.password_hash
+    #if pWord == hasher.hash(password):
+        #userData = User.find_by_username(username)
+        #pWord = userData.password_hash
+        #if pWord == hasher.hash(password):
+            #request.redirect("/")
