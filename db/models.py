@@ -19,7 +19,10 @@ class User:
     
     @classmethod
     def find_by_id(cls, id):
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM users ")
         raise NotImplementedError()
+        
         return cls()
 
     @classmethod
@@ -126,4 +129,3 @@ class Score:
 
 
 conn = sqlite3.connect('db/trivia.db')
-print(conn)
