@@ -87,6 +87,26 @@ class Flag:
         raise NotImplementedError()
 
 
+class Answer:
+    def __init__(self, answer_id, question_id, correct, text):
+        self.id = answer_id
+        self.question_id = question_id
+        self.correct = correct
+        self.text = text
+
+    @classmethod
+    def create(cls, answer_id, question_id, correct, text):
+        raise NotImplementedError()
+
+    @classmethod
+    def find_by_id(cls, answer_id):
+        raise NotImplementedError()
+
+    @classmethod
+    def delete_by_id(cls, answer_id):
+        raise NotImplementedError()
+
+
 def hash_password(string):
     raise NotImplementedError()
     return string
