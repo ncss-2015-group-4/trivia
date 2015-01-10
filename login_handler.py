@@ -28,9 +28,9 @@ def login_handler_post(request):
        return
     print(username)
     #gets a returned hash password from db
-    userData == User.find_by_username(username)
-    pWord == userData.password_hash
-    if User.check_login(username, password):
-        request.redirect("/")
+    #userData == User.find_by_username(username)
+    #pWord == userData.password_hash
+    #if User.check_login(username, password):
+        #request.redirect("/")
 
 
