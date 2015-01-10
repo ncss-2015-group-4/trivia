@@ -1,9 +1,6 @@
 # The models for Trivia
 
-<<<<<<< HEAD
-=======
 import hasher
->>>>>>> origin/database
 import sqlite3
 
 class User:
