@@ -26,13 +26,15 @@ def difficulty(people_answers):
 			elif person == EXPERT:
 				sum += HARD
 	average = sum/len(people_answers)
-	if average == 1:
-		print("Easy")
-	elif average == 2:
-		print("Average")
-	elif average == 3:
-		print("Hard")
+	if 0 <= average < 2:
+		return "Easy" 
+	elif 2 <= average < 3:
+		return "Medium"
+	elif 3 < average:
+		return "Hard"
 	
 if __name__ == '__main__':
 	print(difficulty([(INTERMEDIATE, True)]))
+	print(difficulty([(INTERMEDIATE, True), (BEGINNER, True)]))
+	print(difficulty([(BEGINNER, True), (INTERMEDIATE, True), (EXPERT, True)]))
 	
