@@ -7,40 +7,40 @@
 		margin: 0px;
 }
 
+	h1,h2,h3,h4,h5,h5 {
+			font-weight: bold;
+			text-align: center;
+	}
+	
+	
 	h1{
 		line-height: 94.2px;
 		font-size: 60px;
-		font-weight: bold;
 }
 
 	h2{
 		line-height: 47.1px;
 		font-size: 30px;
-		font-weight: bold;
 }
 
 	h3{
 		line-height: 23.55px;
 		font-size: 15px;
-		font-weight: bold;
 }
 
 	h4{
 		line-height: 12.56px;
 		font-size: 8px;
-		font-weight: bold;
 }
 
 	h5{
 		line-height: 12.56px;
 		font-size: 8px;
-		font-weight: bold;
 }
 
 	h6{
 		line-height: 12.56px;
-		font-size: 8px;
-		font-weight: bold;
+		font-size: 8px;S
 }
 
 	p{
@@ -48,6 +48,7 @@
 		font-size: 14px;
 		line-height: 22px;
 		margin-top: 11px;
+		text-align: center;
 }
 
 
