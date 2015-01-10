@@ -40,6 +40,34 @@ class User:
         return True
 
 
+class TriviaQuestion:
+    def __init__(self, id, question, num_answered, num_correct, category):
+        self.id = id
+        self.question = question
+        self.num_answered = num_answered
+        self.num_correct = num_correct
+        self.category = category
+
+    @classmethod
+    def create(cls, question, category):
+        raise NotImplementedError
+        # num_answered = 0
+        # num_correct = 0
+        ...
+        return cls(qid, question, 0, 0, category)
+
+
+class Category:
+    def __init__(self, id, name):
+        self.id = id
+        self.name = name
+
+    @classmethod
+    def create(cls, name):
+        raise NotImplementedError
+        ...
+        return cls(cid, name)
+
 
 def hash_password(string):
     raise NotImplementedError()
@@ -48,4 +76,4 @@ def hash_password(string):
     
 
     
-        
+ 
