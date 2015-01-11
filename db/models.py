@@ -4,15 +4,26 @@ import sqlite3
 import hasher
 
 class Model:
+    """Base class for models defined in this module."""
     def __init__():
         pass
 
     @classmethod
     def _table_name(cls):
+        """Internal use only: returns the database table name for a model class."""
         return cls.__name__.lower() + 's'
 
     @classmethod
     def query(cls, action, **kwargs):
+        """
+        Run a query with a specified action where keyword arguments are equal
+        to its values, and then return an instance of 
+
+        >>> Question.query("SELECT * FROM", question_id=1).question
+        'Which house is Harry Potter in?'
+        >>> User.query("SELECT * FROM", username='awesomealex').email
+        'dummyemail@email.com'
+        """
         table_name = cls._table_name()
         query = action.upper() + ' {0} WHERE'.format(cls._table_name())
 
@@ -28,6 +39,14 @@ class Model:
 
     @classmethod
     def find(cls, **kwargs):
+        """
+        A shortcut for `Model.query("SELECT * FROM", **kwargs)`.
+
+        >>> Question.find(question_id=1).question
+        'Which house is Harry Potter in?'
+        >>> User.find(username='awesomealex').email
+        'dummyemail@email.com'
+        """
         return cls.query("SELECT * FROM", **kwargs)
 
     @classmethod
