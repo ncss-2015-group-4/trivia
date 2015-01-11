@@ -1,0 +1,24 @@
+button {
+	position:relative;
+	margin-left: auto;
+    margin-right: auto;
+	border-radius: 5px;
+	width: 83px;
+	height: 22px;
+	text-align: center;
+
+}
+.login-form {
+	width: 275px;
+	height: 183px;
+	margin: 150px auto auto auto;
+	
+}
+ul li{
+  display: inline;
+}
+
+footer {
+	width: 400px;
+	margin: 600px auto 10px auto;
+}
