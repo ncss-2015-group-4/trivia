@@ -27,7 +27,7 @@ class Model:
 
     @classmethod
     def find(cls, **kwargs):
-        query("SELECT * FROM", kwargs)
+        return query("SELECT * FROM", kwargs)
 
     @classmethod
     def delete(cls, **kwargs):
