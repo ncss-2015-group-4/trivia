@@ -44,7 +44,15 @@
 		font-size: 54px;
 		color: #e5ae00;
 }
-
+	.title{
+			font-size: 150px;
+}
+	.boxed {
+			width: 300px;
+			padding: 25px;
+			border: 25px solid green;
+			background-color: green;
+}
 	h2{
 		line-height: 54px;
 		font-size: 36px;
