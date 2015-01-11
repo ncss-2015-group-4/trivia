@@ -48,7 +48,7 @@ class IfNode(Node):
 
 class IncludeNode(Node):
     def __init__(self, path):
-        self.path = path
+        self.path = path.strip()
         
     def eval(self, scope):
         with open(self.path) as p:
