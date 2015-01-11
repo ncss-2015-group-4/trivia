@@ -99,7 +99,26 @@
 		margin-bottom: 11px;
 }
 
-	ol,li{
-		
+	ul{
+		list-style-position: inside;
+		list-style-type: circle;
 }
+
+	ol{
+		list-style-position: inside;
+		list-style-type: upper-roman;
+}	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
