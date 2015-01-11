@@ -1,28 +1,16 @@
 <!DOCTYPE html>
 <html>
 	<head>
-<<<<<<< HEAD:static/post_game.html
 		<link rel="stylesheet" href="static/CSS/reset.css" type = "text/css" >
 		<link rel="stylesheet" href="static/CSS/csstemplate.css" type = "text/css" >
 =======
 		<link rel="stylesheet" href="static/css/reset.css" type = "text/css" >
 		<link rel="stylesheet" href="static/css/csstemplate.css" type = "text/css" >
->>>>>>> origin/Web-Dev:static/post_game.html
 	</head>
-	<header>
-	<!--logo, links and profile avatar-->
-		<nav>
-			<img src="images/scrabble.jpg"><!-- Our Logo -->
-			<a href="#">Link 1</a>
-			<a href="#">Link 2</a>
-			<a href="#">Link 3</a>
-			<a href="#">Link 4</a>
-			<img src="images/profilepic.jpg"> <!-- Player's Profile picture -->
-			<a href="#">YOU</a>
-		</nav>
-	</header>
+
 	<!-- Summary of game -->
 	<body>
+		{% include static/header.html %}
 		<h1>CONGRATULATIONS!</h1>
 		<p>You completed x quiz on x difficulty!</p>
 		<p>Time:</p>
