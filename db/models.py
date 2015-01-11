@@ -137,7 +137,7 @@ class Flag(Model):
     @classmethod
     def create(cls, question_id):
         cur=conn.cursor()
-        cur.execute('INSERT INTO flags VALUES(NULL,?)',(question_id,))
+        cur.execute('INSERT INTO flags VALUES(NULL,?)',(question_id))
         conn.commit()
         return cls(cur.lastrowid,question_id)
 
@@ -152,12 +152,9 @@ class Answer(Model):
     @classmethod
     def create(cls, question_id, correct, text):
         cur=conn.cursor()
-        cur.execute('INSERT INTO answers VALUES(NULL,?,?,?)',(question_id,correct,text,))
+        cur.execute('INSERT INTO answers VALUES(NULL,?,?,?)',(question_id,correct,text))
         conn.commit()
         return cls(cur.lastrowid, question_id, correct, text)
-    @classmethod
-    def delete_by_id(cls, answer_id):
-        raise NotImplementedError()
 
 
 class Score(Model):
@@ -173,14 +170,16 @@ class Score(Model):
         cur.execute('INSERT INTO scores VALUES(?,?,0,0)',(user_id,category_id))
         conn.commit()
         return cls(user_id,category_id,0,0)
-		
-	def update_score(self,num_answered,num_correct):
-		self.num_answered += num_answered
-		cur = conn.cursor()
-        cur.execute('UPDATE scores SET num_answered=?,num_correct=? WHERE user_id=? AND category=?', (new_email, self.id))
+        
+    def update_score(self,correct_answer):
+        if correct_answer:
+            self.num_correct += 1
+        self.num_answered += 1
+        cur = conn.cursor()
+        cur.execute('UPDATE scores SET num_answered=?,num_correct=? WHERE user_id=? AND category_id=?', (self.num_answered, self.num_correct, self.user_id, self.category_id))
         
         cur.commit()
-	
+    
 
 
 conn = sqlite3.connect('db/trivia.db')
