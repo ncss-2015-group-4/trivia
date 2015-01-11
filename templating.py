@@ -50,7 +50,7 @@ class IncludeNode(Node):
         self.path = path
         
     def eval(self, scope):
-        with open(self.path) as p:
+        with open(htmlPath+self.path) as p:
             lines=[line.strip() for line in p]
             template=''.join(lines)
         return Parser(template).eval(scope)
@@ -68,10 +68,12 @@ class Parser(object):
 {{a+b}}{% if a==d %}{{str(b)*5}}{% end if %}").eval({'a':1, 'b':2, 'c':3, 'd':1})
     '322222abcd2efgh212342101234333333333322222'
     '''
-    def __init__(self, tokens):
+    
+    def __init__(self, tokens, htmlPath):
         self.tokens = tokens
         self.index = 0
         self.length = len(tokens)
+        self.htmlPath = htmlPath
 
     def _parse_python_node(self):
         #need to account for python node in python node
@@ -173,6 +175,16 @@ class Parser(object):
 
     def next(self):
         self.index += 1
+
+def render_template(path, scope):
+    with open(path) as p:
+        lines=[line.strip() for line in p]
+        template=''.join(lines)
+    htmlPath = path.split('/')
+    htmlPath.pop()
+    htmlPath = ''.join(htmlPath)
+    return Parser(template, htmlPath).eval(scope)
+  
 if __name__ == "__main__":
     import doctest
     doctest.testmod()
