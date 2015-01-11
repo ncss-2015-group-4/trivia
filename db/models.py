@@ -14,7 +14,7 @@ class Model:
         return cls.__name__.lower() + 's'
 
     @classmethod
-    def query(cls, action, **kwargs):
+    def query(cls, action, single=True, **kwargs):
         """
         Run a query with a specified action where keyword arguments are equal
         to its values, and then return an instance of 
@@ -33,9 +33,15 @@ class Model:
 
         cur = conn.cursor()
         cur.execute(query, values)
-        result = cur.fetchone()
-        if result:
-            return cls(*result)
+
+        if single:
+            result = cur.fetchone()
+            if result:
+                return cls(*result)
+        else:
+            results = cur.fetchall()
+            return results
+
 
     @classmethod
     def find(cls, **kwargs):
@@ -52,6 +58,14 @@ class Model:
     @classmethod
     def delete(cls, **kwargs):
         cls.query("DELETE FROM", **kwargs)
+
+    @classmethod
+    def find_all(cls, **kwargs):
+        return cls.query("SELECT * FROM", single=False, **kwargs)
+
+    @classmethod
+    def delete_all(cls, **kwargs):
+        cls.query("DELETE FROM", single=False, **kwargs)
 
     @classmethod
     def create():
@@ -102,11 +116,11 @@ class TriviaQuestion(Model):
         self.category = category
 
     @classmethod
-    def create(cls, question, category):
+    def create(cls, question, category_id):
         cur=conn.cursor()
-        cur.execute('INSERT INTO questions VALUES(NULL,?,0,0,?)',(question,category,))
+        cur.execute('INSERT INTO questions VALUES(NULL,?,0,0,?)', (question, category_id))
         conn.commit()
-        return cls(cur.lastrowid,category)
+        return cls(cur.lastrowid, category_id)
 
     def flag(self):
         return Flag.create(self.id)
@@ -137,7 +151,7 @@ class Flag(Model):
     @classmethod
     def create(cls, question_id):
         cur=conn.cursor()
-        cur.execute('INSERT INTO flags VALUES(NULL,?)',(question_id))
+        cur.execute('INSERT INTO flags VALUES(NULL,?)',(question_id,))
         conn.commit()
         return cls(cur.lastrowid,question_id)
 
