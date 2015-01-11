@@ -12,9 +12,9 @@ class Model:
         return cls.__name__.lower() + 's'
 
     @classmethod
-    def find(cls, **kwargs):
+    def query(cls, action,**kwargs):
         table_name = cls._table_name()
-        query = 'SELECT * FROM {0} WHERE'.format(cls._table_name())
+        query = action.upper() + ' {0} WHERE'.format(cls._table_name())
 
         for key in kwargs:
             query += ' ' + key + ' = ?'
@@ -23,7 +23,19 @@ class Model:
         cur = conn.cursor()
         cur.execute(query, values)
         result = cur.fetchone()
-        return cls(**result)
+        return cls(**result)    
+
+    @classmethod
+    def find(cls, **kwargs):
+        query("SELECT * FROM", kwargs)
+
+    @classmethod
+    def delete():
+        query("DELETE FROM ")
+
+    @classmethod
+    def create():
+        raise NotImplementedError()
 
 
 class User(Model):
