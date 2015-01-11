@@ -6,6 +6,7 @@ The python code can then be evaluated and added to the html to be displayed by a
 '''
 
 IF_TAG=' if '
+INCLUDE_TAG = ' include '
 
 class ParseError(Exception):
     pass
@@ -44,10 +45,28 @@ class IfNode(Node):
         else:
             return ''
 
+class IncludeNode(Node):
+    def __init__(self, path):
+        self.path = path
+        
+    def eval(self, scope):
+        with open(self.path) as p:
+            lines=[line.strip() for line in p]
+            template=''.join(lines)
+        return Parser(template).eval(scope)
+            
 class Parser(object):
     '''
     >>> Parser("abcd{{1+1}}efgh{% if 1==1 %}2{% end if %}{% if 1==3 %}3{% end if %}1234").eval({})
     'abcd2efgh21234'
+    >>> Parser("{% if 1==1 %}2{% end if %}{{5*2}}{% if 1==3 %}3{% end if %}1234").eval({})
+    '2101234'
+    >>> Parser("{{a+b}}{% if a==d %}{{str(b)*5}}{% end if %}").eval({'a':1, 'b':2, 'c':3, 'd':1})
+    '322222'
+    >>> Parser("{{a+b}}{% if a==d %}{{str(b)*5}}{% end if %}\
+{% include templating/template_include_test.test %}\
+{{a+b}}{% if a==d %}{{str(b)*5}}{% end if %}").eval({'a':1, 'b':2, 'c':3, 'd':1})
+    '322222abcd2efgh212342101234333333333322222'
     '''
     def __init__(self, tokens):
         self.tokens = tokens
@@ -94,7 +113,22 @@ class Parser(object):
         self.next()
         true_node = self._parse_group_node('{% end if %}')
         return IfNode(predicate, true_node)
-            
+        
+    def _parse_include_node(self):
+        path = ''
+        path += self.tokens[self.index]
+        while self.read_next() != '%':
+            self.next()
+            path += self.tokens[self.index]
+            if self.is_end():
+                raise ParseError("Unexpected end of input.")
+        self.next()
+        if self.read_next() != '}':
+            raise ParseError("'}' expected")
+        self.next() 
+        self.next()
+        return IncludeNode(path)
+    
     def _parse_group_node(self, end):
         children = []
         while self.tokens[self.index:self.index+len(end)] != end or (end == '' and not self.is_end()):
@@ -105,16 +139,21 @@ class Parser(object):
                 if self.tokens[self.index] == '{':
                     self.next()
                     children.append(self._parse_python_node())
+                
                 elif self.tokens[self.index] == '%':
                     self.next()
                     if self.tokens[self.index:self.index+len(IF_TAG)] == IF_TAG:
                         self.index += len(IF_TAG)
                         children.append(self._parse_if_node())
+                
+                    if self.tokens[self.index:self.index+len(INCLUDE_TAG)] == INCLUDE_TAG:
+                        self.index += len(INCLUDE_TAG)
+                        children.append(self._parse_include_node())
                 else:
                     raise ParseError("Unexpected token after '{'")
             else:
                 children.append(self._parse_text_node())
-        self.index+=len(end)
+        self.index += len(end)
         return GroupNode(children)
         
     def parse(self):
