@@ -12,7 +12,7 @@ class Model:
         return cls.__name__.lower() + 's'
 
     @classmethod
-    def query(cls, action,**kwargs):
+    def query(cls, action, **kwargs):
         table_name = cls._table_name()
         query = action.upper() + ' {0} WHERE'.format(cls._table_name())
 
@@ -27,11 +27,11 @@ class Model:
 
     @classmethod
     def find(cls, **kwargs):
-        query("SELECT * FROM", kwargs)
+        return query("SELECT * FROM", kwargs)
 
     @classmethod
-    def delete():
-        query("DELETE FROM ")
+    def delete(cls, **kwargs):
+        query("DELETE FROM ", kwargs)
 
     @classmethod
     def create():
@@ -50,18 +50,6 @@ class User(Model):
         cur.execute('SELECT username, password_hash FROM users WHERE username = ?', (username,))
         result = cur.fetchone()
         return hasher.hash(password) == result['password_hash']
-
-    @classmethod
-    def find(cls, **kwargs):
-        query = 'SELECT user_id, username, email FROM users WHERE'
-        for key in kwargs:
-            query += ' ' + key + ' = ?'
-        values = tuple(kwargs.values())
-
-        cur = conn.cursor()
-        cur.execute(query, values)
-        result = cur.fetchone()
-        return cls(**result)
 
     @classmethod
     def create(cls, username, password, email):
