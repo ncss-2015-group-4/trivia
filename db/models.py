@@ -196,7 +196,7 @@ class TriviaQuestion(Model):
         cur=conn.cursor()
         cur.execute('INSERT INTO questions VALUES(NULL,?,0,0,?)', (question, category_id))
         conn.commit()
-        return cls(cur.lastrowid, 0, 0, category_id)
+        return cls(cur.lastrowid, question, 0, 0, category_id)
 
     def flag(self):
         return Flag.create(self.id)
