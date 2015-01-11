@@ -23,15 +23,16 @@ class Model:
         cur = conn.cursor()
         cur.execute(query, values)
         result = cur.fetchone()
-        return cls(**result)    
+        if result:
+            return cls(**result)    
 
     @classmethod
     def find(cls, **kwargs):
-        return query("SELECT * FROM", kwargs)
+        return cls.query("SELECT * FROM", **kwargs)
 
     @classmethod
     def delete(cls, **kwargs):
-        query("DELETE FROM ", kwargs)
+        cls.query("DELETE FROM", **kwargs)
 
     @classmethod
     def create():
@@ -43,6 +44,10 @@ class User(Model):
         self.id = user_id
         self.username = username
         self.email = email
+
+    @classmethod
+    def find(cls, **kwargs):
+        return cls.query("SELECT user_id, username, email FROM", **kwargs)
 
     @classmethod
     def check_login(cls, username, password):
