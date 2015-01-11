@@ -1,5 +1,4 @@
-#from db.models import User
-#import db.hasher as hasher
+from db.models import User
 
 def login_handler(request):
     request.write("""<!DOCTYPE html>
@@ -63,19 +62,17 @@ def login_handler_post(request):
     if username_email == None or username_email == '' or password == None or password == '':
         request.redirect("/") #field isn't filled in
         return
-    userData = User.find_by_username(username_email) #checks db with username
-    if userData is not None: #if there is a row in the database
-        pWord = userData.password_hash #gets a returned hash password from db
-        if pWord == hasher.hash(password): #checks hashes
+    user_data = User.find(username=username_email) #checks db with username
+    if user_data is not None: #if there is a row in the database
+        if user_data.check_login(password):
             request.redirect("/") #login
             return
         else:
             request.redirect("/") #username/password is incorrect
     else: #does a second check on db with email
-        userData = User.find_by_email(username_email) #may 
-        if userData is not None:
-            pWord = userData.password_hash #gets a returned hash password from db
-            if pWord == hasher.hash(password):
+        user_data = User.find(email=username_email) #may 
+        if user_data is not None:
+            if user_data.check_login(password):
                 request.redirect("/") #login
                 return
             else:
@@ -107,13 +104,13 @@ def signup_handler_post(request):
         request.redirect("/") #Says that the user is missing a feild
         return
     
-    userData = User.find_by_username(username) #requests a database entry with the user's username
-    if userData == None:    #checks that there is a row in the database that 
-        if User.find_by_email(email) != None:
+    user_data = User.find(username=username) #requests a database entry with the user's username
+    if user_data == None:    #checks that there is a row in the database that 
+        if user_data.find(email=email) != None:
             request.redirect("/") #Says that the user email address is already in use
             return 
         else:
-            User.create(username, password, email) #Creates a new entry into the db
+            user_data.create(username, password, email) #Creates a new entry into the db
             request.redirect("/") #sends user a thanks pafe or profile page?
             return 
     else:

@@ -1,0 +1,17 @@
+
+h1 {
+	font-size: 50px;
+	color: pink;
+}
+.letters {
+	height:8px;
+	line-height:16px;
+	border-bottom:1px
+solidgreen;
+	position:relative;
+}
+.letters > span {
+	floart:left;
+	-moz-transform:
+	rotate(-90deg);
+}
