@@ -112,3 +112,10 @@
 		list-style-position: inside;
 		list-style-type: upper-roman;
 }		
+
+	.submit{
+		top: 20px;
+		padding-top: 30px;
+		background-color: #068BBC;
+		text-align: center;
+}
