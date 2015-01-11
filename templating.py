@@ -29,6 +29,17 @@ class GroupNode(Node):
         for node in self.children:
             result += str(node.eval(scope))
         return result
+        
+class IfNode(Node):
+    def __init__(self, predicate, true_node):
+        self.predicate = predicate
+        self.true_node = true_node
+
+    def eval(self, scope):
+        if eval(self.predicate, scope):
+            return self.true_node.eval(scope)
+        else:
+            return ''
 
 class Parser(object):
     def __init__(self, tokens):
