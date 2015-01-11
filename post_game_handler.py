@@ -1,10 +1,3 @@
 def post_game_handler(request):
-    request.write("""<!DOCTYPE html>
-<html>
-<body>
-<h1>
-post 01000111011000010110110101100101!!!
-</h1>
-</body>
-</html>
-""")
+    post_game_page = open('static/postgamelobby.html')
+    request.write(post_game_page.read())
