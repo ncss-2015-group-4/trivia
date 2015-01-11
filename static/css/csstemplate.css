@@ -184,3 +184,19 @@
 		background-color: #068BBC;
 		text-align: center;
 }
+	.submitform{
+		top: 20px;
+		padding-top: 30px;
+		background-color: black;
+		text-align: center;
+}	
+	.submitinputquestion{
+		top: 50px;
+		padding: 8px 8px 8px 8px;
+		width: 300px;
+		text-align: center;
+}	
+	.submitbutton{
+		margin: 20px;
+		text-align: center;
+}	
