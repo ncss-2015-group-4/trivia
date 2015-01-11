@@ -4,19 +4,7 @@
 		<link rel="stylesheet" href="static/css/reset.css" type = "text/css" >
 		<link rel="stylesheet" href="static/css/csstemplate.css" type = "text/css" >
 	</head>
-	<header>
-		<nav>
-			<div class="page-width">
-				<img src="static/images/scrabble.jpg">
-				<a href="/">Home</a>
-				<a href="/pre_game">Play</a>
-				<a href="/leaderboard">Leaderboard</a>
-				<a href="/profile">Profile</a>
-				<img src="static/images/profilepic.jpg">
-				<a href="#">USER</a>
-			</div>	
-		</nav>
-	</header>
+	{% include static/header.html %}
 	<body>
 		<h1 class="submit">Submit Your Own Question</h1>
 		<form class="submitform">
