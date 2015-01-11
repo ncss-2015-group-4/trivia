@@ -61,7 +61,7 @@ def login_handler_post(request):
     if username_email == None or username_email == '' or password == None or password == '':
        request.redirect("/") #field isn't filled in
        return
-    userData = User.find_by_username(username_email) #checks db with username
+    userData = User.find(username=username_email) #checks db with username
     if userData is not None: #if there is a row in the database
         pWord = userData.password_hash #gets a returned hash password from db
         if pWord == hasher.hash(password): #checks hashes
@@ -70,7 +70,7 @@ def login_handler_post(request):
         else:
             request.redirect("/") #username/password is incorrect
     else: #does a second check on db with email
-        userData = User.find_by_email(username_email) #may 
+        userData = User.find(email=username_email) #may 
         if userData is not None:
             pWord = userData.password_hash #gets a returned hash password from db
             if pWord == hasher.hash(password):
@@ -105,9 +105,9 @@ def signup_handler_post(request):
         request.redirect("/") #Says that the user is missing a feild
         return
     
-    userData = User.find_by_username(username) #requests a database entry with the user's username
+    userData = User.find(username=username) #requests a database entry with the user's username
     if userData == None:    #checks that there is a row in the database that 
-        if User.find_by_email(email) != None:
+        if User.find(email=email) != None:
             request.redirect("/") #Says that the user email address is already in use
             return 
         else:
