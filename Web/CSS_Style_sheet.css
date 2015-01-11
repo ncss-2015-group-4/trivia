@@ -1,0 +1,124 @@
+@font-face {
+    font-family: 'trashhandregular';
+    src: url('TrashHand-webfont.eot');
+    src: url('TrashHand-webfont.eot?#iefix') format('embedded-opentype'),
+         url('TrashHand-webfont.woff') format('woff'),
+         url('TrashHand-webfont.ttf') format('truetype'),
+         url('TrashHand-webfont.svg#trashhandregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+	
+@font-face {
+    font-family: 'caviar_dreamsregular';
+    src: url('CaviarDreams-webfont.eot');
+    src: url('CaviarDreams-webfont.eot?#iefix') format('embedded-opentype'),
+         url('CaviarDreams-webfont.woff') format('woff'),
+         url('CaviarDreams-webfont.ttf') format('truetype'),
+         url('CaviarDreams-webfont.svg#caviar_dreamsregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+	body {
+		font-family; caviar_dreamsregular;
+		font-size: 14px;
+		margin: 0px;
+		margin-bottom: 11px;
+		font-size: 16px;
+		line-height: 24px;
+}
+
+	h1,h2,h3,h4,h5,h5 {
+			font-family: trashhandregular;
+			font-weight: bold;
+			color: #0e1e26;;
+	}
+	
+	
+	h1{
+		line-height: 81px;
+		font-size: 54px;
+		color: #e5ae00;
+}
+
+	h2{
+		line-height: 54px;
+		font-size: 36px;
+}
+
+	h3{
+		line-height: 36px;
+		font-size: 24px;
+}
+
+
+	p{
+		margin-bottom: 11px;
+		font-size: 16px;
+		line-height: 24px;
+		margin-top: 11px;
+		color: #0e1e26;
+		font-family: caviar_dreamsregular;
+}
+
+	a {
+		margin-bottom: 11px;
+		font-size: 16px;
+		line-height: 24px;
+		font-family: caviar_dreamsregular;
+}
+
+	input{
+		background-color: #dcf1f3;
+}	
+
+	header{
+		background-color: #068bbc;
+}
+
+	.page-width{
+		max-width: 960px;
+		margin: auto; 
+		padding: 0 48px;
+}
+
+	button{
+		background-color: #068bbc;
+		font-weight: bold;
+		font-family: caviar_dreamsregular;
+}
+
+	li, dl, legend, td, th{ 
+		font-family: caviar_dreamsregular;
+		font-size: 16px;
+		line-height: 24px;
+		margin-bottom: 11px;
+}
+
+	ul{
+		list-style-position: inside;
+		list-style-type: circle;
+}
+
+	ol{
+		list-style-position: inside;
+		list-style-type: upper-roman;
+}	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
