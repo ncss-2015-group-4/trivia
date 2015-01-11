@@ -4,15 +4,8 @@
 		<link rel="stylesheet" href="static/css/reset.css" type = "text/css" >
 		<link rel="stylesheet" href="static/css/csstemplate.css" type = "text/css" >
 	</head>
-	<header>
-	<!--logo, links and profile avatar-->
-		<nav>
-			<img src="static/images/scrabble.jpg">
-			<img src="static/images/profilepic.jpg">
-			<a href="#">YOU</a>
-		</nav>
-	</header>
 	<body>
+		{% include static/header.html %}
 	<!-- IMPORTANT: insert Javascript countdown for timing Questions -->
 		<p>Question x: random question.</p>
 		<ol>

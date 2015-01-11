@@ -1,4 +1,6 @@
+from templating import render_template
+
 def profile_handler(request):
-    profile_page = open('static/profile.html')
-    request.write(profile_page.read())
+    profile_page = render_template('static/profile.html', {})
+    request.write(profile_page)
 

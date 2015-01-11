@@ -4,67 +4,23 @@
 		<link rel="stylesheet" href="static/css/reset.css" type = "text/css" >
 		<link rel="stylesheet" href="static/css/csstemplate.css" type = "text/css" >
 	</head>
-	<header>
-<<<<<<< HEAD
-		<nav class=">
-			<img src ="scrabble logo.jpg">
-			<a href = "#">Link 1</a>
-			<a href = "#">Link 2</a>
-			<a href = "#">Link 3</a>
-			<a href = "#">Link 4</a>
-			<img src ="Profile picture.jpg">
-			<a href = "#">YOU</a>
-		</nav>
-	</header>
+	{% include static/header.html %}
 	<body>
 		<h1 class="submit">Submit Your Own Question</h1>
-		<form>
-			<p><input type="text" placeholder="Enter a Question"></p>
-			<p><input type="text" placeholder="Correct Answer"></p>
-			<p><input type="text" placeholder="Incorrect Answer"></p>
-			<p><input type="text" placeholder="Incorrect Answer"></p>
-			<p><input type="text" placeholder="Incorrect Answer"></p>
-			<button>Submit</button>
+		<form class="submitform">
+			<p><input type="text" placeholder="Enter a Question" class="submitinputquestion"></p>
+			<p><input type="text" placeholder="Correct Answer" class="submitinputcorrect"></p>
+			<p><input type="text" placeholder="Incorrect Answer" class="submitinputincorrect"></p>
+			<p><input type="text" placeholder="Incorrect Answer" class="submitinputincorrect"></p>
+			<p><input type="text" placeholder="Incorrect Answer" class="submitinputincorrect2"></p>
+			<button class="submitbutton">Submit</button>
 		</form>
-		<h2>Rules:</h2>
-		<ul>
+		<h2 class="rules">Rules:</h2>
+		<ul class="rulesdotpoints">
 			<li>Don't do this</li>
 			<li>or this</li>
 			<li>or that</li>
 			<li>blah blah blah</li>
 		</ul>
-=======
-		<nav>
-			<div class="page-width">
-				<h1> This is a heading </h1>
-				<img src="static/images/scrabble.jpg">
-				<a href="/">Home</a>
-				<a href="/pre_game">Play</a>
-				<a href="/leaderboard">Leaderboard</a>
-				<a href="/profile">Profile</a>
-				<img src="static/images/profilepic.jpg">
-				<a href="#">USER</a>
-			</nav>
-		</header>
-		<body>
-		<div id="main" class="page-width"> 
-			<h1>Submit Your Own Question</h1>
-			<form>
-				<p><input type="text" placeholder="Enter a Question"></p>
-				<p><input type="text" placeholder="Correct Answer"></p>
-				<p><input type="text" placeholder="Incorrect Answer"></p>
-				<p><input type="text" placeholder="Incorrect Answer"></p>
-				<p><input type="text" placeholder="Incorrect Answer"></p>
-				<button>Submit</button>
-			</form>
-			<h2>Rules:</h2>
-			<ul>
-				<li>Don't do this</li>
-				<li>or this</li>
-				<li>or that</li>
-				<li>blah blah blah</li>
-			</ul>
-		</div>
->>>>>>> origin/Web-Dev
 	</body>
 </html>
