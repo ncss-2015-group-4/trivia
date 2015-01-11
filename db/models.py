@@ -14,7 +14,7 @@ class Model:
         return cls.__name__.lower() + 's'
 
     @classmethod
-    def query(cls, action, **kwargs):
+    def query(cls, action, single=True, **kwargs):
         """
         Run a query with a specified action where keyword arguments are equal
         to its values, and then return an instance of 
@@ -33,9 +33,15 @@ class Model:
 
         cur = conn.cursor()
         cur.execute(query, values)
-        result = cur.fetchone()
-        if result:
-            return cls(*result)
+
+        if single:
+            result = cur.fetchone()
+            if result:
+                return cls(*result)
+        else:
+            results = cur.fetchall()
+            return results
+
 
     @classmethod
     def find(cls, **kwargs):
@@ -52,6 +58,14 @@ class Model:
     @classmethod
     def delete(cls, **kwargs):
         cls.query("DELETE FROM", **kwargs)
+
+    @classmethod
+    def find_all(cls, **kwargs):
+        return cls.query("SELECT * FROM", single=False, **kwargs)
+
+    @classmethod
+    def delete_all(cls, **kwargs):
+        cls.query("DELETE FROM", single=False, **kwargs)
 
     @classmethod
     def create():
@@ -79,7 +93,7 @@ class User(Model):
         cur=conn.cursor()
         cur.execute('INSERT INTO users VALUES(NULL,?,?,?)',(username,hasher.hash(password),email,))
         conn.commit()
-        return cls.find(user_id=cur.lastrowid)
+        return cls(cur.lastrowid,username,email)
 
     def set_email(self, new_email):
         cur = conn.cursor()
@@ -102,11 +116,11 @@ class TriviaQuestion(Model):
         self.category = category
 
     @classmethod
-    def create(cls, question, category):
+    def create(cls, question, category_id):
         cur=conn.cursor()
-        cur.execute('INSERT INTO questions VALUES(NULL,?,0,0,?)',(question,category,))
+        cur.execute('INSERT INTO questions VALUES(NULL,?,0,0,?)', (question, category_id))
         conn.commit()
-        return cls.find(question_id=cur.lastrowid)
+        return cls(cur.lastrowid, category_id)
 
     def flag(self):
         return Flag.create(self.id)
@@ -126,7 +140,7 @@ class Category(Model):
         cur=conn.cursor()
         cur.execute('INSERT INTO categories VALUES(NULL,?)',(name))
         conn.commit()
-        return cls.find(category_id=cur.lastrowid)
+        return cls(cur.lastrowid,name)
 
 
 class Flag(Model):
@@ -137,9 +151,9 @@ class Flag(Model):
     @classmethod
     def create(cls, question_id):
         cur=conn.cursor()
-        cur.execute('INSERT INTO flags VALUES(NULL,?)',(question_id))
+        cur.execute('INSERT INTO flags VALUES(NULL,?)',(question_id,))
         conn.commit()
-        return cls.find(flag_id=cur.lastrowid)
+        return cls(cur.lastrowid,question_id)
 
 
 class Answer(Model):
@@ -150,15 +164,11 @@ class Answer(Model):
         self.text = text
 
     @classmethod
-    def create(cls, answer_id, question_id, correct, text):
+    def create(cls, question_id, correct, text):
         cur=conn.cursor()
-        cur.execute('INSERT INTO answers VALUES(NULL,?)',(name))
+        cur.execute('INSERT INTO answers VALUES(NULL,?,?,?)',(question_id,correct,text))
         conn.commit()
-        return cls.find(answer_id=cur.lastrowid)
-
-    @classmethod
-    def delete_by_id(cls, answer_id):
-        raise NotImplementedError()
+        return cls(cur.lastrowid, question_id, correct, text)
 
 
 class Score(Model):
@@ -170,7 +180,20 @@ class Score(Model):
 
     @classmethod
     def create(cls, user_id, category_id):
-        raise NotImplementedError()
+        cur=conn.cursor()
+        cur.execute('INSERT INTO scores VALUES(?,?,0,0)',(user_id,category_id))
+        conn.commit()
+        return cls(user_id,category_id,0,0)
+        
+    def update_score(self,correct_answer):
+        if correct_answer:
+            self.num_correct += 1
+        self.num_answered += 1
+        cur = conn.cursor()
+        cur.execute('UPDATE scores SET num_answered=?,num_correct=? WHERE user_id=? AND category_id=?', (self.num_answered, self.num_correct, self.user_id, self.category_id))
+        
+        cur.commit()
+    
 
 
 conn = sqlite3.connect('db/trivia.db')
