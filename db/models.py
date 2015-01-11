@@ -228,6 +228,15 @@ class Category(Model):
         cur.execute('INSERT INTO categories VALUES(NULL,?)',(name))
         conn.commit()
         return cls(cur.lastrowid,name)
+    
+    def create_question(self, question, answers):
+        question = TriviaQuestion.create(question, self.id)
+        for index, answer in enumerate(answers):
+            if index == 0:
+                Answer.create(question.id, 1, answer)
+            else:
+                Answer.create(question.id, 0, answer)
+        return question
 
 
 class Flag(Model):
