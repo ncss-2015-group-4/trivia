@@ -93,7 +93,7 @@ class User(Model):
         cur=conn.cursor()
         cur.execute('INSERT INTO users VALUES(NULL,?,?,?)',(username,hasher.hash(password),email,))
         conn.commit()
-        return cls(cur.lastrowid,username,password,email)
+        return cls(cur.lastrowid,username,email)
 
     def set_email(self, new_email):
         cur = conn.cursor()
