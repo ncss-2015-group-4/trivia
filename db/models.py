@@ -3,7 +3,22 @@
 import sqlite3
 import hasher
 
-class User:
+class Model:
+    def __init__():
+        pass
+
+    @classmethod
+    def _table_name(cls):
+        return cls.__name__.lower() + 's'
+
+    @classmethod
+    def find(cls, **kwargs):
+        table_name = cls._table_name()
+        query = 'SELECT * FROM {0} WHERE '.format(cls._table_name())
+        ...
+
+
+class User(Model):
     def __init__(self, user_id, username, email):
         self.id = user_id
         self.username = username
@@ -15,7 +30,12 @@ class User:
         cur.execute('SELECT username, password_hash FROM users WHERE username = ?', (username,))
         result = cur.fetchone()
         return hasher.hash(password) == result['password_hash']
-    
+
+    @classmethod
+    def find(cls, **kwargs):
+        query = 'SELECT user_id, username, email FROM users WHERE '
+        ...
+
     @classmethod
     def find_by_id(cls, user_id):
         raise NotImplementedError()
@@ -48,7 +68,7 @@ class User:
         self.email = self.new_email
         cur.commit()
 
-class TriviaQuestion:
+class TriviaQuestion(Model):
     def __init__(self, question_id, question, num_answered, num_correct, category):
         self.id = question_id
         self.question = question
@@ -68,10 +88,14 @@ class TriviaQuestion:
         return Flag.create(self.id)
 
 
-class Category:
+class Category(Model):
     def __init__(self, category_id, name):
         self.id = category_id
         self.name = name
+
+    @classmethod
+    def _table_name(cls):
+        return 'categories'
 
     @classmethod
     def create(cls, name):
@@ -80,7 +104,7 @@ class Category:
         return cls(cid, name)
 
 
-class Flag:
+class Flag(Model):
     def __init__(self, flag_id, question_id):
         self.id = flag_id
         self.question_id = question_id
@@ -94,7 +118,7 @@ class Flag:
         raise NotImplementedError()
 
 
-class Answer:
+class Answer(Model):
     def __init__(self, answer_id, question_id, correct, text):
         self.id = answer_id
         self.question_id = question_id
@@ -114,9 +138,9 @@ class Answer:
         raise NotImplementedError()
 
 
-class Score:
+class Score(Model):
     def __init__(self, user_id, category_id, num_answered, num_correct):
-        self.id = user_id
+        self.user_id = user_id
         self.category_id = category_id
         self.num_answered = num_answered
         self.num_correct = num_correct
