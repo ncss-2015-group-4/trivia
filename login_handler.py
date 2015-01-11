@@ -1,5 +1,5 @@
 from db.models import User
-import hasher.hasher as hasher
+import db.hasher as hasher
 
 def login_handler(request):
     request.write("""<!DOCTYPE html>
