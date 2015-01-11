@@ -111,4 +111,15 @@
 	ol{
 		list-style-position: inside;
 		list-style-type: upper-roman;
-}		
+}
+
+}	
+		.RecentlyPlayed {
+		display:inline-block;
+		float:left;
+		
+	}
+		.Friends {
+		display:inline-block;
+		float:right;
+	}
