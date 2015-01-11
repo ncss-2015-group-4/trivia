@@ -14,8 +14,16 @@ class Model:
     @classmethod
     def find(cls, **kwargs):
         table_name = cls._table_name()
-        query = 'SELECT * FROM {0} WHERE '.format(cls._table_name())
-        ...
+        query = 'SELECT * FROM {0} WHERE'.format(cls._table_name())
+
+        for key in kwargs:
+            query += ' ' + key + ' = ?'
+        values = tuple(kwargs.values())
+
+        cur = conn.cursor()
+        cur.execute(query, values)
+        result = cur.fetchone()
+        return cls(**result)
 
 
 class User(Model):
@@ -33,8 +41,15 @@ class User(Model):
 
     @classmethod
     def find(cls, **kwargs):
-        query = 'SELECT user_id, username, email FROM users WHERE '
-        ...
+        query = 'SELECT user_id, username, email FROM users WHERE'
+        for key in kwargs:
+            query += ' ' + key + ' = ?'
+        values = tuple(kwargs.values())
+
+        cur = conn.cursor()
+        cur.execute(query, values)
+        result = cur.fetchone()
+        return cls(**result)
 
     @classmethod
     def create(cls, username, password, email):
