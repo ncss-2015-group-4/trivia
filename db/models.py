@@ -24,7 +24,7 @@ class Model:
         cur.execute(query, values)
         result = cur.fetchone()
         if result:
-            return cls(**result)    
+            return cls(*result)
 
     @classmethod
     def find(cls, **kwargs):
