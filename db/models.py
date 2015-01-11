@@ -79,7 +79,7 @@ class User(Model):
         cur=conn.cursor()
         cur.execute('INSERT INTO users VALUES(NULL,?,?,?)',(username,hasher.hash(password),email,))
         conn.commit()
-        return cls.find(user_id=cur.lastrowid)
+        return cls(cur.lastrowid,username,password,email)
 
     def set_email(self, new_email):
         cur = conn.cursor()
@@ -106,7 +106,7 @@ class TriviaQuestion(Model):
         cur=conn.cursor()
         cur.execute('INSERT INTO questions VALUES(NULL,?,0,0,?)',(question,category,))
         conn.commit()
-        return cls.find(question_id=cur.lastrowid)
+        return cls(cur.lastrowid,category)
 
     def flag(self):
         return Flag.create(self.id)
@@ -126,7 +126,7 @@ class Category(Model):
         cur=conn.cursor()
         cur.execute('INSERT INTO categories VALUES(NULL,?)',(name))
         conn.commit()
-        return cls.find(category_id=cur.lastrowid)
+        return cls(cur.lastrowid,name)
 
 
 class Flag(Model):
@@ -137,9 +137,9 @@ class Flag(Model):
     @classmethod
     def create(cls, question_id):
         cur=conn.cursor()
-        cur.execute('INSERT INTO flags VALUES(NULL,?)',(question_id))
+        cur.execute('INSERT INTO flags VALUES(NULL,?)',(question_id,))
         conn.commit()
-        return cls.find(flag_id=cur.lastrowid)
+        return cls(cur.lastrowid,question_id)
 
 
 class Answer(Model):
@@ -150,12 +150,11 @@ class Answer(Model):
         self.text = text
 
     @classmethod
-    def create(cls, answer_id, question_id, correct, text):
+    def create(cls, question_id, correct, text):
         cur=conn.cursor()
-        cur.execute('INSERT INTO answers VALUES(NULL,?)',(name))
+        cur.execute('INSERT INTO answers VALUES(NULL,?,?,?)',(question_id,correct,text,))
         conn.commit()
-        return cls.find(answer_id=cur.lastrowid)
-
+        return cls(cur.lastrowid, question_id, correct, text)
     @classmethod
     def delete_by_id(cls, answer_id):
         raise NotImplementedError()
@@ -170,7 +169,18 @@ class Score(Model):
 
     @classmethod
     def create(cls, user_id, category_id):
-        raise NotImplementedError()
+        cur=conn.cursor()
+        cur.execute('INSERT INTO scores VALUES(?,?,0,0)',(user_id,category_id))
+        conn.commit()
+        return cls(user_id,category_id,0,0)
+		
+	def update_score(self,num_answered,num_correct):
+		self.num_answered += num_answered
+		cur = conn.cursor()
+        cur.execute('UPDATE scores SET num_answered=?,num_correct=? WHERE user_id=? AND category=?', (new_email, self.id))
+        
+        cur.commit()
+	
 
 
 conn = sqlite3.connect('db/trivia.db')
