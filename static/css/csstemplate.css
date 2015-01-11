@@ -56,7 +56,15 @@
 		font-size: 54px;
 		color: #e5ae00;
 }
-
+	.title{
+			font-size: 150px;
+}
+	.boxed {
+			width: 300px;
+			padding: 25px;
+			border: 25px solid #068bbc;
+			background-color: #068bbc;
+}
 	h2{
 		line-height: 54px;
 		font-size: 36px;
@@ -124,8 +132,7 @@
 	ol{
 		list-style-position: inside;
 		list-style-type: upper-roman;
-}		
-
+}
 
 /**
  *
@@ -169,4 +176,11 @@
 .home-facts {
 	width: 400px;
 	margin: 600px auto 10px auto;
+}
+
+	.submit{
+		top: 20px;
+		padding-top: 30px;
+		background-color: #068BBC;
+		text-align: center;
 }
