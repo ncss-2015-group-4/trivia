@@ -1,43 +1,9 @@
 from db.models import User
+from templating import render_template
 
 def login_handler(request):
-    request.write("""<!DOCTYPE html>
-<html>
-<body>
-
-<h1>
-Log-in below -->
-</h1>
-
-<form method="post">
-Email/Username:<br>
-<input type="text" name="username">
-<br>
-Password:<br>
-<input type="text" name="password">
-<input type="submit" value="Submit">
-</form>
-
-
-<h1>
-Sign up here...
-</h1>
-
-
-<form method="post" action="/user">
-Email/Username:<br>
-<input type="text" name="username">
-<br>
-Password:<br>
-<input type="text" name="password">
-Email:<br>
-<input type="text" name="email">
-<input type="submit" value="Submit">
-</form>
-
-</body>
-</html>
-""")
+    login_page = render_template('static/login.html', {})
+    request.write(login_page)
 
 
 #--------------------------------------
