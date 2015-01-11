@@ -23,8 +23,8 @@ Password:<br>
 Sign up here...
 </h1>
 
-<form>
-<form method="post">
+
+<form method="post" action="/user">
 Email/Username:<br>
 <input type="text" name="username">
 <br>
@@ -106,11 +106,11 @@ def signup_handler_post(request):
     
     user_data = User.find(username=username) #requests a database entry with the user's username
     if user_data == None:    #checks that there is a row in the database that 
-        if user_data.find(email=email) != None:
+        if User.find(email=email) != None:
             request.redirect("/") #Says that the user email address is already in use
             return 
         else:
-            user_data.create(username, password, email) #Creates a new entry into the db
+            User.create(username, password, email) #Creates a new entry into the db
             request.redirect("/") #sends user a thanks pafe or profile page?
             return 
     else:

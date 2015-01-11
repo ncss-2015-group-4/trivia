@@ -1,7 +1,7 @@
 # The models for Trivia
 
 import sqlite3
-import db.hasher
+import db.hasher as hasher
 
 class Model:
     def __init__():
