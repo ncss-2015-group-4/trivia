@@ -188,14 +188,7 @@
 	width: 400px;
 	margin: 600px auto 10px auto;
 }
-.home-facts .home-facts-format:second-child {
-	border-right: 1px solid #068bbc;
-	border-left: 1px solid #068bbc;
-	padding-right: 12px;
-	margin-right: 12px;
-	padding-left: 12px;
-	margin-left: 12px;
-	}
+
 	.submit{
 		top: 20px;
 		padding-top: 30px;
