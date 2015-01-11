@@ -52,9 +52,9 @@ class User(Model):
     @classmethod
     def check_login(cls, username, password):
         cur = conn.cursor()
-        cur.execute('SELECT username, password_hash FROM users WHERE username = ?', (username,))
+        cur.execute('SELECT username, password FROM users WHERE username = ?', (username,))
         result = cur.fetchone()
-        return hasher.hash(password) == result['password_hash']
+        return hasher.hash(password) == result['password']
 
     @classmethod
     def create(cls, username, password, email):
