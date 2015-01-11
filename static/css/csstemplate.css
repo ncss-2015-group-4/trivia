@@ -270,4 +270,18 @@
 		padding-top: 30px;
 		background-color: #068BBC;
 		text-align: center;
+}
 
+	.header{
+		text-align: center;
+		
+}
+
+	.headerlinks{
+		color: #e5ae00;
+		padding-right: 20px;
+		padding-left: 20px;
+		text-decoration: none;
+		font-size: 20px;
+		
+}
