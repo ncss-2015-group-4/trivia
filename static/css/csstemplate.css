@@ -218,3 +218,19 @@
 		margin: 20px;
 		text-align: center;
 }	
+/*
+		Below is the header
+*/
+	.header{
+		text-align: center;
+		
+}
+
+	.headerlinks{
+		color: #e5ae00;
+		padding-right: 20px;
+		padding-left: 20px;
+		text-decoration: none;
+		font-size: 20px;
+		
+}
