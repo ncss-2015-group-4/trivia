@@ -1,4 +1,4 @@
 import hashlib
 
 def hash(password):
-	return hashlib.md5(password).hexdigest()
+	return hashlib.md5(password.encode()).hexdigest()
