@@ -90,6 +90,10 @@
 		background-color: #068bbc;
 		font-weight: bold;
 		font-family: caviar_dreamsregular;
+		color: #e5ae00;
+		padding: 5px;
+		border-radius: 5px;
+		
 }
 
 	li, dl, legend, td, th{ 
