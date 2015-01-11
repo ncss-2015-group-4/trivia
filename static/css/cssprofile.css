@@ -1,0 +1,20 @@
+button {
+	margin-left: auto;
+    margin-right: auto;
+	border-radius: 5px;
+	width: 30%;
+
+}
+.login-form {
+	width: 400px;
+	margin: 150px auto auto auto;
+	
+}
+ul li{
+  display: inline;
+}
+
+footer {
+	width: 400px;
+	margin: 500px auto 10px auto;
+}
