@@ -44,7 +44,15 @@
 		font-size: 54px;
 		color: #e5ae00;
 }
-
+	.title{
+			font-size: 150px;
+}
+	.boxed {
+			width: 300px;
+			padding: 25px;
+			border: 25px solid green;
+			background-color: green;
+}
 	h2{
 		line-height: 54px;
 		font-size: 36px;
@@ -90,6 +98,10 @@
 		background-color: #068bbc;
 		font-weight: bold;
 		font-family: caviar_dreamsregular;
+		color: #e5ae00;
+		padding: 5px;
+		border-radius: 5px;
+		
 }
 
 	li, dl, legend, td, th{ 
@@ -108,3 +120,10 @@
 		list-style-position: inside;
 		list-style-type: upper-roman;
 }		
+
+	.submit{
+		top: 20px;
+		padding-top: 30px;
+		background-color: #068BBC;
+		text-align: center;
+}

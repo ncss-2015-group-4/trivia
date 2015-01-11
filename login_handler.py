@@ -6,7 +6,7 @@ def login_handler(request):
 <body>
 
 <h1>
-Login in below -->
+Log-in below -->
 </h1>
 
 <form method="post">
@@ -23,13 +23,15 @@ Password:<br>
 Sign up here...
 </h1>
 
-<form>
-<form method="post">
+
+<form method="post" action="/user">
 Email/Username:<br>
 <input type="text" name="username">
 <br>
 Password:<br>
 <input type="text" name="password">
+Email:<br>
+<input type="text" name="email">
 <input type="submit" value="Submit">
 </form>
 
@@ -58,8 +60,8 @@ def login_handler_post(request):
     username_email = request.get_field("username")
     password = request.get_field("password")
     if username_email == None or username_email == '' or password == None or password == '':
-       request.redirect("/") #field isn't filled in
-       return
+        request.redirect("/") #field isn't filled in
+        return
     user_data = User.find(username=username_email) #checks db with username
     if user_data is not None: #if there is a row in the database
         if user_data.check_login(password):
@@ -104,11 +106,11 @@ def signup_handler_post(request):
     
     user_data = User.find(username=username) #requests a database entry with the user's username
     if user_data == None:    #checks that there is a row in the database that 
-        if user_data.find(email=email) != None:
+        if User.find(email=email) != None:
             request.redirect("/") #Says that the user email address is already in use
             return 
         else:
-            user_data.create(username, password, email) #Creates a new entry into the db
+            User.create(username, password, email) #Creates a new entry into the db
             request.redirect("/") #sends user a thanks pafe or profile page?
             return 
     else:
