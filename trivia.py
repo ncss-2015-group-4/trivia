@@ -19,7 +19,8 @@ server.register('/submit', submit_handler.submit_handler)
 server.register('/login',
                 login_handler.login_handler,
                 post=login_handler.login_handler_post)
-server.register('/question', question_handler.new_question_handler)
+server.register('/question', question_handler.new_question_handler,
+                post=question_handler.new_question_form)
 server.register('/question/([0-9]+)',
                 question_handler.get_question_handler,
                 post=question_handler.edit_question_handler)
