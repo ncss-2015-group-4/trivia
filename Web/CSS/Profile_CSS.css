@@ -14,10 +14,7 @@ ul li{
   display: inline;
 }
 
-#footer {
-    clear: both;
-    position: absolute;
-    z-index: 10;
-    height: 30px;
-    margin-top: -10px;
+footer {
+	width: 400px;
+	margin: 500px auto 10px auto;
 }
