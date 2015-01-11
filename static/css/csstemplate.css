@@ -188,6 +188,12 @@
 	margin: 600px auto 10px auto;
 }
 
+.:second-child {
+	border-right: 1px solid #068bbc;
+	padding-right: 12px;
+	margin-right: 12px;
+}
+
 	.submit{
 		top: 20px;
 		padding-top: 30px;
