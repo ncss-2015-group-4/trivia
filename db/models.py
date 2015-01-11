@@ -68,9 +68,15 @@ class User(Model):
 
     def set_email(self, new_email):
         cur = conn.cursor()
-        cur.execute('UPDATE users SET email = ? WHERE uid = ?', (new_email, self.id))
+        cur.execute('UPDATE users SET email = ? WHERE user_id = ?', (new_email, self.id))
         self.email = self.new_email
         cur.commit()
+
+    def set_password(self, new_password):
+        cur = conn.cursor()
+        cur.execute('UPDATE users SET password_hash = ? WHERE user_id = ?', (hasher.hash(password), self.id))
+        cur.commit()
+
 
 class TriviaQuestion(Model):
     def __init__(self, question_id, question, num_answered, num_correct, category):
