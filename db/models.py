@@ -58,18 +58,10 @@ class User(Model):
 
     @classmethod
     def create(cls, username, password, email):
-        raise NotImplementedError()
-        return cls(0, username, hash_password(password), email)
-
-    @classmethod
-    def delete_by_id(cls, user_id):
-        raise NotImplementedError()
-        return True
-
-    @classmethod
-    def delete_by_username(cls, username):
-        raise NotImplementedError()
-        return True
+        cur=conn.cursor()
+        cur.execute('INSERT INTO users VALUES(NULL,?,?,?)',(username,hasher.hash(password),email,))
+        conn.commit()
+        return cls.find(user_id=cur.lastrowid)
 
     def set_email(self, new_email):
         cur = conn.cursor()
@@ -93,11 +85,10 @@ class TriviaQuestion(Model):
 
     @classmethod
     def create(cls, question, category):
-        raise NotImplementedError
-        # num_answered = 0
-        # num_correct = 0
-        ...
-        return cls(qid, question, 0, 0, category)
+        cur=conn.cursor()
+        cur.execute('INSERT INTO questions VALUES(NULL,?,0,0,?)',(question,category,))
+        conn.commit()
+        return cls.find(question_id=cur.lastrowid)
 
     def flag(self):
         return Flag.create(self.id)
@@ -114,9 +105,10 @@ class Category(Model):
 
     @classmethod
     def create(cls, name):
-        raise NotImplementedError
-        ...
-        return cls(cid, name)
+        cur=conn.cursor()
+        cur.execute('INSERT INTO categories VALUES(NULL,?)',(name))
+        conn.commit()
+        return cls.find(category_id=cur.lastrowid)
 
 
 class Flag(Model):
@@ -126,7 +118,10 @@ class Flag(Model):
 
     @classmethod
     def create(cls, question_id):
-        raise NotImplementedError()
+        cur=conn.cursor()
+        cur.execute('INSERT INTO flags VALUES(NULL,?)',(question_id))
+        conn.commit()
+        return cls.find(flag_id=cur.lastrowid)
 
 
 class Answer(Model):
@@ -138,7 +133,10 @@ class Answer(Model):
 
     @classmethod
     def create(cls, answer_id, question_id, correct, text):
-        raise NotImplementedError()
+        cur=conn.cursor()
+        cur.execute('INSERT INTO answers VALUES(NULL,?)',(name))
+        conn.commit()
+        return cls.find(answer_id=cur.lastrowid)
 
     @classmethod
     def delete_by_id(cls, answer_id):
@@ -157,4 +155,4 @@ class Score(Model):
         raise NotImplementedError()
 
 
-conn = sqlite3.connect('db/trivia.db')
+conn = sqlite3.connect('trivia.db')
