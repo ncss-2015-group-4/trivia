@@ -1,53 +1,81 @@
 # The models for Trivia
 
-import hasher
 import sqlite3
+import hasher
 
-class User:
-    def __init__(self, user_id, username, password_hash, email):
+class Model:
+    def __init__():
+        pass
+
+    @classmethod
+    def _table_name(cls):
+        return cls.__name__.lower() + 's'
+
+    @classmethod
+    def query(cls, action, **kwargs):
+        table_name = cls._table_name()
+        query = action.upper() + ' {0} WHERE'.format(cls._table_name())
+
+        for key in kwargs:
+            query += ' ' + key + ' = ?'
+        values = tuple(kwargs.values())
+
+        cur = conn.cursor()
+        cur.execute(query, values)
+        result = cur.fetchone()
+        if result:
+            return cls(*result)
+
+    @classmethod
+    def find(cls, **kwargs):
+        return cls.query("SELECT * FROM", **kwargs)
+
+    @classmethod
+    def delete(cls, **kwargs):
+        cls.query("DELETE FROM", **kwargs)
+
+    @classmethod
+    def create():
+        raise NotImplementedError()
+
+
+class User(Model):
+    def __init__(self, user_id, username, email):
         self.id = user_id
         self.username = username
-        self.password_hash = password_hash
-	self.email = email
-
-    def authenticate(username, password):
-        #get pass from db where user = username
-        query = 'SELECT Username, Password FROM Users WHERE Username == '+username
-        #result = sql.queryDatabase(query)
-        #if hasher.hash(password) == result[1]:
-            #return True        
-        return False
-    
-    @classmethod
-    def find_by_id(cls, id):
-        cursor = conn.cursor()
-        cursor.execute("SELECT * FROM users ")
-        raise NotImplementedError()
-        
-        return cls()
+        self.email = email
 
     @classmethod
-    def find_by_username(cls, username):
-        raise NotImplementedError()
-        return cls(0)
+    def find(cls, **kwargs):
+        return cls.query("SELECT user_id, username, email FROM", **kwargs)
+
+    @classmethod
+    def check_login(cls, username, password):
+        cur = conn.cursor()
+        cur.execute('SELECT username, password FROM users WHERE username = ?', (username,))
+        result = cur.fetchone()
+        return hasher.hash(password) == result['password']
 
     @classmethod
     def create(cls, username, password, email):
-        raise NotImplementedError()
-        return cls(0, username, hash_password(password), email)
+        cur=conn.cursor()
+        cur.execute('INSERT INTO users VALUES(NULL,?,?,?)',(username,hasher.hash(password),email,))
+        conn.commit()
+        return cls.find(user_id=cur.lastrowid)
 
-    @classmethod
-    def delete_by_id(cls, user_id):
-        raise NotImplementedError()
-        return True
+    def set_email(self, new_email):
+        cur = conn.cursor()
+        cur.execute('UPDATE users SET email = ? WHERE user_id = ?', (new_email, self.id))
+        self.email = self.new_email
+        cur.commit()
 
-    @classmethod
-    def delete_by_username(cls, username):
-        raise NotImplementedError()
-        return True
+    def set_password(self, new_password):
+        cur = conn.cursor()
+        cur.execute('UPDATE users SET password_hash = ? WHERE user_id = ?', (hasher.hash(password), self.id))
+        cur.commit()
 
 
-class TriviaQuestion:
+class TriviaQuestion(Model):
     def __init__(self, question_id, question, num_answered, num_correct, category):
         self.id = question_id
         self.question = question
@@ -57,43 +85,46 @@ class TriviaQuestion:
 
     @classmethod
     def create(cls, question, category):
-        raise NotImplementedError
-        # num_answered = 0
-        # num_correct = 0
-        ...
-        return cls(qid, question, 0, 0, category)
+        cur=conn.cursor()
+        cur.execute('INSERT INTO questions VALUES(NULL,?,0,0,?)',(question,category,))
+        conn.commit()
+        return cls.find(question_id=cur.lastrowid)
 
     def flag(self):
         return Flag.create(self.id)
 
 
-class Category:
+class Category(Model):
     def __init__(self, category_id, name):
         self.id = category_id
         self.name = name
 
     @classmethod
+    def _table_name(cls):
+        return 'categories'
+
+    @classmethod
     def create(cls, name):
-        raise NotImplementedError
-        ...
-        return cls(cid, name)
+        cur=conn.cursor()
+        cur.execute('INSERT INTO categories VALUES(NULL,?)',(name))
+        conn.commit()
+        return cls.find(category_id=cur.lastrowid)
 
 
-class Flag:
+class Flag(Model):
     def __init__(self, flag_id, question_id):
         self.id = flag_id
         self.question_id = question_id
 
     @classmethod
-    def find_by_id(cls, id):
-        raise NotImplementedError()
-
-    @classmethod
     def create(cls, question_id):
-        raise NotImplementedError()
+        cur=conn.cursor()
+        cur.execute('INSERT INTO flags VALUES(NULL,?)',(question_id))
+        conn.commit()
+        return cls.find(flag_id=cur.lastrowid)
 
 
-class Answer:
+class Answer(Model):
     def __init__(self, answer_id, question_id, correct, text):
         self.id = answer_id
         self.question_id = question_id
@@ -102,20 +133,19 @@ class Answer:
 
     @classmethod
     def create(cls, answer_id, question_id, correct, text):
-        raise NotImplementedError()
-
-    @classmethod
-    def find_by_id(cls, answer_id):
-        raise NotImplementedError()
+        cur=conn.cursor()
+        cur.execute('INSERT INTO answers VALUES(NULL,?)',(name))
+        conn.commit()
+        return cls.find(answer_id=cur.lastrowid)
 
     @classmethod
     def delete_by_id(cls, answer_id):
         raise NotImplementedError()
 
 
-class Score:
+class Score(Model):
     def __init__(self, user_id, category_id, num_answered, num_correct):
-        self.id = user_id
+        self.user_id = user_id
         self.category_id = category_id
         self.num_answered = num_answered
         self.num_correct = num_correct
@@ -124,13 +154,6 @@ class Score:
     def create(cls, user_id, category_id):
         raise NotImplementedError()
 
-    @classmethod
-    def find(cls, user_id, category_id):
-        raise NotImplementedError()
-
 
 conn = sqlite3.connect('db/trivia.db')
-<<<<<<< HEAD
-print(conn)
-=======
->>>>>>> origin/database
+conn.row_factory = sqlite3.Row
