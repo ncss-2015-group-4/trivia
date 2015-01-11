@@ -37,17 +37,6 @@ class User(Model):
         ...
 
     @classmethod
-    def find_by_id(cls, user_id):
-        raise NotImplementedError()
-
-        return cls()
-
-    @classmethod
-    def find_by_username(cls, username):
-        raise NotImplementedError()
-        return cls(0)
-
-    @classmethod
     def create(cls, username, password, email):
         raise NotImplementedError()
         return cls(0, username, hash_password(password), email)
@@ -110,10 +99,6 @@ class Flag(Model):
         self.question_id = question_id
 
     @classmethod
-    def find_by_id(cls, id):
-        raise NotImplementedError()
-
-    @classmethod
     def create(cls, question_id):
         raise NotImplementedError()
 
@@ -130,10 +115,6 @@ class Answer(Model):
         raise NotImplementedError()
 
     @classmethod
-    def find_by_id(cls, answer_id):
-        raise NotImplementedError()
-
-    @classmethod
     def delete_by_id(cls, answer_id):
         raise NotImplementedError()
 
@@ -147,10 +128,6 @@ class Score(Model):
 
     @classmethod
     def create(cls, user_id, category_id):
-        raise NotImplementedError()
-
-    @classmethod
-    def find(cls, user_id, category_id):
         raise NotImplementedError()
 
 
