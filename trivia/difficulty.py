@@ -46,19 +46,13 @@ def skill_level(questions_answers):
 				total += 2
 			elif question == HARD:
 				total += 3
-		else:
-			if question == EASY:
-				total -= 3
-			elif question == MEDIUM:
-				total -= 2
-			elif question == HARD:
-				total -= 1
+		
 	final = total/len(questions_answers)
-	if final < 2:
+	if final < 1.25:
 		return 'Beginner'
-	elif 2 <= final < 3:
+	elif 1.25 <= final < 2.25:
 		return 'Intermediate'	
-	elif 3 <= final:
+	elif 2.25 <= final:
 		return 'Expert'
 	
 						
@@ -72,3 +66,5 @@ if __name__ == '__main__':
 	print(skill_level([(EASY, True), (EASY, True), (EASY, True), (EASY, True)]))
 	print(skill_level([(HARD, True), (EASY, False), (EASY, True), (MEDIUM, False), (HARD, False), (MEDIUM, True), (MEDIUM, True)]))
 	print(skill_level([(EASY, False), (MEDIUM, True), (MEDIUM, True), (MEDIUM, True)]))
+	print(skill_level([(HARD, True), (HARD, True), (HARD, True)]))
+	print(skill_level([(HARD, True), (HARD, True), (HARD, True), (EASY, False), (EASY, False)]))

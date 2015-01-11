@@ -8,7 +8,7 @@ class User:
         self.id = user_id
         self.username = username
         self.password_hash = password_hash
-		self.email = email
+	self.email = email
 
     def authenticate(username, password):
         #get pass from db where user = username
