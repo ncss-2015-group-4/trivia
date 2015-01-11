@@ -31,6 +31,8 @@ Email/Username:<br>
 <br>
 Password:<br>
 <input type="text" name="password">
+Email:<br>
+<input type="text" name="email">
 <input type="submit" value="Submit">
 </form>
 
@@ -59,8 +61,8 @@ def login_handler_post(request):
     username_email = request.get_field("username")
     password = request.get_field("password")
     if username_email == None or username_email == '' or password == None or password == '':
-       request.redirect("/") #field isn't filled in
-       return
+        request.redirect("/") #field isn't filled in
+        return
     userData = User.find_by_username(username_email) #checks db with username
     if userData is not None: #if there is a row in the database
         pWord = userData.password_hash #gets a returned hash password from db
