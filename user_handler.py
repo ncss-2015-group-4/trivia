@@ -1,4 +1,7 @@
 def user_handler(request):
+    #this is a login thingy ben needs to do here.
+    pass
+def edit_user_handler(request, user_id):
     request.write("""<!DOCTYPE html>
 <html>
 <body>
@@ -31,14 +34,14 @@ def user_handler_post(request):
     if username != '' and password != '' and email != '':
         request.redirect('/user/8829')
 
+#request.write("""<!DOCTYPE html>
+#<html>
+#<body>
+#<h1>
+#""" + user_id + """
+#</h1>
+#</body>
+#</html>
+#""")
 
-def edit_user_handler(request, user_id):
-    request.write("""<!DOCTYPE html>
-<html>
-<body>
-<h1>
-""" + user_id + """
-</h1>
-</body>
-</html>
-""")
+
