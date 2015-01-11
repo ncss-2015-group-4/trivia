@@ -1,10 +1,15 @@
+from db.models import TriviaQuestion
+
 def new_question_handler(request):
   question = request.get_field("question")
   correct_answer = request.get_field("correct_answer")
   wrong_answer_1 = request.get_field("wrong_answer_1")
   wrong_answer_2 = request.get_field("wrong_answer_2")
   wrong_answer_3 = request.get_field("wrong_answer_3")
-  print(question, correct_answer, wrong_answer_1, wrong_answer_2, wrong_answer_3)
+  category = request.get_field("categories")
+  TriviaQuestion.create(question, category)
+  
+  print(question, correct_answer, wrong_answer_1, wrong_answer_2, wrong_answer_3, category)
   
 def new_question_form(request):
     request.write("""<!DOCTYPE html>
@@ -14,6 +19,11 @@ def new_question_form(request):
 New Question Form :)
 </h1>
 <form method="post">
+<select name="categories">
+  <option value="1">Harry Potter</option>
+  <option value="2">Doctor Who</option>
+ 
+</select>
 Question:<br>
 <input type="text" name="question">
 <br>
