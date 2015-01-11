@@ -24,7 +24,7 @@ server.register('/question', question_handler.new_question_handler,
 server.register('/question/([0-9]+)',
                 question_handler.get_question_handler,
                 post=question_handler.edit_question_handler)
-server.register('/user', user_handler.user_handler)
+server.register('/user', user_handler.user_handler, post=user_handler.user_handler_post)
 server.register('/user/([0-9]+)', user_handler.edit_user_handler)
 
 

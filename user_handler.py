@@ -23,13 +23,21 @@ Email:<br>
 </body>
 </html>
 """)
+    
+def user_handler_post(request):
+    username = request.get_field("username")
+    password = request.get_field("password")
+    email = request.get_field("email")
+    if username != '' and password != '' and email != '':
+        request.redirect('/user/8829')
+
 
 def edit_user_handler(request, user_id):
     request.write("""<!DOCTYPE html>
 <html>
 <body>
 <h1>
-3d!tz
+""" + user_id + """
 </h1>
 </body>
 </html>
