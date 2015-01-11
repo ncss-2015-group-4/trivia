@@ -7,7 +7,7 @@ def login_handler(request):
 <body>
 
 <h1>
-Login in below -->
+Log-in below -->
 </h1>
 
 <form method="post">
