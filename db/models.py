@@ -68,10 +68,9 @@ class User(Model):
     def find(cls, **kwargs):
         return cls.query("SELECT user_id, username, email FROM", **kwargs)
 
-    @classmethod
-    def check_login(cls, username, password):
+    def check_login(self, password):
         cur = conn.cursor()
-        cur.execute('SELECT username, password FROM users WHERE username = ?', (username,))
+        cur.execute('SELECT password FROM users WHERE user_id = ?', (self.id,))
         result = cur.fetchone()
         return hasher.hash(password) == result['password']
 
