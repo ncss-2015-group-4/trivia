@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="static/css/reset.css" type = "text/css" >
+		<link rel="stylesheet" href="static/css/csstemplate.css" type = "text/css" >
+	</head>
+	<body>
+		{% include static/header.html %}
+		<form action="/send_to">
+			<legend>
+				Registration
+			</legend>
+			<!--feel free to change variable names for content to be assigned-->
+			<p>
+				<label>Email:</label>
+				<input type="text" name="email">
+			</p>
+			<p>
+				<label>Username:</label>
+				<input type="text" name="username">
+			</p>
+			<p>
+				<label>Password:</label>
+				<input type="text" name="password">
+			</p>
+		</form>
+	</body>
+</html>
