@@ -1,5 +1,5 @@
-from db.models import User
-import db.hasher as hasher
+#from db.models import User
+#import db.hasher as hasher
 
 def login_handler(request):
     request.write("""<!DOCTYPE html>
@@ -61,7 +61,6 @@ def login_handler_post(request):
     if username_email == None or username_email == '' or password == None or password == '':
        request.redirect("/") #field isn't filled in
        return
-    
     userData = User.find_by_username(username_email) #checks db with username
     if userData is not None: #if there is a row in the database
         pWord = userData.password_hash #gets a returned hash password from db
