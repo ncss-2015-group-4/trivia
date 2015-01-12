@@ -402,8 +402,14 @@
     .container {
         width: 500px;
         clear: both;
+		margin: 0px auto;
     }
+	
     .container input {
         width: 100%;
         clear: both;
     }
+	
+	.whitespace {
+	padding-bottom: 50px
+	}
