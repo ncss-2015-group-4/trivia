@@ -12,14 +12,18 @@
 			<h1>{{ user_name }}</h1>
 		</div>
 		<div class="profileinfo">
-			<p>Email: person@mail.com</p>
+			<p>Email: {{email}}</p>
 			<ul>
 				<h2>Player Progress</h2>
 				<div class = "progress">
-					<!-- replace with categorylisthtmltemp.html -->
-					<li>Category: 'percentage' correct.</li>
-					<li>Category: 'percentage' correct.</li>
-					<li>Category: 'percentage' correct.</li>
+                {% if len(score) != 0 %}
+                    {% for i in score %}
+                        <li>{{i[0]}}: {{i[1]}} correct.</li>
+                    {% end for %}
+                {% end if %}
+                {% if len(score) == 0 %}
+                    <li>No current progress...</li>
+                {% end if %}
 				</div>
 			</ul>
 			<ul>
