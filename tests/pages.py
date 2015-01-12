@@ -2,7 +2,7 @@ from tornado.testing import AsyncHTTPTestCase
 import re
 #define regex patters to search for nav bar links
 pre_game_pattern = re.compile(r'href\ *\=\ *\"\/pre_game\"')
-submit_pattern = re.compile(r'href\ *\=\ *\"\/submit\"')
+submit_pattern = re.compile(r'href\ *\=\ *\"\/question\"')
 #prifile will need to take into account whether the user is logged in
 #profile_pattern = re.compile(r'href\ *\=\ *\"\/profile\"')
 home_pattern = re.compile(r'href\ *\=\ *\"\/"')
