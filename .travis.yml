@@ -4,5 +4,5 @@ python:
   - "3.4"
 
 # Command to run tests
-before_script: cd db && python3 db/create_db.py && python3 db/dummy_data.py && cd ..
+before_script: cd db && python3 create_db.py && python3 dummy_data.py && cd ..
 script: python3 -m tornado.testing tests/pages.py && python3 templating.py
