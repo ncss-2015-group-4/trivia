@@ -39,7 +39,6 @@
 		font-family; caviar_dreams;
 		font-size: 14px;
 		margin: 0px;
-		margin-bottom: 11px;
 		font-size: 16px;
 		line-height: 24px;
 }
@@ -57,7 +56,8 @@
 		color: #e5ae00;
 }
 	.title{
-			font-size: 150px;
+			font-size: 250px;
+            text-align: center;
 }
 	.boxed {
 			width: 300px;
@@ -129,36 +129,25 @@
 		list-style-position: inside;
 		list-style-type: upper-roman;
 }
-
-.RecentlyPlayed {
-	display:inline-block;
-	float:left;
-}
-
-.Friends {
-	display:inline-block;
-	float:right;
-}
 	div{
 		font-family: caviar_dreams;
 		font-size: 16px;
 		line-height: 24px;
 }  
 .login-form {
-	width: 275px;
-	height: 183px;
 	margin: 150px auto auto auto;
 	text-align: center;
 }
 
 .login-form .button-cta {
-	width: 200px;
-	height: 80px;
-	font-size: 38px;
+	width: 300px;
+	height: 120px;
+	font-size: 45px;
 	font-weight: bold;
-	border: none;
+	border-color: #e5ae00;
+    
 	border-radius: 10px;
-	margin: 24px 0 12px;
+	margin: 100px 0 12px;
 }
 
 .login-form .login-action {
@@ -179,14 +168,14 @@
 
 .home-facts {
 	width: 400px;
-	margin: 600px auto 10px auto;
+	margin: 460px auto 10px auto;
 }
 
 .home-facts .home-facts-format {
 	border-right: 1px solid #068bbc;
 	border-left: 1px solid #068bbc;
-	padding: 0 36px;
-	margin: 0 36px;
+	padding: 0 20px;
+	margin: 0 20px;
 }
 	.footer-margin-bottom {
 		margin-top: -48px;
@@ -316,24 +305,56 @@
 	text-align: center;
 	font-size: 30px;
 	padding: 20px;
+	padding-bottom: 80px;
+}
+.postgametable{
+	text-align: left;
+	margin-left:auto; 
+	margin-right:auto;
+	background-color: #DCF1F3;
+	
+}
+.postgamebackground{
+	background-color: #DCF1F3;
+	padding-bottom: 133px;
+}		
+.postgameyouranswers{
+	width: 1000px;
+
 }
 .postgamecolumn{
 	text-align: center;
 }		
-.postgameyouranswers{
-	width: 400px;
-	height: 600px;
-	text-align: center;	
-	float: left;
-	padding-left: 400px;
-
-}
 .postgamehighscores{
 	width: 400px;
-	height: 600px;
-	padding-right: 400px;
-	float: right;
-
+	border-left: 5px solid #068BBC;
+	border-radius: 2px;
+}
+.postgamequestion{
+	padding-left: 10px;
+	padding-right: 10px;
+	
+	
+}
+.postgamescores2{
+	padding-left: 100px;
+	padding-right: 100px;
+	
+}
+.postgamesubtitle {
+	margin-bottom: 25px;
+}
+.postgamequestion {
+	font-weight: bold;
+	list-style-type: none;
+	padding-top: 20px;
+}
+.postgamequestion2 {
+	font-weight: bold;
+}
+.postgameanswer {
+	list-style-type: upper-alpha;
+	font-weight: normal;
 }
 .header2{
 	text-align: center;
@@ -342,11 +363,8 @@
 	text-align: center;
 	background-color: #068BBC;
 }
-.postgameyouranswers{
-	width: 400px;
-	margin: 0px;
-	padding-left: 300px;
-	height: 600px;
+.table {
+	border: 1px;
 }
 .topic{
 	padding: 15px 15px 15px 15px;
@@ -367,14 +385,17 @@
 
 .popular{
 	text-align: center;
+	padding: 10px;
 }
 
 .recommended{
 	text-align: center;
+	padding: 20px;
 }
 
 .difficulty{
 	text-align: center;
+	margin: auto;
 }
 
 .profile {
@@ -386,13 +407,14 @@ margin: auto;
 
 .profilename {
 	top: 20px;
-	padding-top: 15px;
+	padding-top: 30px;
 	text-align: center;
 	line-height: 81px;
 	font-size: 54px;
 	color: #e5ae00;
 	font-family: trashhandregular;
 	font-weight: bold;
+	background-color: #068BBC;
 }
 .blue {
 	background-color: #dcf1f3;
@@ -401,6 +423,42 @@ margin: auto;
 .start{
 	text-align: center;
 }
+
+.profileinfo {
+	width: 400px;
+	margin: 20px auto;
+}
+.profileinfo ul h2 {
+	text-align:center;
+	border: 4px solid black;
+	background-color: white;
+}
+.progress {
+	margin:10px auto;
+	text-align:center;
+	list-style-type: none;
+	background-color: 0e1e26;
+}
+.recentactivity{
+	margin:10px auto;
+	text-align:left;
+	background-color: 0e1e26;
+}
+
+.progress li {
+	margin-bottom:5px;
+}
+
+.recentactivity li {
+	margin-bottom:5px;
+}
+/*profile end*/
+
+.start{
+	text-align: center;
+
+}
+
 .start2{
 	height: 75px;
 	width: 200px;
@@ -463,3 +521,14 @@ margin: auto;
 	.error_title{
 		font-size: 100px;
 }
+
+	.category-button {
+		margin-top: 30px;
+		height: 85px;
+		width: 450px;
+		text-align: center;
+		font-size: 30px;
+		border-color: #e5ae00;
+		border-radius: 20px;
+	}
+	
