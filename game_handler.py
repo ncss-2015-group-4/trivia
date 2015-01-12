@@ -11,8 +11,9 @@ def game_handler(request):
 
     	if category_id and difficulty:
     		game = Game.create(user.id, category_id)
+    		request.redirect('/game/0')
 
-def get_question(request, game_id, question_index):
+def get_question_handler(request, game_id, question_index):
 	game = Game.find(id=int(game_id))
 	if game:
 		question = game.get_question(int(question_index))
@@ -37,7 +38,7 @@ def submit_question_handler(request):
 		if game and user:
 			if game.user_id == user.id:
 				if game.submit_answer(question_id):
-					request.redirect('/play/{0}'.format(game.question_index))
+					request.redirect('/game/{0}'.format(game.question_index))
 					return
 
 	request.redirect("/404")
