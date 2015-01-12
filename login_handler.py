@@ -87,7 +87,7 @@ def signup_handler_post(request):
         if User.find(email=email) != None:
             error = "Email already in use"
         else:
-            User.create(username, password, email) #Creates a new entry into the db
+            user_data = User.create(username, password, email) #Creates a new entry into the db
             login_start(request, user_data.id)
     else:
         error = "Username already in use"
