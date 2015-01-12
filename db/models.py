@@ -360,12 +360,17 @@ class Game(Model):
     @classmethod
     def create(cls, user_id, category_id, difficulty, n=4):
         cur=conn.cursor()
-        question_ids = random.shuffle(','.join(cur.execute('SELECT question_id FROM questions WHERE category_id = ? AND difficulty =?',
-                                (category_id, difficulty)).fetchone()).split(","))[0:n]
 
-        cur.execute('INSERT INTO games VALUES(NULL, ?, ?, 0, ?, 0, ?, ?, 0)',(user_id, question_ids, time.time(),category_id, difficulty))
+        question_ids = []
+        for row in cur.execute('SELECT question_id FROM questions WHERE category = ? AND difficulty =?', (category_id, difficulty)):
+            question_ids.append(row["question_id"])
+
+        random.shuffle(question_ids)
+        print("number of questions generated: " + str(len(question_ids)))
+
+        cur.execute('INSERT INTO games VALUES(NULL, ?, ?, 0, ?, 0, ?, ?, 0)',(user_id, str(question_ids), time.time(),category_id, difficulty))
         conn.commit()
-        return cls(id, user_id, question_ids, 0, 0, time.time(), 0, difficulty, category_id, 0)
+        return cls(cur.lastrowid, user_id, question_ids, 0, time.time(), 0, difficulty, category_id, 0)
 
     def submit_answer(cls, question_id, answer_id):
         cur=conn.cursor()
@@ -381,12 +386,12 @@ class Game(Model):
     def get_question(self, index):
         current_question_id = self.question_ids[index]
 
-        question = Question.find(id=current_question_id)
+        question = TriviaQuestion.find(question_id=current_question_id)
 
         return question
 
     def get_answers(self, question_id):
-        return Answers.find_all(question_id=question_id)
+        return Answer.find_all(question_id=question_id)
 
 
 conn = sqlite3.connect('db/trivia.db')
