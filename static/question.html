@@ -7,8 +7,8 @@
 	</head>
 	<body>
 		{% include static/header.html %}
-		<h2>Question {{ question_index }}</h2>
-		<p id="question">{{ question.question+1 }}</p>
+		<h2>Question {{ question_index+1 }}</h2>
+		<p id="question">{{ question.question }}</p>
 		<ol id="answers">
 			{% for answer in answers %}
 			<li><a href="/game/submit/{{ answer.id }}">{{ answer.text }}</a></li>
