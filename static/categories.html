@@ -12,11 +12,11 @@
             <header>
             <body bgcolor="#dcf1f3">
         </div>
-        <ul>
+        <div align="center">
             {% for category in list_of_categories %}
-            <li><a href="/category/{{category.id}}">{{category.name}}</a></li>
+            <a href="/category/{{category.id}}"><button class="category-button">{{category.name}}</button></a></br>
             
             {% end for %}
-        </ul>
+		</div>
     </body>
 </html>
