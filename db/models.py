@@ -325,7 +325,18 @@ class Score(Model):
         cur.commit()
     
 class Game(Model):
-    """A model that represents a Game that a user is/was playing"""
+    """
+    A model that represents a Game that a user is/was playing
+
+    Properties:
+    * id                - the games id
+    * user_id           - the user id
+    * time_started      - when the game started
+    * time_completed    - when the game finished
+    * difficulty        - what difficulty the game is
+    * category_id       - what category the game is in
+    * score             - the current score in the game
+    """
     def __init__(self, game_id, user_id, time_started, time_completed, difficulty, category_id, score):
         self.id = game_id
         self.user_id = user_id
