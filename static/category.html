@@ -1,17 +1,19 @@
 <html>
 	<head>
-		<link rel="stylesheet" href="static/css/reset.css" type = "text/css" >
-		<link rel="stylesheet" href="static/css/csstemplate.css" type = "text/css" >
+		<link rel="stylesheet" href="/static/css/Reset.css" type = "text/css" >
+		<link rel="stylesheet" href="/static/css/csstemplate.css" type = "text/css" >
 	</head>
 	<body>
 	{% include static/header.html %}
     
-	<h1>Category {{ category_name }}</h1>
-    
-    <ul>
-        {% for question in list_of_questions %}
-      <li>{{question.question}}</li>
-      {% end for %}
-    </ul> 
-	</body>
+	<div class="page-width">
+        <h1>Category {{ category_name }}</h1>
+        
+        <ul>
+            {% for question in list_of_questions %}
+          <li>{{question.question}}</li>
+          {% end for %}
+        </ul> 
+    </div>
+    </body>
 </html>
