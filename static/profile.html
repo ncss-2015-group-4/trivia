@@ -11,30 +11,29 @@
 		<div class="profilename">
 			<h1>{{ user_name }}</h1>
 		</div>
-			<table>
-				<tr>
-					<th>Questions Answered:</th>
-					<td>x</td>
-				</tr>
-				<tr>
-					<th>Questions Correct:</th>
-					<td>x</td>
-				</tr>
-				<tr>
-					<th>Skill Level:</th>
-					<td>Beginner</td>
-				</tr>							
-			</table>
+		<div class="profileinfo">
+			<p>Email: {{email}}</p>
 			<ul>
-				<h2>Submitted Questions</h2>
-				<li>Question 1</li>
-				<li>Question 2</li>
-				<li>Question 3</li>
+				<h2>Player Progress</h2>
+				<div class = "progress">
+                {% if len(score) != 0 %}
+                    {% for i in score %}
+                        <li>{{i[0]}}: {{i[1]}} correct.</li>
+                    {% end for %}
+                {% end if %}
+                {% if len(score) == 0 %}
+                    <li>No current progress...</li>
+                {% end if %}
+				</div>
 			</ul>
-			<a href = "#">See more ('no. of more qs)</a>
+			<ul>
+				<h2>Recent Activity</h2>
+				<div class = "recentactivity">
+					<li>I played...</li>
+					<li>I played...</li>
+					<li>I played...</li>
+				</div>
+			</ul>
 		</div>
 	</body>
-	<footer>
-		
-	</footer>
 </html>
