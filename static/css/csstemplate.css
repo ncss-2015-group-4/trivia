@@ -424,7 +424,7 @@ text-align: center;
 margin: auto;
 }
 
-/*profile start */
+
 
 .profilename {
 	top: 20px;
@@ -455,23 +455,15 @@ margin: auto;
 	background-color: white;
 }
 .progress {
-    margin-bottom: 20px;
-    padding:10px;
+	margin:10px auto;
 	text-align:center;
 	list-style-type: none;
-	background-color: white;
-    border-left: 4px solid black;
-    border-right: 4px solid black;
-    border-bottom: 4px solid black;
+	background-color: #0e1e26;
 }
 .recentactivity{
-	margin-bottom:20px;
-    padding:10px;
+	margin:10px auto;
 	text-align:left;
-	background-color: white;
-    border-left: 4px solid black;
-    border-right: 4px solid black;
-    border-bottom: 4px solid black;
+	background-color: #0e1e26;
 }
 
 .progress li {
