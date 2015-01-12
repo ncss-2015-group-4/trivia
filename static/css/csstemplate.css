@@ -127,13 +127,6 @@ input:focus {
     margin-top: -48px;
 }
 
-.submit {
-    padding-top: 20px;
-    padding-bottom: 20px;
-    background-color: #068BBC;
-    text-align: center;
-}
-
 .submitform {
     top: 20px;
     padding-top: 30px;
@@ -211,6 +204,7 @@ input:focus {
     text-align: center;
 }
 
+/*header start */
 #header {
     text-align: center;
     background-color: #DCF1F3;
@@ -225,7 +219,8 @@ input:focus {
     text-decoration: none;
     font-size: 20px;
 }
-
+/*header end */
+/*postgame start*/
 .postgameoutcome {
     background-color: #DCF1F3;
     text-align: center;
@@ -297,12 +292,9 @@ input:focus {
     list-style-type: upper-alpha;
     font-weight: normal;
 }
-.header2 {
-    padding-top: 20px;
-    padding-bottom: 20px;
-    background-color: #068BBC;
-    text-align: center;
-}
+
+/*postgame end */
+
 .table {
     border: 1px;
 }
@@ -338,24 +330,21 @@ input:focus {
     margin: auto;
 }
 
+/*banner start*/
+.banner {
+	padding-top: 5px;
+    padding-bottom: 5px;
+	background-color: #068BBC;
+	text-align: center;
+ }
+/*banner end*/
+
+ /*profile start */
 .profile {
 text-align: center;
 margin: auto;
 }
 
-/*profile start */
-
-.profilename {
-    top: 20px;
-    padding-top: 30px;
-    text-align: center;
-    line-height: 81px;
-    font-size: 54px;
-    color: #e5ae00;
-    font-family: trashhandregular;
-    font-weight: bold;
-    background-color: #068BBC;
-}
 .blue {
     background-color: #dcf1f3;
 }
