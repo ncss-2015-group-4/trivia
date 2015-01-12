@@ -532,3 +532,8 @@ margin: auto;
 		border-radius: 20px;
 	}
 	
+    .error{
+        margin: 0px auto;
+        color: red;
+        text-align: center;
+    }
