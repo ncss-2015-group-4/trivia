@@ -78,9 +78,7 @@ class Parser(object):
     '2101234'
     >>> Parser("{{a+b}}{% if a==d %}{{str(b)*5}}{% end if %}").eval({'a':1, 'b':2, 'c':3, 'd':1})
     '322222'
-    >>> Parser("{{a+b}}{% if a==d %}{{str(b)*5}}{% end if %}\
-{% include templating/template_include_test.test %}\
-{{a+b}}{% if a==d %}{{str(b)*5}}{% end if %}").eval({'a':1, 'b':2, 'c':3, 'd':1})
+    >>> Parser("{{a+b}}{% if a==d %}{{str(b)*5}}{% end if %}{% include templating/template_include_test.test %}{{a+b}}{% if a==d %}{{str(b)*5}}{% end if %}").eval({'a':1, 'b':2, 'c':3, 'd':1})
     '322222abcd2efgh212342101234333333333322222'
     >>> Parser("{% for i in items %}{{i}}{% end for %}").eval({'items':[1,2,3]})
     '123'
