@@ -175,8 +175,8 @@
 .home-facts .home-facts-format {
 	border-right: 1px solid #068bbc;
 	border-left: 1px solid #068bbc;
-	padding: 0 36px;
-	margin: 0 36px;
+	padding: 0 20px;
+	margin: 0 20px;
 }
 	.footer-margin-bottom {
 		margin-top: -48px;
@@ -390,6 +390,10 @@ margin: auto;
 	background-color: #dcf1f3;
 }
 
+.start{
+	text-align: center;
+}
+
 .profileinfo {
 	width: 400px;
 	margin: 20px auto;
@@ -403,12 +407,12 @@ margin: auto;
 	margin:10px auto;
 	text-align:center;
 	list-style-type: none;
-	background-color: 0e1e26;
+	background-color: #0e1e26;
 }
 .recentactivity{
 	margin:10px auto;
 	text-align:left;
-	background-color: 0e1e26;
+	background-color: #0e1e26;
 }
 
 .progress li {
