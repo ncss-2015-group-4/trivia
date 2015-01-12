@@ -132,7 +132,7 @@ input:focus {
 .home-facts {
 	width: 400px;
 	margin: 240px auto 10px auto;
-
+}
 .submitform {
     top: 20px;
     padding-top: 30px;
@@ -223,6 +223,7 @@ input:focus {
 	padding-top: 30px;
 	background-color: #068BBC;
 	text-align: center;
+}
 .rules {
     color: #e5ae00;
     top: 20px;
