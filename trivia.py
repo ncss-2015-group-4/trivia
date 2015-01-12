@@ -1,5 +1,7 @@
 from tornado.ncss import Server
 import index_handler
+from templating import render_template
+
 import profile_handler
 import game_handler
 import pre_game_handler
@@ -8,9 +10,18 @@ import submit_handler
 import login_handler
 import question_handler
 import user_handler
+import error_handler
 import leaderboard_handler
 import category_handler
+import lg_handler
 
+def return_404(response, *args, **kwargs):
+	response.set_status(404)
+	error = render_template('static/error.html', {})
+	response.write(error)
+
+def default_handler(response, method, *args, **kwargs):
+	return return_404(response)
 
 server = Server()
 server.register('/', index_handler.index_handler)
@@ -31,6 +42,10 @@ server.register('/question/([0-9]+)',
 server.register('/category/([0-9]+)', category_handler.category_handler)
 server.register('/user', user_handler.user_handler, post=login_handler.signup_handler_post)
 server.register('/user/([0-9]+)', user_handler.edit_user_handler)
+server.register('/categories', category_handler.category_list_handler)
+server.register('/logout', lg_handler.logout)
+server.register('/.*', return_404)
+
 
 if __name__ == '__main__':
     server.run()
