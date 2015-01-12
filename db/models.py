@@ -20,15 +20,13 @@ class Model:
         Run a query with a specified action where keyword arguments are equal
         to its values, and then return an instance of the model.
 
-        >>> Question.query("SELECT * FROM", question_id=1).question
+        >>> Question.query("SELECT *", question_id=1).question
         'Which house is Harry Potter in?'
-        >>> User.query("SELECT * FROM", username='awesomealex').email
+        >>> User.query("SELECT *", username='awesomealex').email
         'dummyemail@email.com'
         """
 
-        table_name = cls._table_name()
-        query = action.upper() + ' {0} WHERE'.format(cls._table_name())
-
+        query = action.upper() + ' FROM {0} WHERE'.format(cls._table_name())
         for key in kwargs:
             query += ' ' + key + ' = ?'
         values = tuple(kwargs.values())
@@ -48,26 +46,26 @@ class Model:
     @classmethod
     def find(cls, **kwargs):
         """
-        A shortcut for `Model.query("SELECT * FROM", **kwargs)`.
+        A shortcut for `Model.query("SELECT *", **kwargs)`.
 
         >>> Question.find(question_id=1).question
         'Which house is Harry Potter in?'
         >>> User.find(username='awesomealex').email
         'dummyemail@email.com'
         """
-        return cls.query("SELECT * FROM", **kwargs)
+        return cls.query("SELECT *", **kwargs)
 
     @classmethod
     def delete(cls, **kwargs):
-        cls.query("DELETE FROM", **kwargs)
+        cls.query("DELETE", **kwargs)
 
     @classmethod
     def find_all(cls, **kwargs):
-        return cls.query("SELECT * FROM", single=False, **kwargs)
+        return cls.query("SELECT *", single=False, **kwargs)
 
     @classmethod
     def delete_all(cls, **kwargs):
-        cls.query("DELETE FROM", single=False, **kwargs)
+        cls.query("DELETE", single=False, **kwargs)
 
     @classmethod
     def create():
