@@ -129,6 +129,22 @@
 		list-style-position: inside;
 		list-style-type: upper-roman;
 }
+
+.RecentlyPlayed {
+	display:inline-block;
+	float:left;
+}
+
+.Friends {
+	display:inline-block;
+	float:right;
+}
+	div{
+		font-family: caviar_dreams;
+		font-size: 16px;
+		line-height: 24px;
+}
+
 /**
  *
  *       home page
@@ -180,6 +196,11 @@
 	margin: 0 36px;
 }
 
+/**
+ *
+ *       SUBMIT PAGE CSS
+ *
+ */
 	.footer-margin-bottom {
 		margin-top: -48px;
 	}
@@ -277,6 +298,48 @@
 		padding-left: 20px;
 		text-decoration: none;
 		font-size: 20px;
+}
+/**
+ *
+ *       POSTGAME CSS
+ *
+ */
+	.postgameheader{
+		top: 20px;
+		padding-top: 30px;
+		background-color: #068BBC;
+		text-align: center;
+}
+	.postgameoutcome{
+		background-color: #DCF1F3;
+		text-align: center;
+		padding: 50px;
+}
+	.postgameoutcometext{
+		text-align: center;
+		font-size: 30px;
+}
+	.postgametime{
+		background-color: #DCF1F3;
+		text-align: center;
+		font-size: 20px;
+		font-weight: bold;
+		margin: 0px;
+}
+	.postgametime2{
+		background-color: #DCF1F3;
+		margin: 0px;
+		text-align: center;
+		font-size: 30px;
+		padding: 20px;
+}
+	.postgamecolumn{
+		-webkit-column-count: 2;
+		-webkit-column-gap: 2px;
+		text-align: center;
+		columns: 2px 2;
+		column-gap: 10px;
+		
 }		
 
 	.header2{
@@ -286,6 +349,14 @@
 		text-align: center;
 		background-color: #068BBC;
 }
+	.postgameyouranswers{
+		width: 400px;
+		margin: 0px;
+		padding-left: 300px;
+		height: 600px;
+}
+ 
+	
 
 	.topic{
 		text-align: center;
@@ -322,6 +393,8 @@
 .stats tr th {
 	text-align:left;
 }
+<<<<<<< HEAD
+=======
 
 }
     .register{
@@ -339,3 +412,4 @@
         width: 100%;
         clear: both;
     }
+>>>>>>> 3b01a0f761ccf4a5a1e752cabab309455fe6f160
