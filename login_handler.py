@@ -4,11 +4,21 @@ from templating import render_template
 def login_handler(request):
     login_page = render_template('static/login.html', {})
     request.write(login_page)
+    
 
 
 #--------------------------------------
 # By Ben
 #--------------------------------------
+
+#======================================
+# Handles cookie creation
+#======================================
+def login_start(request, user_id):
+    if not request.get_secure_cookie("user_id"): #checks for cookie
+        request.set_secure_cookie("user_id", str(user_id)) #creates a new cookie
+    request.redirect("/")
+    
 
 #======================================
 # Does all the login handling:
@@ -31,7 +41,7 @@ def login_handler_post(request):
     user_data = User.find(username=username_email) #checks db with username
     if user_data is not None: #if there is a row in the database
         if user_data.check_login(password):
-            request.redirect("/") #login
+            login_start(request, user_data.id)
             return
         else:
             request.redirect("/") #username/password is incorrect
@@ -39,7 +49,7 @@ def login_handler_post(request):
         user_data = User.find(email=username_email) #may 
         if user_data is not None:
             if user_data.check_login(password):
-                request.redirect("/") #login
+                login_start(request, user_data.id)
                 return
             else:
                 request.redirect("/") #username/password is incorrect

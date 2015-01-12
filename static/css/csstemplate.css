@@ -434,6 +434,28 @@
 	width: 100%;
 	clear: both;
 }
+
+.container {
+	width: 500px;
+	clear: both;
+	margin: 0px auto;
+}
+
+.container input {
+	width: 100%;
+	clear: both;
+}
+
+.leaderboard{
+	top: 20px;
+	padding-top: 30px;
+	background-color: #068BBC;
+	text-align: center;
+}
+
+.leadp{
+	text-align: center;
+}
 	
 .whitespace {
 	padding-bottom: 50px
