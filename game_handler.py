@@ -36,16 +36,16 @@ def get_question_handler(request, question_index):
     request.redirect("/404kid")
 
 def submit_question_handler(request, answer_id):
-    print("SUBMITTED QUESTION")
     game_id = request.get_secure_cookie("game_id")
     user_id_cookie = request.get_secure_cookie("user_id")
-
+    
     if game_id and user_id_cookie and answer_id:
         game = Game.find(game_id=int(game_id.decode()))
         user = User.find(user_id=int(user_id_cookie.decode()))
-        game.game_nextquestion()
+        score = game.game_nextquestion()
+        game.submit_answer(game.question_ids[game.question_index-1],answer_id)
         if game.question_index >= len(game.question_ids):
-            request.redirect('/post_game')
+            request.redirect('/post_game/{0}'.format(score))
         else:
             request.redirect('/game/{0}'.format(game.question_index))
         

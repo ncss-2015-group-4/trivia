@@ -373,12 +373,18 @@ class Game(Model):
         conn.commit()
         return cls(cur.lastrowid, user_id, question_ids, 0, time.time(), 0, difficulty, category_id, 0)
 
-    def submit_answer(cls, question_id, answer_id):
+
+    def submit_answer(self, question_id, answer_id):
         cur=conn.cursor()
         correct = 0
         answer = Answer.find(answer_id=answer_id)
         if answer.correct:
             correct = 1
+            cur.execute('UPDATE games SET score = score + 1 WHERE game_id = ?',(self.id,))
+            self.score += 1
+            print("SCORE INCREMENTED")
+        else:
+            print("answer:",answer)
         cur.execute('UPDATE questions SET questions_answered = questions_answered + 1, questions_correct = questions_correct + ? WHERE question_id = ?',
                         (correct, question_id))
         conn.commit()
@@ -405,6 +411,7 @@ class Game(Model):
         cur.execute('UPDATE games SET question_index = question_index + 1 WHERE game_id=?',(self.id,))
         self.question_index += 1
         conn.commit()
+        return self.score
 
 conn = sqlite3.connect('db/trivia.db')
 conn.row_factory = sqlite3.Row
