@@ -140,6 +140,13 @@
         outline: 0;
     }
     
+.banner {
+	padding-top: 10px;
+    padding-bottom: 10px;
+	background-color: #068BBC;
+	text-align: center;
+ }
+    
 .login-form {
 	margin: 150px auto auto auto;
 	text-align: center;
@@ -278,7 +285,7 @@
 		text-align: center;
 }
 
-.header{
+#header{
 	text-align: center;
 	background-color: #DCF1F3;
     padding-top: 10px;
@@ -293,12 +300,7 @@
 	font-size: 20px;
     
 }
-.postgameheader{
-	top: 20px;
-	padding-top: 30px;
-	background-color: #068BBC;
-	text-align: center;
-}
+
 .postgameoutcome{
 	background-color: #DCF1F3;
 	text-align: center;
@@ -516,13 +518,6 @@ margin: auto;
 .container input {
 	width: 100%;
 	clear: both;
-}
-
-.leaderboard{
-	top: 20px;
-	padding-top: 30px;
-	background-color: #068BBC;
-	text-align: center;
 }
 
 .leadp{
