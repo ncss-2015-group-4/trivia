@@ -192,7 +192,7 @@ class TriviaQuestion(Model):
     def _table_name(cls):
         return 'questions'
 
-    def __init__(self, question_id, question, num_answered, num_correct, category, difficulty):
+    def __init__(self, question_id, question, questions_answered, questions_correct, category, difficulty):
         self.id = question_id
         self.question = question
         self.questions_answered = questions_answered
