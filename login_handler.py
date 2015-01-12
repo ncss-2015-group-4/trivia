@@ -2,7 +2,13 @@ from db.models import User
 from templating import render_template
 
 def login_handler(request):
-    login_page = render_template('static/login.html', {})
+    id = request.get_secure_cookie ('user_id')
+    u_name = ""
+    if id is not None:
+        id = id.decode("UTF-8")
+        u_name = User.find(user_id=id)
+        u_name = u_name.username
+    login_page = render_template('static/login.html', {"user_name": u_name})
     request.write(login_page)
     
 

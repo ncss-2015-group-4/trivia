@@ -14,11 +14,7 @@ import error_handler
 import leaderboard_handler
 import category_handler
 import lg_handler
-
-def return_404(response, *args, **kwargs):
-	response.set_status(404)
-	error = render_template('static/error.html', {})
-	response.write(error)
+from error_handler import return_404
 
 def default_handler(response, method, *args, **kwargs):
 	return return_404(response)
