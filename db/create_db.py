@@ -53,7 +53,7 @@ cur.execute("""CREATE TABLE IF NOT EXISTS games(
 	questions TEXT NOT NULL,
 	index INTEGER NOT NULL,
 	time_started INTEGER NOT NULL,
-	time_completed INTEGER NOT NULL,
+	time_completed INTEGER,
 	difficulty REAL NOT NULL,
 	category_id INTEGER NOT NULL,
 	score INTEGER NOT NULL,
