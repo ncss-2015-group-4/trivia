@@ -177,7 +177,7 @@
 
 .home-facts {
 	width: 400px;
-	margin: 460px auto 10px auto;
+	margin: 240px auto 10px auto;
 }
 
 .home-facts .home-facts-format {
@@ -189,7 +189,26 @@
 	.footer-margin-bottom {
 		margin-top: -48px;
 	}
-
+    
+.description {
+    text-align: center;
+    padding-top: 100px;
+    color: #068BBC;
+    font-size: 22px
+}
+.description2{
+    text-align: center;
+    padding-top: 3px;
+    color: #068BBC;
+    font-size: 22px
+}
+.description3{
+    text-align: center;
+    padding-top: 20px;
+    color: #068BBC;
+    font-size: 22px;
+    font-weight: bold;
+}
 .submit{
 	top: 20px;
 	padding-top: 30px;
