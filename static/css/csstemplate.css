@@ -293,8 +293,7 @@
 
 .profilepic {
 	display:block;
-	margin: 1px;
-	padding: 15px 15px 15px 15px;
+	margin: 20px;
 	border: 4px solid black;
 	float: left;
 }
@@ -312,6 +311,7 @@
 .profileinfo {
 	width: 600px;
 	margin:auto;
+	height:inherit;
 }
 
 
@@ -327,11 +327,9 @@
 .stats tr th {
 	text-align:left;
 }
-<<<<<<< HEAD
 
 
 	
-=======
     .register{
     text-align: center;
 }
@@ -347,4 +345,3 @@
         width: 100%;
         clear: both;
     }
->>>>>>> origin/Web-Dev
