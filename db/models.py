@@ -325,7 +325,7 @@ class Score(Model):
         cur.commit()
     
 class Game(Model):
-    """docstring for Game"""
+    """A model that represents a Game that a user is/was playing"""
     def __init__(self, game_id, user_id, time_started, time_completed, difficulty, category_id, score):
         self.id = game_id
         self.user_id = user_id
