@@ -10,8 +10,8 @@
 		<div class="profile">
 			{% include static/header.html %}
 			<div class ="profileinfo">
-				<img src ="static/images/profilepic.jpg" class="profilepic">
-				<p>Name ('username')</p>
+				<img class="profilepic" src ="static/images/profilepic.jpg">
+				<h1 class = "profilename">Name ('username')</h1>
 				<table class="stats">
 					<tr>
 						<th>Games Played:</th>
@@ -27,13 +27,13 @@
 					</tr>
 				</table>
 			</div>
-			<div>
-			<ul>
-				<p>Questions</p>
-				<li>Question 1</li>
-				<li>Question 2</li>
-				<li>Question 3</li>
-			</ul>
+			<div class = "submittedquestions">
+				<ul>
+					<h2>Submitted Questions</h2>
+					<li>Question 1</li>
+					<li>Question 2</li>
+					<li>Question 3</li>
+				</ul>
 			</div>
 			<a href = "#">See more ('no. of more qs)</a>
 		</div>
