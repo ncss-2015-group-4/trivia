@@ -355,14 +355,14 @@ class Game(Model):
         self.score = score
 
     @classmethod
-    def create(cls, user_id, category_id, difficulty, n=10):
+    def create(cls, user_id, category_id, difficulty, n=4):
         cur=conn.cursor()
-        question_ids = ','.join(cur.execute('SELECT question_id FROM questions WHERE category_id = ? AND difficulty =?',
-                                (category_id, difficulty)).fetchone())
+        question_ids = ','.join(map(str, cur.execute('SELECT question_id FROM questions WHERE category = ?', 
+                                (category_id,)).fetchone()))
         rand_ids = []
         i=0
         while True:
-            random_number = random.randrange(1, len(question_ids.split(",")))
+            random_number = random.randrange(1, len(question_ids.split(",")) + 1)
             if random_number not in rand_ids:
                 i+=1
                 rand_ids.append(random_number)
