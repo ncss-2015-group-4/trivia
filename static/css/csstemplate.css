@@ -338,9 +338,34 @@
 		height: 600px;
 }
 	.topic{
+		padding: 15px 15px 15px 15px;
+		border-width: 4px;
+		border-color: black;
+		width: 500px;
+		margin: 20px;
+		border-radius: 20px;
+		font-size: 18px;
+		font-weight: bold;
+		font-family: 'caviar_dreams';
 		text-align: center;
 }
-		
+
+	.topic2{
+		text-align: center;
+}
+
+	.popular{
+		text-align: center;
+}
+
+	.recommended{
+		text-align: center;
+}
+
+	.difficulty{
+		text-align: center;
+}
+	
  .profile {
 	text-align: center;
 	margin: auto;
@@ -407,3 +432,5 @@
         width: 100%;
         clear: both;
     }
+	
+
