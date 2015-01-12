@@ -1,6 +1,6 @@
 from templating import render_template
 from db.models import User
-#from trivia.difficulty import skill_level
+from difficulty import skill_level
 
 
 
