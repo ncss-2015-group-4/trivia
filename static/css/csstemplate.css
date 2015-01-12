@@ -285,3 +285,13 @@
 		font-size: 20px;
 		
 }
+	.leaderboard{
+		top: 20px;
+		padding-top: 30px;
+		background-color: #068BBC;
+		text-align: center;
+}
+
+    .leadp{
+        text-align: center;
+}
