@@ -349,6 +349,8 @@ class Game(Model):
     def __init__(self, game_id, user_id, question_ids, question_index, time_started, time_completed, difficulty, category_id, score):
         self.id = game_id
         self.user_id = user_id
+        if isinstance(question_ids, str):
+            question_ids = [int(x) for x in question_ids.split(',')]
         self.question_ids = question_ids
         self.question_index = question_index
         self.time_started = time_started
@@ -369,7 +371,7 @@ class Game(Model):
         question_ids = question_ids[:n]
         print("number of questions generated: " + str(len(question_ids)))
 
-        cur.execute('INSERT INTO games VALUES(NULL, ?, ?, 0, ?, 0, ?, ?, 0)',(user_id, str(question_ids), time.time(),category_id, difficulty))
+        cur.execute('INSERT INTO games VALUES(NULL, ?, ?, 0, ?, 0, ?, ?, 0)',(user_id, ','.join(map(str, question_ids)), time.time(),category_id, difficulty))
         conn.commit()
         return cls(cur.lastrowid, user_id, question_ids, 0, time.time(), 0, difficulty, category_id, 0)
 
@@ -385,8 +387,9 @@ class Game(Model):
 
 
     def get_question(self, index):
+        print(repr(self.question_ids), index)
         current_question_id = self.question_ids[index]
-
+        print(current_question_id)
         question = TriviaQuestion.find(question_id=current_question_id)
 
         return question

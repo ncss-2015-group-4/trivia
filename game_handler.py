@@ -13,7 +13,7 @@ def game_handler(request):
             game = Game.create(user.id, int(category_id), float(difficulty))
             request.set_secure_cookie("game_id", str(game.id))
             print('game_id set to', game.id)
-            request.redirect('/game/1')
+            request.redirect('/game/0')
 
 def get_question_handler(request, question_index):
     game_id = request.get_secure_cookie('game_id')
@@ -28,7 +28,7 @@ def get_question_handler(request, question_index):
         if not question:
             request.write("that question does not exist")
             return
-        answers = game.get_answers(int(question_index))
+        answers = game.get_answers(int(question_index) + 1)
 
         request.write(render_template('static/question.html',
                     {"question": question, "answers": answers, "question_index": question_index}))
