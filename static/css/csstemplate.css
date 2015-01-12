@@ -129,17 +129,6 @@
 		list-style-position: inside;
 		list-style-type: upper-roman;
 }
-
-.RecentlyPlayed {
-	display:inline-block;
-	float:left;
-}
-
-.Friends {
-	display:inline-block;
-	float:right;
-}
-
 /**
  *
  *       home page
@@ -284,4 +273,25 @@
 		text-decoration: none;
 		font-size: 20px;
 		
+}
+
+/**
+ *
+ *       profile page
+ *
+ */
+ .profile {
+	text-align: center;
+	margin: auto;
+	background-color: #dcf1f3;
+}
+
+.profilepic {
+	padding: 15px 15px 15px 15px;
+	border-width: 4px;
+	border-color: black;
+}
+
+.stats tr th {
+	text-align:left;
 }
