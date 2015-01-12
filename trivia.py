@@ -8,6 +8,7 @@ import submit_handler
 import login_handler
 import question_handler
 import user_handler
+import category_handler
 
 
 server = Server()
@@ -25,6 +26,7 @@ server.register('/question', question_handler.new_question_form,
 server.register('/question/([0-9]+)',
                 question_handler.get_question_handler,
                 post=question_handler.edit_question_handler)
+server.register('/category/([0-9]+)', category_handler.category_handler)
 server.register('/user', user_handler.user_handler, post=login_handler.signup_handler_post)
 server.register('/user/([0-9]+)', user_handler.edit_user_handler)
 server.run()
