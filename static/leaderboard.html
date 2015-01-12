@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<link rel="stylesheet" href="CSS/reset.css" type = "text/css" >
-		<link rel="stylesheet" href="CSS/csstemplate.css" type = "text/css" >	
+		<link rel="stylesheet" href="static/css/reset.css" type = "text/css" >
+		<link rel="stylesheet" href="static/css/csstemplate.css" type = "text/css" >	
 	</head>
 	<body>
 		{% include static/header.html %}
-		<h1>Leaderboards</h1>
+		<h1 class="leaderboard">Leaderboards</h1>
 		<!-- Top Player, Best Contributer & Daily Highscore to be updated daily -->
-		<p>Top Player</p>
-		<p>Best Contributer</p>
-		<p>Daily Highscore</p>
-		<h2>Leaderboard/Top Ten</h2>
+		<p class="leadp">Top Player</p>
+		<p class="leadp">Best Contributer</p>
+		<p class="leadp">Daily Highscore</p>
+		<h2 style="text-align: center">Leaderboard/Top Ten</h2>
 		<ol> <!-- values to have profile picture with name and score beside -->
         {% for person in people %}
-			<li>{{ person }}</li>
+			<li class="leadp">{{ person }}</li>
         {% end for %}
 		</ol>
 	</body>
