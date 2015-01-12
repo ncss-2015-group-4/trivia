@@ -7,12 +7,16 @@
 	{% include static/header.html %}
 	<body>
 		<h1 class="submit">Submit Your Own Question</h1>
-		<form class="submitform">
-			<p><input type="text" placeholder="Enter a Question" class="submitinputquestion"></p>
-			<p><input type="text" placeholder="Correct Answer" class="submitinputcorrect"></p>
-			<p><input type="text" placeholder="Incorrect Answer" class="submitinputincorrect"></p>
-			<p><input type="text" placeholder="Incorrect Answer" class="submitinputincorrect"></p>
-			<p><input type="text" placeholder="Incorrect Answer" class="submitinputincorrect2"></p>
+		<form class="submitform" method="post">
+			<select name="categories">
+				<option value="1">Harry Potter</option>
+				<option value="2">Doctor Who</option>
+			<p><input type="text" name="question" placeholder="Enter a Question" class="submitinputquestion"></p>
+			<p><input type="text" name="correct_answer" placeholder="Correct Answer" class="submitinputcorrect"></p>
+			<p><input type="text" name="wrong_answer_1" placeholder="Incorrect Answer" class="submitinputincorrect"></p>
+			<p><input type="text" name="wrong_answer_2" placeholder="Incorrect Answer" class="submitinputincorrect"></p>
+			<p><input type="text" name="wrong_answer_3" placeholder="Incorrect Answer" class="submitinputincorrect2"></p>
+			
 			<button class="submitbutton">Submit</button>
 		</form>
 		<h2 class="rules">Rules:</h2>
