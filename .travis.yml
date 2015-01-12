@@ -4,4 +4,4 @@ python:
   - "3.4"
 
 # Command to run tests
-script: python3 -m tornado.testing tests/pages.py
+script: python3 -m tornado.testing tests/pages.py && python3 templating.py
