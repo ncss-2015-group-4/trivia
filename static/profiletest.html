@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="static/css/reset.css" type = "text/css" >
+		<link rel="stylesheet" href="static/css/csstemplate.css" type = "text/css" >
+	</head>
+
+	<!--actual page w/ profile name, statistics, friends etc.-->
+	<body class="blue">
+		{% include static/header.html %}
+		<div class="profilename">
+			<h1>{{ user_name }}</h1>
+		</div>
+		<p>Email: person@mail.com</p>
+		<div class = "skilllevels">
+		<ul>
+			<h2>Skill Levels</h2>
+			<li>{{ user_name }} is a 'skill level' at 'category'.</li>
+			<li>{{ user_name }} is a 'skill level' at 'category'.</li>
+			<li>{{ user_name }} is a 'skill level' at 'category'.</li>
+		</div>
+		<div>
+		<ul>
+			<h2>Recent Activity</h2>
+			<li>I played...</li>
+			<li>I played...</li>
+			<li>I played...</li>
+		</ul>
+	</body>
+</html>

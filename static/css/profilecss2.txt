@@ -1,0 +1,20 @@
+ .profile {
+	text-align: center;
+	margin: auto;
+}
+
+
+
+.profilename {
+	top: 20px;
+	padding-top: 15px;
+	text-align: center;
+	line-height: 81px;
+	font-size: 54px;
+	color: #e5ae00;
+	font-family: trashhandregular;
+	font-weight: bold;
+}
+.blue {
+	background-color: #dcf1f3;
+}
