@@ -1,3 +1,6 @@
+from db.models import User, Game 
 def game_handler(request):
-    game_page = open('static/game.html')
-    request.write(game_page.read())
+    category_id = request.get_field("category_id")
+    difficulty = request.get_field("difficulty")
+
+
