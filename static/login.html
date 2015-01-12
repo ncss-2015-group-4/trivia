@@ -8,10 +8,6 @@
 	<div class="whitespace"></div>
 	<h1 style="text-align: center;">Login</h1>
         <div class="container">
-        <h2>{{error_message}}</h2>
-        {% if error_message != "" %}
-            {{error_message}}
-        {% end if %}
 		<form class="login" method="post">
 		<p>
 			<label>Email/Username:</label>
@@ -21,6 +17,11 @@
 			<label>Password:</label>
 			<input type="password" name="password" required>
 			</p>
+        {% if error_message != "" %}
+            {% if error_message ==  "Password/Username is incorrect" or error_message == "User doesn't exist" %}
+                <div class="error">{{error_message}}</div>
+            {% end if %}
+        {% end if %}
 		<input type="submit" value="Submit">
 		</form>
         </div>
@@ -40,6 +41,11 @@
 				Email:
 				<input type="text" name="email" required>
 				</p>
+        {% if error_message != "" %}
+            {% if error_message == "Email already in use!" or error_message == "Username already in use!" %}
+                <div class="error">{{error_message}}</div>
+           {% end if %}
+        {% end if %}
 		<input type="submit" value="Submit">
 		</form>
         </div>
