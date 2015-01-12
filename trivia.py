@@ -44,4 +44,4 @@ server.register('/user/([0-9]+)', user_handler.edit_user_handler)
 server.register('/.*', return_404)
 
 if __name__ == '__main__':s
-    server.run()
+	server.run()
