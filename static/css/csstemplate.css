@@ -92,9 +92,6 @@
 		font-family: caviar_dreams;
 }
 	
-	header{
-		background-color: #068bbc;
-}
 
 	.page-width{
 		max-width: 960px;
@@ -189,8 +186,8 @@
     font-weight: bold;
 }
 .submit{
-	top: 20px;
-	padding-top: 30px;
+	padding-top: 20px;
+    padding-bottom: 20px;
 	background-color: #068BBC;
 	text-align: center;
 }
@@ -274,15 +271,18 @@
 
 .header{
 	text-align: center;
-	
+	background-color: #DCF1F3;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 .headerlinks{
-	color: #e5ae00;
-	padding-right: 20px;
-	padding-left: 20px;
+	color: #068BBC;
+	padding-right: 30px;
+	padding-left: 30px;    
 	text-decoration: none;
 	font-size: 20px;
+    
 }
 .postgameheader{
 	top: 20px;
@@ -364,11 +364,10 @@
 	font-weight: normal;
 }
 .header2{
-	text-align: center;
-	top: 20px;
-	padding-top: 30px;
-	text-align: center;
+	padding-top: 20px;
+    padding-bottom: 20px;
 	background-color: #068BBC;
+	text-align: center;
 }
 .table {
 	border: 1px;
@@ -522,7 +521,10 @@ margin: auto;
 }
 	
 .whitespace {
-	padding-bottom: 50px
+	padding-top: 20px;
+    padding-bottom: 20px;
+	background-color: #068BBC;
+	text-align: center;
 }
 
 	.error_title{
