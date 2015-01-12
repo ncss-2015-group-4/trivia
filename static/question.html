@@ -7,12 +7,16 @@
 	</head>
 	<body>
 		{% include static/header.html %}
+        <center>
+        <br/>
 		<h2>Question {{ question_index }}</h2>
 		<p id="question">{{ question.question }}</p>
+        <br/>
 		<ol id="answers">
 			{% for answer in answers %}
 			<li><a href="/game/submit/{{ answer.id }}">{{ answer.text }}</a></li>
 			{% end for %}
 		</ol>
+        </center>
 	</body>
 </html>
