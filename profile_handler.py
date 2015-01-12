@@ -1,8 +1,6 @@
 from templating import render_template
 from db.models import User
-#from trivia.difficulty import skill_level
-
-
+from difficulty import skill_level
 
 def profile_handler(request):
     id = request.get_secure_cookie ('user_id')

@@ -10,11 +10,13 @@ EXPERT = 3
 
 def difficulty( ):
     sum = 0
-    question_data = Score.find(user_id = '1')
-    print(question_data.num_answered)
-    print(question_data.num_correct)
-    category_data = Category.find(category_id = question_data.category_id)
-    print(category_data.category)
+    question_data = Score.find_all(user_id = '1')
+    
+    for i in question_data:
+        print(i.num_answered)
+        print(i.num_correct)
+        category_data = Category.find(category_id = i.category_id)
+        print(category_data.name)
     """
 	for person, correct in people_answers:
 		if correct:
