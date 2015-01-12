@@ -354,7 +354,7 @@ class Game(Model):
 		rand_ids = []
 		i=0
 		while True:
-			random_number = random.randint(0, len(question_ids.split(","))
+			random_number = random.randrange(1, len(question_ids.split(","))
 			if	random_number not in rand_ids:
 				i+=1
 				rand_ids.append(random_number)
