@@ -181,7 +181,6 @@
 		margin-top: -48px;
 	}
 
-    
 .description {
     text-align: center;
     padding-top: 100px;
@@ -207,6 +206,7 @@
 	background-color: #068BBC;
 	text-align: center;
 }
+
 
 .submitform{
 	top: 20px;
@@ -559,4 +559,4 @@ margin: auto;
 		font-size: 30px;
 		border-color: #e5ae00;
 		border-radius: 20px;
-	}
+}

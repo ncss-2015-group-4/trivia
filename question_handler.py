@@ -20,11 +20,11 @@ def new_question_handler(request):
   request.redirect('/category/' + category)
   
 def new_question_form(request):
-    id = request.get_secure_cookie ('user_id')
+    u_id = request.get_secure_cookie ('user_id')
     u_name = ""
-    if id is not None:
-        id = id.decode("UTF-8")
-        u_name = User.find(user_id=id)
+    if u_id is not None:
+        u_id = u_id.decode("UTF-8")
+        u_name = User.find(user_id=u_id)
         u_name = u_name.username
     question_new = render_template('static/submit.html', {"user_name":u_name})
     request.write(question_new)
