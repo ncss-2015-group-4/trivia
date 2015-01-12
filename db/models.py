@@ -190,19 +190,20 @@ class TriviaQuestion(Model):
     def _table_name(cls):
         return 'questions'
 	
-    def __init__(self, question_id, question, num_answered, num_correct, category):
+    def __init__(self, question_id, question, num_answered, num_correct, category, difficulty):
         self.id = question_id
         self.question = question
         self.num_answered = num_answered
         self.num_correct = num_correct
         self.category = category
+        self.difficulty = difficulty
 
     @classmethod
     def create(cls, question, category_id):
         cur=conn.cursor()
-        cur.execute('INSERT INTO questions VALUES(NULL,?,0,0,?)', (question, category_id))
+        cur.execute('INSERT INTO questions VALUES(NULL,?,0,0,?,0)', (question, category_id))
         conn.commit()
-        return cls(cur.lastrowid, question, 0, 0, category_id)
+        return cls(cur.lastrowid, question, 0, 0, category_id, 0)
 
     def flag(self):
         return Flag.create(self.id)
@@ -357,24 +358,9 @@ class Game(Model):
     @classmethod
     def create(cls, user_id, category_id, difficulty, n=10):
         cur=conn.cursor()
-        question_ids = ','.join(cur.execute('SELECT question_id FROM questions WHERE category_id = ? AND difficulty =?',
-                                (category_id, difficulty)).fetchone())
-        rand_ids = []
-        i=0
-        while True:
-            random_number = random.randrange(1, len(question_ids.split(",")))
-            if random_number not in rand_ids:
-                i+=1
-                rand_ids.append(random_number)
-                if i == n:
-                    break
-        questions = []
-        for i in rand_ids:
-            questions.append(question_ids[i])
-        question_ids[:] = []
-        for id in questions:
-            question_ids.append(id)
-
+        question_ids = random.shuffle(','.join(cur.execute('SELECT question_id FROM questions WHERE category_id = ? AND difficulty =?',
+                                (category_id, difficulty)).fetchone()).split(","))[0:n]
+        
         cur.execute('INSERT INTO games VALUES(NULL, ?, ?, 0, ?, 0, ?, ?, 0)',(user_id, question_ids, time.time(),category_id, difficulty))
         conn.commit()
         return cls(id, user_id, question_ids, 0, 0, time.time(), 0, difficulty, category_id, 0)
