@@ -70,7 +70,6 @@ button:focus {
     outline: 0;
 }
 
-<<<<<<< HEAD
 	button{
 		background-color: #068bbc;
 		font-weight: bold;
@@ -606,3 +605,21 @@ margin: auto;
     color: red;
     text-align: center;
 }
+
+    #pre_game_sections {
+        width: 1010px;
+        margin: 20px auto;
+    }
+    
+    #instructions {
+        display: inline-block;
+        vertical-align: top;
+        width: 350px;
+    }
+    
+    #game_start {
+        display: inline-block;
+        vertical-align: top;
+        width: 650px;
+    }
+

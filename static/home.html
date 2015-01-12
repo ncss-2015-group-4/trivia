@@ -3,16 +3,26 @@
 	<head>
 		<link rel="stylesheet" href="static/css/reset.css" type = "text/css" >
 		<link rel="stylesheet" href="static/css/csstemplate.css" type = "text/css" >
+
 	</head>
+    <header>
+      {% include static/header.html%}
+    </header>
 	<body>
 	<body style="background-color: #dcf1f3">
-        {% include static/header.html%}
 		<section class="login-form">
 			<div>
 				<h1 class="title">
 					QUIZZI	
 				</h1>
-			</div>
+            </div>
+            <p>
+                <h3>Welcome to QUIZZI!<h3><br>
+                Where the fun starts with you. QUIZZI is where you can share your trivia questions with others - click on 
+                <a href ="/question">SUBMIT</a>, or simply have fun playing a variety of trivia quizzes - click on <a href="pre_game">PLAY NOW!</a> button below. <br>
+                Just click on the <a href ="/login">REGISTER</a> link below - or <a href ="/login">SIGN IN</a> if you simply can't get enough of QUIZZI!
+            </p>
+            <br>
 				<a href="pre_game"><button type="button" class="button-cta">Play Now!</button></a>
 			<menu>
 				<a href="login" class="login-action">Register</a><a href="login" class="login-action">Sign In</a>
