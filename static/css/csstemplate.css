@@ -305,8 +305,9 @@
 
 	.start{
 		text-align: center;
-
- .profile {
+}
+		
+	.profile{
 	text-align: center;
 	margin: auto;
 	background-color: #dcf1f3;
@@ -320,5 +321,21 @@
 
 .stats tr th {
 	text-align:left;
+}
 
 }
+    .register{
+    text-align: center;
+}
+
+    .login{
+    text-align: center;
+}
+    .container {
+        width: 500px;
+        clear: both;
+    }
+    .container input {
+        width: 100%;
+        clear: both;
+    }
