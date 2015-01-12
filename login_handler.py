@@ -1,9 +1,8 @@
 from db.models import User
 from templating import render_template
 
-error = ""
-
-def login_handler(request):
+def login_handler(request, **kwargs):
+    error=kwargs.get("error","")
     u_id = request.get_secure_cookie('user_id')
     u_name = ""
     if u_id is not None:
@@ -25,7 +24,7 @@ def login_start(response, user_id):
     response.clear_cookie('user_id')
     if not response.get_secure_cookie("user_id"): #checks for cookie
         response.set_secure_cookie("user_id", str(user_id)) #creates a new cookie
-    response.redirect("/")
+    response.redirect("/profile")
     
 
 #======================================
@@ -64,8 +63,7 @@ def login_handler_post(request):
                error = "Password/Username is incorrect"
         else:
             error = "User doesn't exist"
-    login_handler(request) #cannot find username or email in database!
-    print(error)
+    login_handler(request, error=error) #cannot find username or email in database!
     return
 #======================================
 # Does all the signup handling:
@@ -85,19 +83,20 @@ def signup_handler_post(request):
     username = request.get_field("username")
     password = request.get_field("password")
     email = request.get_field("email")
+    error=""
     if username == None or username == '' or password == None or password == '':
         request.redirect("/") #Says that the user is missing a feild
         return
-    
     user_data = User.find(username=username) #requests a database entry with the user's username
     if user_data == None:    #checks that there is a row in the database that 
-        if User.find(email=email) != None:
-            request.redirect("/") #Says that the user email address is already in use
-            return 
+        if User.find(email=email) != None:#Says that the user email address is already in use
+            error = "Email already in use!"
         else:
             User.create(username, password, email) #Creates a new entry into the db
-            request.redirect("/") #sends user a thanks pafe or profile page?
+            login_handler_post(request)
+            request.redirect("/profile") #sends user a thanks pafe or profile page?
             return 
     else:
-        request.redirect("/") #Says that the user already has a row in database
-        return 
+        error="Username already in use!"
+    login_handler(request, error = error)
+   # request.redirect("/login")

@@ -1,21 +1,21 @@
-<!DOCTYPE html>
 <html>
 	<head>
 		<link rel="stylesheet" href="static/css/reset.css" type = "text/css" >
-		<link rel="stylesheet" href="static/css/csstemplate.css" type = "text/css" >	
+		<link rel="stylesheet" href="static/css/csstemplate.css" type = "text/css" >
 	</head>
-	<body>
-		{% include static/header.html %}
-		<h1 class="leaderboard">Leaderboards</h1>
-		<!-- Top Player, Best Contributer & Daily Highscore to be updated daily -->
-		<p class="leadp">Top Player</p>
-		<p class="leadp">Best Contributer</p>
-		<p class="leadp">Daily Highscore</p>
-		<h2 style="text-align: center">Leaderboard/Top Ten</h2>
-		<ol> <!-- values to have profile picture with name and score beside -->
-        {% for person in people %}
-			<li class="leadp">{{ person }}</li>
-        {% end for %}
+	<body style="background-color: #dcf1f3">
+	{% include static/header.html%}
+    <div class="banner">
+        <h1>Leaderboard</h1>
+    </div>
+    <!-- Top Player, Best Contributer & Daily Highscore to be updated daily -->
+    <h2 style="text-align: center">Top Player</h2>
+    <p class="leadp">{{score_list[0][0]}}</p>
+    <h2 style="text-align: center">Top Ten</h2>
+    <ol> <!-- values to have profile picture with name and score beside -->
+    {% for score_entry in score_list[:10] %}
+        <li class="leadp">{{ score_entry[0] }}, {{ score_entry[1]}}</li>
+    {% end for %}
 		</ol>
 	</body>
 </html>
