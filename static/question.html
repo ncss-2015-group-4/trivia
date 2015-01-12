@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title></title>
+		<link rel="stylesheet" href="static/css/reset.css" type="text/css">
+		<link rel="stylesheet" href="static/css/csstemplate.css" type="text/css">
+	</head>
+	<body>
+		{% include static/header.html %}
+		<h2>Question {{ question_index }}</h2>
+		<p id="question">{{ question }}</p>
+		<ol id="answers">
+			<li>{{ answers[0] }}</li>
+			<li>{{ answers[1] }}</li>
+			<li>{{ answers[2] }}</li>
+			<li>{{ answers[3] }}</li>
+		</ol>
+	</body>
+</html>
