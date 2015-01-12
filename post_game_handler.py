@@ -5,7 +5,7 @@ from db.models import User
 def post_game_handler(request, score):
     u_id = request.get_secure_cookie ('user_id')
     u_name = ""
-    score = str(int(score) + 1)
+    score = str(int(score))
     if u_id is not None:
         u_id = u_id.decode("UTF-8")
         u_name = User.find(user_id=u_id)

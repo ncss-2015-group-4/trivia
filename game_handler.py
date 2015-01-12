@@ -51,7 +51,7 @@ def submit_question_handler(request, answer_id):
         game = Game.find(game_id=int(game_id.decode()))
         user = User.find(user_id=int(user_id_cookie.decode()))
         score = game.game_nextquestion()
-        game.submit_answer(game.question_ids[game.question_index-1],answer_id)
+        game.submit_answer(game.question_ids[game.question_index],answer_id)
         if game.question_index >= len(game.question_ids):
             request.redirect('/post_game/{0}'.format(score))
         else:
