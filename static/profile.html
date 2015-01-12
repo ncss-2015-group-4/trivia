@@ -4,31 +4,17 @@
 		<link rel="stylesheet" href="static/css/reset.css" type = "text/css" >
 		<link rel="stylesheet" href="static/css/csstemplate.css" type = "text/css" >
 	</head>
-	<header>
-	<!--logo, links and profile avatar-->
-		<nav>
-			<img src="scrabble logo.jpg">
-			<a href="#">Link 1</a>
-			<a href="#">Link 2</a>
-			<a href="#">Link 3</a>
-			<a href="#">Link 4</a>
-			<img src="Profile picture.jpg">
-			<a href="#">YOU</a>
-		</nav>
-	</header>
+
 	<!--actual page w/ profile name, statistics, friends etc.-->
 	<body>
-		<img src ="C:\Users\jzhu9214\Documents\GitHub\trivia\Web\Profile picture.jpg">
+		{% include static/header.html %}
+		<img src ="static/images/profilepic.jpg">
 		<p>Name ('username')</p>
 		<p>Games Played: x</p>
 		<p>Games Won: x</p>
 		<p>Answers Correct: x</p>
-		<ul>
-			<p>Recently Played</p>
-			<li>Category 1</li>
-			<li>Category 2</li>
-			<li>Category 3</li>
-		</ul>
+
+		<div class="Friends">
 		<ul>
 			<p>Friends</p>
 			<li>Friend 1</li>
@@ -36,6 +22,7 @@
 			<li>Friend 3</li>
 		</ul>
 		<a href = "#">See more (no. of more friends)</a>
+		</div>
 		<ul>
 			<p>Questions</p>
 			<li>Question 1</li>

@@ -11,20 +11,32 @@
 }
 	
 @font-face {
-    font-family: 'caviar_dreamsregular';
+    font-family: 'caviar_dreams';
     src: url('CaviarDreams-webfont.eot');
     src: url('CaviarDreams-webfont.eot?#iefix') format('embedded-opentype'),
          url('CaviarDreams-webfont.woff') format('woff'),
          url('CaviarDreams-webfont.ttf') format('truetype'),
-         url('CaviarDreams-webfont.svg#caviar_dreamsregular') format('svg');
+         url('CaviarDreams-webfont.svg#caviar_dreams') format('svg');
     font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'caviar_dreams';
+    src: url('Caviar_Dreams_Bold-webfont.eot');
+    src: url('Caviar_Dreams_Bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('Caviar_Dreams_Bold-webfont.woff') format('woff'),
+         url('Caviar_Dreams_Bold-webfont.ttf') format('truetype'),
+         url('Caviar_Dreams_Bold-webfont.svg#caviar_dreams') format('svg');
+    font-weight: bold;
     font-style: normal;
 
 }
 
 
 	body {
-		font-family; caviar_dreamsregular;
+		font-family; caviar_dreams;
 		font-size: 14px;
 		margin: 0px;
 		margin-bottom: 11px;
@@ -70,20 +82,16 @@
 		line-height: 24px;
 		margin-top: 11px;
 		color: #0e1e26;
-		font-family: caviar_dreamsregular;
+		font-family: caviar_dreams;
 }
 
 	a {
 		margin-bottom: 11px;
 		font-size: 16px;
 		line-height: 24px;
-		font-family: caviar_dreamsregular;
+		font-family: caviar_dreams;
 }
-
-	input{
-		background-color: #dcf1f3;
-}	
-
+	
 	header{
 		background-color: #068bbc;
 }
@@ -97,15 +105,16 @@
 	button{
 		background-color: #068bbc;
 		font-weight: bold;
-		font-family: caviar_dreamsregular;
+		font-family: caviar_dreams;
 		color: #e5ae00;
 		padding: 5px;
 		border-radius: 5px;
+		line-height: 1.5em;
 		
 }
 
 	li, dl, legend, td, th{ 
-		font-family: caviar_dreamsregular;
+		font-family: caviar_dreams;
 		font-size: 16px;
 		line-height: 24px;
 		margin-bottom: 11px;
@@ -119,11 +128,160 @@
 	ol{
 		list-style-position: inside;
 		list-style-type: upper-roman;
-}		
+}
+
+.RecentlyPlayed {
+	display:inline-block;
+	float:left;
+}
+
+.Friends {
+	display:inline-block;
+	float:right;
+}
+
+/**
+ *
+ *       home page
+ *
+ */
+ .login-form {
+	width: 275px;
+	height: 183px;
+	margin: 150px auto auto auto;
+	text-align: center;
+	
+}
+
+.login-form .button-cta {
+	width: 200px;
+	height: 80px;
+	font-size: 38px;
+	font-weight: bold;
+	border: none;
+	border-radius: 10px;
+	margin: 24px 0 12px;
+}
+
+.login-form .login-action {
+	text-decoration: none;
+	font-weight: bold;
+	color: #0e1e26;
+}
+
+.login-form .login-action:first-child {
+	border-right: 1px solid #068bbc;
+	padding-right: 12px;
+	margin-right: 12px;
+}
+	
+.home-facts li{
+  display: inline;
+}
+
+.home-facts {
+	width: 400px;
+	margin: 600px auto 10px auto;
+}
+
+.:second-child {
+	border-right: 1px solid #068bbc;
+	padding-right: 12px;
+	margin-right: 12px;
+}
 
 	.submit{
 		top: 20px;
 		padding-top: 30px;
 		background-color: #068BBC;
 		text-align: center;
+}
+	.submitform{
+		top: 20px;
+		padding-top: 30px;
+		background-color: #DCF1F3;
+		text-align: center;
+}	
+	.submitinputquestion{
+		padding: 15px 15px 15px 15px ;
+		border-width: 4px;
+		border-color: black;
+		width: 500px;
+		margin: 20px;
+		text-align: center;
+		border-radius: 20px;
+		font-size: 18px;
+		font-weight: bold;
+		font-family: 'caviar_dreams';
+}	
+	.submitbutton{
+		margin: 20px;
+		height: 75px;
+		width: 200px;
+		text-align: center;
+		font-size: 30px;
+		border-color: #e5ae00;
+		border-radius: 20px;
+		margin: 40px;
+}	
+	.submitinputcorrect{
+		border-color: green;
+		border-width: 3px;
+		padding: 5px;
+		width: 250px;
+		margin: 20px;
+		text-align: center;
+		border-radius: 15px;
+		font-family: 'caviar_dreams';
+		font-size: 15px;
+}	
+	.submitinputincorrect{
+		border-color: red;
+		border-width: 3px;
+		padding: 5px;
+		width: 250px;
+		margin: 20px;
+		text-align: center;
+		border-radius: 15px;
+		font-family: 'caviar_dreams';
+		font-size: 15px;
+}	
+	.submitinputincorrect2{
+		border-color: red;
+		border-width: 3px;
+		padding: 5px;
+		width: 250px;
+		margin: 20px 20px 0px 20px;
+		text-align: center;
+		border-radius: 15px;
+		font-family: 'caviar_dreams';
+		font-size: 15px;
+
+}	
+	.rules{
+		color: #e5ae00;
+		top: 20px;
+		padding-top: 30px;
+		background-color: #068BBC;
+		text-align: center;
+}
+	.rulesdotpoints{
+		top: 20px;
+		padding-top: 30px;
+		background-color: #068BBC;
+		text-align: center;
+}
+
+	.header{
+		text-align: center;
+		
+}
+
+	.headerlinks{
+		color: #e5ae00;
+		padding-right: 20px;
+		padding-left: 20px;
+		text-decoration: none;
+		font-size: 20px;
+		
 }
