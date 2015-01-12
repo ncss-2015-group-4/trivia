@@ -403,7 +403,9 @@
     .container {
         width: 500px;
         clear: both;
+		margin: 0px auto;
     }
+	
     .container input {
         width: 100%;
         clear: both;
@@ -419,4 +421,6 @@
     .leadp{
         text-align: center;
 }
-
+	
+	.whitespace {
+	padding-bottom: 50px
