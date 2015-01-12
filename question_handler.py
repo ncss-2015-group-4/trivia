@@ -2,6 +2,7 @@ from db.models import TriviaQuestion
 from db.models import Answer
 from db.models import Category
 from templating import render_template
+from db.models import User
 
 def new_question_handler(request):
   question = request.get_field("question")
@@ -17,13 +18,17 @@ def new_question_handler(request):
   Answer.create(question.id, False, wrong_answer_1)
   Answer.create(question.id, False, wrong_answer_2)
   Answer.create(question.id, False, wrong_answer_3)
-  request.redirect('/category/' + category)
- 
- 
+  request.redirect('/category/' + category) 
  
 def new_question_form(request):
+    u_id = request.get_secure_cookie ('user_id')
+    u_name = ""
+    if u_id is not None:
+        u_id = u_id.decode("UTF-8")
+        u_name = User.find(user_id=u_id)
+        u_name = u_name.username
     list_of_categories = Category.find_all()
-    question_new = render_template('static/submit.html', {"list_of_categories": list_of_categories})
+    question_new = render_template('static/submit.html', {"list_of_categories": list_of_categories,"user_name":u_name})
     request.write(question_new)
 
 def get_question_handler(request, question_id):

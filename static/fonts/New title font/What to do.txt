@@ -1,0 +1,5 @@
+Put this in all the html pages
+<link href='http://fonts.googleapis.com/css?family=Shadows+Into+Light+Two' rel='stylesheet' type='text/css'>
+
+And this in the CSS
+font-family: 'Shadows Into Light Two', cursive;

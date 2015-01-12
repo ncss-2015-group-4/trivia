@@ -142,7 +142,7 @@
 	font-size: 45px;
 	font-weight: bold;
 	border-color: #e5ae00;
-    cursor: pointer;    
+  cursor: pointer;    
 	border-radius: 10px;
 	margin: 100px 0 12px;
 }
@@ -191,6 +191,7 @@
 	background-color: #068BBC;
 	text-align: center;
 }
+
 .submitform{
 	top: 20px;
 	padding-top: 30px;
@@ -282,7 +283,6 @@
 	padding-left: 30px;    
 	text-decoration: none;
 	font-size: 20px;
-    
 }
 .postgameheader{
 	top: 20px;
@@ -409,7 +409,7 @@ text-align: center;
 margin: auto;
 }
 
-
+/*profile start */
 
 .profilename {
 	top: 20px;
@@ -440,15 +440,23 @@ margin: auto;
 	background-color: white;
 }
 .progress {
-	margin:10px auto;
+    margin-bottom: 20px;
+    padding:10px;
 	text-align:center;
 	list-style-type: none;
-	background-color: 0e1e26;
+	background-color: white;
+    border-left: 4px solid black;
+    border-right: 4px solid black;
+    border-bottom: 4px solid black;
 }
 .recentactivity{
-	margin:10px auto;
+	margin-bottom:20px;
+    padding:10px;
 	text-align:left;
-	background-color: 0e1e26;
+	background-color: white;
+    border-left: 4px solid black;
+    border-right: 4px solid black;
+    border-bottom: 4px solid black;
 }
 
 .progress li {
@@ -539,5 +547,4 @@ margin: auto;
 		font-size: 30px;
 		border-color: #e5ae00;
 		border-radius: 20px;
-	}
-	
+}
