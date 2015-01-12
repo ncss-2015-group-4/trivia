@@ -8,24 +8,24 @@
 	<h1>Login</h1>
 		<form method="post">
 		<label>Email/Username:</label>
-		<input type="text" name="username">
+		<input type="text" name="username" required>
 			<p>
 			<label>Password:</label>
-			<input type="text" name="password">
+			<input type="password" name="password" required>
 			</p>
 		<input type="submit" value="Submit">
 		</form>
 	<h1>Registration</h1>
 		<form method="post" action="/user">
 			<label>Email/Username:</label>
-			<input type="text" name="username">
+			<input type="text" name="username" required>
 			<p>
 				<label>Password:</label>
-				<input type="text" name="password">
+				<input type="password" name="password" required>
 			</p>
 			<p>
 				Email:
-				<input type="text" name="email">
+				<input type="text" name="email" required>
 				</p>
 		<input type="submit" value="Submit">
 		</form>
