@@ -1,4 +1,5 @@
 from db.models import User, Game
+from templating import render_template
 
 def game_handler(request):
     category_id = request.get_field("category_id")
@@ -9,6 +10,15 @@ def game_handler(request):
 
     	if (category_id is not None and difficulty is not None):
     		game = Game.create(user.id, category_id)
+
+def get_question(request, game_id, question_index):
+	game = Game.find(id=int(game_id))
+	if (game is not None):
+		question = game.get_question(int(question_index))
+
+		request.write(render_template('static/question.html', {question: question}))
+		return
+	request.redirect("/404kid")
 
 def submit_question_handler(request):
 	game_id = request.get_field("game_id")
@@ -25,8 +35,4 @@ def submit_question_handler(request):
 				if (game.submit_answer(question_text)):
 					request.redirect('/play/{}'.format(game.question_index))
 					return
-
-
-
-
 
