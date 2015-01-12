@@ -7,6 +7,7 @@ body {
     margin: 0px;
     font-size: 16px;
     line-height: 24px;
+    background-color:#DCF1F3;
 }
 
 h1,h2,h3,h4,h5,h5 {
@@ -318,11 +319,6 @@ input:focus {
 .popular {
     text-align: center;
     padding: 10px;
-}
-
-.recommended {
-    text-align: center;
-    padding: 20px;
 }
 
 .difficulty {
