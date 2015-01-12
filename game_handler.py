@@ -6,7 +6,7 @@ def game_handler(request):
     difficulty = request.get_field("difficulty")
     user_id_cookie = request.get_secure_cookie("user_id")
 
-    if user_id_cookie is not:
+    if user_id_cookie is not None:
     	user = User.find(id=int(user_id_cookie.decode()))
 
     	if category_id and difficulty:
@@ -36,7 +36,7 @@ def submit_question_handler(request):
 
 		if game and user:
 			if game.user_id == user.id:
-				if game.submit_answer(question_id)):
+				if game.submit_answer(question_id):
 					request.redirect('/play/{0}'.format(game.question_index))
 					return
 

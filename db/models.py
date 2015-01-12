@@ -354,7 +354,7 @@ class Game(Model):
         self.score = score
 
     @classmethod
-    def create(cls, user_id, category_id, difficulty):
+    def create(cls, user_id, category_id, difficulty, n=10):
         cur=conn.cursor()
         question_ids = ','.join(cur.execute('SELECT question_id FROM questions WHERE category_id = ? AND difficulty =?',
                                 (category_id, difficulty)).fetchone())
@@ -365,7 +365,7 @@ class Game(Model):
             if random_number not in rand_ids:
                 i+=1
                 rand_ids.append(random_number)
-                if i == 10:
+                if i == n:
                     break
         questions = []
         for i in rand_ids:
@@ -396,8 +396,8 @@ class Game(Model):
 
         return question
 
-    def get_answers():
-        ...
+    def get_answers(self, question_id):
+        return Answers.find_all(question_id=question_id)
 
 
 conn = sqlite3.connect('db/trivia.db')
