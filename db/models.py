@@ -42,7 +42,10 @@ class Model:
                 return cls(*result)
         else:
             results = cur.fetchall()
-            return results
+            objects = []
+            for result in results:
+                objects.append(cls(*result))
+            return objects
 
 
     @classmethod
@@ -184,6 +187,10 @@ class TriviaQuestion(Model):
     * TriviaQuestion.create(question_text, category_id)
     """
 
+    @classmethod
+    def _table_name(cls):
+        return 'questions'
+	
     def __init__(self, question_id, question, num_answered, num_correct, category):
         self.id = question_id
         self.question = question
