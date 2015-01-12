@@ -4,6 +4,7 @@ from templating import render_template
 error = ""
 
 def login_handler(request):
+    print(error)
     login_page = render_template('static/login.html', {"error_message": error})
     request.write(login_page)
     
