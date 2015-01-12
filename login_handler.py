@@ -15,7 +15,7 @@ def login_handler(request):
 # Handles cookie creation
 #======================================
 def login_start(request, user_id):
-    if not request.get_cookie("user_id"): #checks for cookie
+    if not request.get_secure_cookie("user_id"): #checks for cookie
         request.set_secure_cookie("user_id", str(user_id)) #creates a new cookie
     request.redirect("/")
     
