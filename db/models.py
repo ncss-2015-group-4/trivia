@@ -133,13 +133,12 @@ class User(Model):
         """
         Set a user's email address in the database.
 
-        >>> user = User.find(username='awesomealex')
-        <db.models.User object at ...>
+        >>> user = User.find(username='fantasticfeddy')
         >>> user.email
-        'dummyemail@email.com'
-        >>> user.set_email('alex@example.com')
+        'dummyemail1@email.com'
+        >>> user.set_email('feddie@example.com')
         >>> user.email
-        'alex@example.com'
+        'feddie@example.com'
         """
 
         cur = conn.cursor()
@@ -152,7 +151,6 @@ class User(Model):
         Set a user's password in the database.
 
         >>> user = User.find(username='awesomealex')
-        <db.models.User object at ...>
         >>> user.check_login('password')
         True
         >>> user.set_password('helloworld')
