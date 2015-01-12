@@ -1,5 +1,7 @@
 from templating import render_template
 from db.models import User
+#from trivia.difficulty import skill_level
+
 
 
 def profile_handler(request):
@@ -8,8 +10,8 @@ def profile_handler(request):
         request.redirect("/login")
     else:
         id = id.decode("UTF-8")
-        print("WLKHGKUSDKUGLUBGS:KDJ:KV:LSKDNV:LKSND:LVK------------>", id)
         user_data = User.find(user_id=id)
-        profile_page = render_template('static/profile.html', {"user_name": user_data.username})
+        profile_page = render_template('static/profile.html', {"user_name": user_data.username, "email": user_data.email})
         request.write(profile_page)
+     
 
