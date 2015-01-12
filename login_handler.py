@@ -95,7 +95,7 @@ def signup_handler_post(request):
         else:
             user_data = User.create(username, password, email) #Creates a new entry into the db
             login_start(request, user_data.id)
-			return
+            return
     else:
         error = "Username already in use"
     login_handler(request, error=error) 
