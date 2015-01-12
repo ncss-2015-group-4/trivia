@@ -290,8 +290,37 @@
 	padding: 15px 15px 15px 15px;
 	border-width: 4px;
 	border-color: black;
+	float:left;
+}
+
+.profilename {
+	top: 20px;
+	padding-top: 30px;
+	text-align: center;
+	line-height: 81px;
+	font-size: 54px;
+	color: #e5ae00;
+	font-family: trashhandregular;
+	font-weight: bold;
+}
+.profileinfo {
+	width: 600px;
+	margin:auto;
+}
+
+
+.stats tr th, td {
+	font-family: trashhandregular;
+	line-height: 54px;
+	font-size: 36px;
+}
+.stats tr td{
+	text-align:center;
 }
 
 .stats tr th {
 	text-align:left;
 }
+
+
+	
