@@ -356,11 +356,32 @@ class Game(Model):
         self.score = score
 
     @classmethod
-    def create(cls, user_id, category_id, difficulty, n=10):
+    def create(cls, user_id, category_id, difficulty, n=4):
         cur=conn.cursor()
+<<<<<<< HEAD
         question_ids = random.shuffle(','.join(cur.execute('SELECT question_id FROM questions WHERE category_id = ? AND difficulty =?',
                                 (category_id, difficulty)).fetchone()).split(","))[0:n]
         
+=======
+        question_ids = ','.join(map(str, cur.execute('SELECT question_id FROM questions WHERE category = ?', 
+                                (category_id,)).fetchone()))
+        rand_ids = []
+        i=0
+        while True:
+            random_number = random.randrange(1, len(question_ids.split(",")) + 1)
+            if random_number not in rand_ids:
+                i+=1
+                rand_ids.append(random_number)
+                if i == n:
+                    break
+        questions = []
+        for i in rand_ids:
+            questions.append(question_ids[i])
+        question_ids[:] = []
+        for id in questions:
+            question_ids.append(id)
+
+>>>>>>> a6ec618068b7cf68340c0b1214fd8abea4a6eda5
         cur.execute('INSERT INTO games VALUES(NULL, ?, ?, 0, ?, 0, ?, ?, 0)',(user_id, question_ids, time.time(),category_id, difficulty))
         conn.commit()
         return cls(id, user_id, question_ids, 0, 0, time.time(), 0, difficulty, category_id, 0)
