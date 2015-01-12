@@ -50,12 +50,12 @@ cur.execute("""CREATE TABLE IF NOT EXISTS games(
     game_id INTEGER PRIMARY KEY,
     user_id INTEGER NOT NULL,
 	questions TEXT NOT NULL,
-	index INTEGER NOT NULL,
+	question_index INTEGER NOT NULL,
 	time_started INTEGER NOT NULL,
 	time_completed INTEGER,
 	difficulty REAL NOT NULL,
 	category_id INTEGER NOT NULL,
 	score INTEGER NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES users (user_id)
+    FOREIGN KEY (user_id) REFERENCES users (user_id),
 	FOREIGN KEY (category_id) REFERENCES categories (category_id)
     );""")

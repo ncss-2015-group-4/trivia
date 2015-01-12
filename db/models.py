@@ -1,7 +1,9 @@
 # The models for Trivia
 
 import sqlite3
+import random
 import db.hasher as hasher
+import time
 
 class Model:
     """Base class for models defined in this module."""
@@ -193,7 +195,7 @@ class TriviaQuestion(Model):
         cur.execute('INSERT INTO questions VALUES(NULL,?,0,0,?)', (question, category_id))
         conn.commit()
         return cls(cur.lastrowid, question, 0, 0, category_id)
-
+		
     def flag(self):
         return Flag.create(self.id)
 
@@ -333,22 +335,63 @@ class Game(Model):
     * category_id       - what category the game is in
     * score             - the current score in the game
     """
-    def __init__(self, game_id, user_id, time_started, time_completed, difficulty, category_id, score):
+    def __init__(self, game_id, user_id, question_ids, question_index, time_started, time_completed, difficulty, category_id, score):
         self.id = game_id
         self.user_id = user_id
+		self.question_ids = question_ids
+        self.question_index = question_index
         self.time_started = time_started
         self.time_completed = time_completed
         self.difficulty = difficulty
-        self.category = category_id
+        self.category_id = category_id
         self.score = score
 
     @classmethod
-    def create(cls, user_id, category_id):
+    def create(cls, user_id, category_id, difficulty):
+        cur=conn.cursor()
+		question_ids = ','.join(cur.execute('SELECT question_id FROM questions WHERE category_id = ? AND difficulty =?', 
+								(category_id, difficulty)).fetchone())
+		rand_ids = []
+		i=0
+		while True:
+			random_number = random.randint(0, len(question_ids.split(","))
+			if	random_number not in rand_ids:
+				i+=1
+				rand_ids.append(random_number)
+				if i == 10:
+					break
+		questions = []
+		for i in rand_ids:
+			questions.append(question_ids[i])
+								
+								
+        cur.execute('INSERT INTO games VALUES(NULL, ?, ?, 0, ?, 0, ?, ?, 0)',(user_id, question_ids, time.time(),category_id, difficulty))
+        conn.commit()
+        return cls(id, user_id, question_ids, 0, 0, time.time(), 0, difficulty, category_id, 0)
+		
+	def submit_answer(cls, question_id, answer_id):
+		cur=conn.cursor()
+		correct = 0
+		answer = Answer.find(id=answer_id)
+		if answer.correct:
+			correct = 1
+		cur.execute('UPDATE questions SET num_answered = num_answered + 1, num_correct = num_correct + ? WHERE question_id = ? AND category = ? ',
+						(correct, question_id, category))
+		conn.commit()
+	
+	@classmethod
+	def get_question(cls, index):
+		cur=conn.cursor()
+	@classmethod
+    def get_answers():
         ...
-
-    def get_questions():
-        ...
-
+		
 
 conn = sqlite3.connect('db/trivia.db')
 conn.row_factory = sqlite3.Row
+
+
+
+
+
+
