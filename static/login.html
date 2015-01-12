@@ -8,6 +8,10 @@
 	<div class="whitespace"></div>
 	<h1 style="text-align: center;">Login</h1>
         <div class="container">
+        <h2>{{error_message}}</h2>
+        {% if error_message != "" %}
+            {{error_message}}
+        {% end if %}
 		<form class="login" method="post">
 		<p>
 			<label>Email/Username:</label>
