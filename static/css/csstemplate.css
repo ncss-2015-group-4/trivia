@@ -56,7 +56,8 @@
 		color: #e5ae00;
 }
 	.title{
-			font-size: 150px;
+			font-size: 250px;
+            text-align: center;
 }
 	.boxed {
 			width: 300px;
@@ -134,20 +135,19 @@
 		line-height: 24px;
 }  
 .login-form {
-	width: 275px;
-	height: 183px;
 	margin: 150px auto auto auto;
 	text-align: center;
 }
 
 .login-form .button-cta {
-	width: 200px;
-	height: 80px;
-	font-size: 38px;
+	width: 300px;
+	height: 120px;
+	font-size: 45px;
 	font-weight: bold;
-	border: none;
+	border-color: #e5ae00;
+    
 	border-radius: 10px;
-	margin: 24px 0 12px;
+	margin: 100px 0 12px;
 }
 
 .login-form .login-action {
@@ -168,7 +168,7 @@
 
 .home-facts {
 	width: 400px;
-	margin: 600px auto 10px auto;
+	margin: 460px auto 10px auto;
 }
 
 .home-facts .home-facts-format {
