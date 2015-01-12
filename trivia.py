@@ -41,7 +41,9 @@ server.register('/question/([0-9]+)',
 server.register('/category/([0-9]+)', category_handler.category_handler)
 server.register('/user', user_handler.user_handler, post=login_handler.signup_handler_post)
 server.register('/user/([0-9]+)', user_handler.edit_user_handler)
+server.register('/categories', category_handler.category_list_handler)
 server.register('/.*', return_404)
+
 
 if __name__ == '__main__':
     server.run()
