@@ -1,0 +1,8 @@
+# Language and language version
+language: python
+python:
+  - "3.4"
+
+# Command to run tests
+before_script: python3 db/create_db.py && python3 db/dummy_data.py
+script: python3 -m tornado.testing tests/pages.py && python3 templating.py

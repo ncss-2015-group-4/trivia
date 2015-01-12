@@ -4,47 +4,36 @@
 		<link rel="stylesheet" href="static/css/reset.css" type = "text/css" >
 		<link rel="stylesheet" href="static/css/csstemplate.css" type = "text/css" >
 	</head>
-	<header>
-	<!--logo, links and profile avatar-->
-		<nav>
-			<img src="scrabble logo.jpg">
-			<a href="#">Link 1</a>
-			<a href="#">Link 2</a>
-			<a href="#">Link 3</a>
-			<a href="#">Link 4</a>
-			<img src="Profile picture.jpg">
-			<a href="#">YOU</a>
-		</nav>
-	</header>
+
 	<!--actual page w/ profile name, statistics, friends etc.-->
-	<body>
-		<img src ="C:\Users\jzhu9214\Documents\GitHub\trivia\Web\Profile picture.jpg">
-		<p>Name ('username')</p>
-		<p>Games Played: x</p>
-		<p>Games Won: x</p>
-		<p>Answers Correct: x</p>
-		<ul>
-			<p>Recently Played</p>
-			<li>Category 1</li>
-			<li>Category 2</li>
-			<li>Category 3</li>
-		</ul>
-		<ul>
-			<p>Friends</p>
-			<li>Friend 1</li>
-			<li>Friend 2</li>
-			<li>Friend 3</li>
-		</ul>
-		<a href = "#">See more (no. of more friends)</a>
-		<ul>
-			<p>Questions</p>
-			<li>Question 1</li>
-			<li>Question 2</li>
-			<li>Question 3</li>
-		</ul>
-		<a href = "#">See more ('no. of more qs)</a>
+	<body class="blue">
+		{% include static/header.html %}
+		<div class="profilename">
+			<h1>{{ user_name }}</h1>
+		</div>
+		<div class="profileinfo">
+			<p>Email: {{email}}</p>
+			<ul>
+				<h2>Player Progress</h2>
+				<div class = "progress">
+                {% if len(score) != 0 %}
+                    {% for i in score %}
+                        <li>{{i[0]}}: {{i[1]}} correct.</li>
+                    {% end for %}
+                {% end if %}
+                {% if len(score) == 0 %}
+                    <li>No current progress...</li>
+                {% end if %}
+				</div>
+			</ul>
+			<ul>
+				<h2>Recent Activity</h2>
+				<div class = "recentactivity">
+					<li>I played...</li>
+					<li>I played...</li>
+					<li>I played...</li>
+				</div>
+			</ul>
+		</div>
 	</body>
-	<footer>
-		
-	</footer>
 </html>
