@@ -110,7 +110,7 @@ class User(Model):
         >>> User.find(username='awesomealex').email
         'dummyemail@email.com'
         """
-        return cls.query("SELECT user_id, username, email FROM", **kwargs)
+        return cls.query("SELECT user_id, username, email", **kwargs)
 
     def check_login(self, password):
         """Check whether a provided password is the user's password."""
