@@ -12,7 +12,7 @@ def login_handler(request):
         u_name = u_name.username
     login_page = render_template('static/login.html', {"error_message": error,"user_name": u_name})
     request.write(login_page)
-    
+
 #--------------------------------------
 # By Ben
 #--------------------------------------

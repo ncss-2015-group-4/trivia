@@ -64,6 +64,7 @@ class HTTPTestCase(AsyncHTTPTestCase):
         #url = '/user'
         #headers = {'method': 'POST', 'body': b'username=someUser&password=pass&email=someUser@someDomain.com'}
         #self.check_page(url, **headers)#test if the registration form works
+        
         #url = '/login'
         #headers = {'method': 'POST', 'body': b'username=someUser&password=pass'}
         #self.check_page(url, **headers)#test if the login form works
