@@ -8,16 +8,15 @@
     
         <div class="header2">
             <header>
-                <h1>Category: {{ category_name }}</h1>
+                <h1>Categories</h1>
             <header>
             <body bgcolor="#dcf1f3">
         </div>
-        <div class="login">
-            <ul style="list-style-type: none">
-                {% for question in list_of_questions %}
-              <li>{{question.question}}</li>
-              {% end for %}
-            </ul> 
-        </div>
+        <ul>
+            {% for category in list_of_categories %}
+            <li><a href="/category/{{category.id}}">{{category.name}}</a></li>
+            
+            {% end for %}
+        </ul>
     </body>
 </html>
