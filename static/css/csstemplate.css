@@ -264,13 +264,15 @@
 		color: #e5ae00;
 		top: 20px;
 		padding-top: 30px;
-		background-color: #068BBC;
+		background-color: #DCF1F3;
 		text-align: center;
+		
 }
 	.rulesdotpoints{
 		top: 20px;
 		padding-top: 30px;
-		background-color: #068BBC;
+		padding-bottom: 50px;
+		background-color: #DCF1F3;
 		text-align: center;
 }
 
