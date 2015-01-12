@@ -1,5 +1,6 @@
 from db.models import User, Game
 from templating import render_template
+from db.models import User
 
 def game_handler(request):
     category_id = request.get_field("category_id")
@@ -16,6 +17,13 @@ def game_handler(request):
             request.redirect('/game/0')
 
 def get_question_handler(request, question_index):
+    u_id = request.get_secure_cookie('user_id')
+    u_name = ""
+    if u_id is not None:
+        u_id = u_id.decode("UTF-8")
+        u_name = User.find(user_id=u_id)
+        u_name = u_name.username
+
     game_id = request.get_secure_cookie('game_id')
     if not game_id:
         request.redirect("/404punk")
@@ -31,7 +39,7 @@ def get_question_handler(request, question_index):
         answers = game.get_answers(game.question_ids[int(question_index)])
 
         request.write(render_template('static/question.html',
-                    {"question": question, "answers": answers, "question_index": question_index}))
+                    {"question": question, "answers": answers, "question_index": question_index, "user_name":u_name}))
         return
     request.redirect("/404kid")
 

@@ -7,7 +7,7 @@
 	</head>
 	<body bgcolor="#dcf1f3">
 	{% include static/header.html %}
-		<div class="header2">
+		<div class="banner">
 			<h1>Lobby</h1>
 		</div>
 		<div class="topic2">
@@ -17,20 +17,11 @@
 		</div>
 		<form method="post" action="/game/create">
 		<div class="popular">
-			<h2>Most Popular Topics</h2>
+			<h2>Topics</h2>
 			<select name="category_id">
 				{% for category in categories %}
 				<option value="{{ category.id }}">{{ category.name }}</option>
 				{% end for %}
-			</select>
-		</div>
-		<div class="recommended">
-			<h2>Recommended</h2>
-			<select>
-				  <option value="x">x</option>
-				  <option value="x">x</option>
-				  <option value="x">x</option>
-				  <option value="x">x</option>
 			</select>
 		</div>
 		<div class="difficulty">
@@ -43,7 +34,6 @@
 		</div>
 		<div class="start">
 			<input type="submit" class="start2" value="Start Game!">
-		</div>
 		</div>
 		</form>
 	</body>
