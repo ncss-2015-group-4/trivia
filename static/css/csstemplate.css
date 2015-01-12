@@ -192,201 +192,197 @@
 		margin-top: -48px;
 	}
 
-	.submit{
-		top: 20px;
-		padding-top: 30px;
-		background-color: #068BBC;
-		text-align: center;
+.submit{
+	top: 20px;
+	padding-top: 30px;
+	background-color: #068BBC;
+	text-align: center;
 }
-	.submitform{
-		top: 20px;
-		padding-top: 30px;
-		background-color: #DCF1F3;
-		text-align: center;
+.submitform{
+	top: 20px;
+	padding-top: 30px;
+	background-color: #DCF1F3;
+	text-align: center;
 }	
-	.submitinputquestion{
-		padding: 15px 15px 15px 15px ;
-		border-width: 4px;
-		border-color: black;
-		width: 500px;
-		margin: 20px;
-		text-align: center;
-		border-radius: 20px;
-		font-size: 18px;
-		font-weight: bold;
-		font-family: 'caviar_dreams';
+.submitinputquestion{
+	padding: 15px 15px 15px 15px ;
+	border-width: 4px;
+	border-color: black;
+	width: 500px;
+	margin: 20px;
+	text-align: center;
+	border-radius: 20px;
+	font-size: 18px;
+	font-weight: bold;
+	font-family: 'caviar_dreams';
 }	
-	.submitbutton{
-		margin: 20px;
-		height: 75px;
-		width: 200px;
-		text-align: center;
-		font-size: 30px;
-		border-color: #e5ae00;
-		border-radius: 20px;
-		margin: 40px;
+.submitbutton{
+	margin: 20px;
+	height: 75px;
+	width: 200px;
+	text-align: center;
+	font-size: 30px;
+	border-color: #e5ae00;
+	border-radius: 20px;
+	margin: 40px;
 }	
-	.submitinputcorrect{
-		border-color: green;
-		border-width: 3px;
-		padding: 5px;
-		width: 250px;
-		margin: 20px;
-		text-align: center;
-		border-radius: 15px;
-		font-family: 'caviar_dreams';
-		font-size: 15px;
+.submitinputcorrect{
+	border-color: green;
+	border-width: 3px;
+	padding: 5px;
+	width: 250px;
+	margin: 20px;
+	text-align: center;
+	border-radius: 15px;
+	font-family: 'caviar_dreams';
+	font-size: 15px;
 }	
-	.submitinputincorrect{
-		border-color: red;
-		border-width: 3px;
-		padding: 5px;
-		width: 250px;
-		margin: 20px;
-		text-align: center;
-		border-radius: 15px;
-		font-family: 'caviar_dreams';
-		font-size: 15px;
+.submitinputincorrect{
+	border-color: red;
+	border-width: 3px;
+	padding: 5px;
+	width: 250px;
+	margin: 20px;
+	text-align: center;
+	border-radius: 15px;
+	font-family: 'caviar_dreams';
+	font-size: 15px;
 }	
-	.submitinputincorrect2{
-		border-color: red;
-		border-width: 3px;
-		padding: 5px;
-		width: 250px;
-		margin: 20px 20px 0px 20px;
-		text-align: center;
-		border-radius: 15px;
-		font-family: 'caviar_dreams';
-		font-size: 15px;
+.submitinputincorrect2{
+	border-color: red;
+	border-width: 3px;
+	padding: 5px;
+	width: 250px;
+	margin: 20px 20px 0px 20px;
+	text-align: center;
+	border-radius: 15px;
+	font-family: 'caviar_dreams';
+	font-size: 15px;
 
 }	
 	.rules{
 		color: #e5ae00;
 		top: 20px;
 		padding-top: 30px;
-		background-color: #068BBC;
+		background-color: #DCF1F3;
 		text-align: center;
+		
 }
 	.rulesdotpoints{
 		top: 20px;
 		padding-top: 30px;
-		background-color: #068BBC;
-		text-align: center;
-}
-
-	.header{
-		text-align: center;
-		
-}
-
-	.headerlinks{
-		color: #e5ae00;
-		padding-right: 20px;
-		padding-left: 20px;
-		text-decoration: none;
-		font-size: 20px;
-}
-	.postgameheader{
-		top: 20px;
-		padding-top: 30px;
-		background-color: #068BBC;
-		text-align: center;
-}
-	.postgameoutcome{
+		padding-bottom: 50px;
 		background-color: #DCF1F3;
 		text-align: center;
-		padding: 50px;
-}
-	.postgameoutcometext{
-		text-align: center;
-		font-size: 30px;
-}
-	.postgametime{
-		background-color: #DCF1F3;
-		text-align: center;
-		font-size: 20px;
-		font-weight: bold;
-		margin: 0px;
-}
-	.postgametime2{
-		background-color: #DCF1F3;
-		margin: 0px;
-		text-align: center;
-		font-size: 30px;
-		padding: 20px;
-}
-	.postgamecolumn{
-		text-align: center;
-}		
-	.postgameyouranswers{
-		width: 400px;
-		height: 600px;
-		text-align: center;	
-		float: left;
-		padding-left: 400px;
-
-}
-	.postgamehighscores{
-		width: 400px;
-		height: 600px;
-		padding-right: 400px;
-		float: right;
-
-}
-	.header2{
-		text-align: center;
-		top: 20px;
-		padding-top: 30px;
-		text-align: center;
-		background-color: #068BBC;
-}
-	.postgameyouranswers{
-		width: 400px;
-		margin: 0px;
-		padding-left: 300px;
-		height: 600px;
-}
-	.topic{
-		padding: 15px 15px 15px 15px;
-		border-width: 4px;
-		border-color: black;
-		width: 500px;
-		margin: 20px;
-		border-radius: 20px;
-		font-size: 18px;
-		font-weight: bold;
-		font-family: 'caviar_dreams';
-		text-align: center;
 }
 
-	.topic2{
-		text-align: center;
-}
-
-	.popular{
-		text-align: center;
-}
-
-	.recommended{
-		text-align: center;
-}
-
-	.difficulty{
-		text-align: center;
-}
-	
- .profile {
+.header{
 	text-align: center;
-	margin: auto;
-	background-color: #dcf1f3;
+	
 }
 
-.profilepic {
-	float:left;
-	margin: 20px;
-	border: 4px solid black;
-	float: left;
+.headerlinks{
+	color: #e5ae00;
+	padding-right: 20px;
+	padding-left: 20px;
+	text-decoration: none;
+	font-size: 20px;
 }
+.postgameheader{
+	top: 20px;
+	padding-top: 30px;
+	background-color: #068BBC;
+	text-align: center;
+}
+.postgameoutcome{
+	background-color: #DCF1F3;
+	text-align: center;
+	padding: 50px;
+}
+.postgameoutcometext{
+	text-align: center;
+	font-size: 30px;
+}
+.postgametime{
+	background-color: #DCF1F3;
+	text-align: center;
+	font-size: 20px;
+	font-weight: bold;
+	margin: 0px;
+}
+.postgametime2{
+	background-color: #DCF1F3;
+	margin: 0px;
+	text-align: center;
+	font-size: 30px;
+	padding: 20px;
+}
+.postgamecolumn{
+	text-align: center;
+}		
+.postgameyouranswers{
+	width: 400px;
+	height: 600px;
+	text-align: center;	
+	float: left;
+	padding-left: 400px;
+
+}
+.postgamehighscores{
+	width: 400px;
+	height: 600px;
+	padding-right: 400px;
+	float: right;
+
+}
+.header2{
+	text-align: center;
+	top: 20px;
+	padding-top: 30px;
+	text-align: center;
+	background-color: #068BBC;
+}
+.postgameyouranswers{
+	width: 400px;
+	margin: 0px;
+	padding-left: 300px;
+	height: 600px;
+}
+.topic{
+	padding: 15px 15px 15px 15px;
+	border-width: 4px;
+	border-color: black;
+	width: 500px;
+	margin: 20px;
+	border-radius: 20px;
+	font-size: 18px;
+	font-weight: bold;
+	font-family: 'caviar_dreams';
+	text-align: center;
+}
+
+.topic2{
+	text-align: center;
+}
+
+.popular{
+	text-align: center;
+}
+
+.recommended{
+	text-align: center;
+}
+
+.difficulty{
+	text-align: center;
+}
+
+.profile {
+text-align: center;
+margin: auto;
+}
+
+
 
 .profilename {
 	top: 20px;
@@ -398,40 +394,21 @@
 	font-family: trashhandregular;
 	font-weight: bold;
 }
-.profileinfo {
-	display:block;
-	width: 600px;
-	margin:auto;
-	height:inherit;
+.blue {
+	background-color: #dcf1f3;
 }
 
-.stats table {
-	margin: 0px 10px;
-	border: 10px 
+.start{
+	text-align: center;
 }
-.stats table tr {
-	margin:0px 20px 0px 20px
-}
-
-.stats table tr th, td {
-	font-family: trashhandregular;
-	line-height: 54px;
-	font-size: 36px;
-}
-.stats table tr td{
-	text-align:center;
-}
-
-.stats tr th {
-	text-align:left;
-}
-
-.submittedquestions {
-	clear:both;
-}
-
-	.start{
-		text-align: center;
+.start2{
+	height: 75px;
+	width: 200px;
+	text-align: center;
+	font-size: 30px;
+	border-color: #e5ae00;
+	border-radius: 20px;
+	margin: 40px;
 }
 		
 	.profile{
@@ -458,7 +435,7 @@
 }
 
 .container {
-	width: 500px;
+	width: 350px;
 	clear: both;
 	margin: 0px auto;
 }
@@ -481,4 +458,8 @@
 	
 .whitespace {
 	padding-bottom: 50px
+}
+
+	.error_title{
+		font-size: 100px;
 }
