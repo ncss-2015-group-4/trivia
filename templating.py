@@ -7,6 +7,7 @@ The python code can then be evaluated and added to the html to be displayed by a
 
 IF_TAG=' if '
 INCLUDE_TAG = ' include '
+FOR_TAG = ' for '
 
 class ParseError(Exception):
     pass
@@ -47,7 +48,7 @@ class IfNode(Node):
 
 class IncludeNode(Node):
     def __init__(self, path):
-        self.path = path
+        self.path = path.strip()
         
     def eval(self, scope):
         with open(self.path) as p:
@@ -55,6 +56,20 @@ class IncludeNode(Node):
             template=''.join(lines)
         return Parser(template).eval(scope)
             
+class ForNode():
+    def __init__(self, var_name, itterable_name, true_node):
+        self.var_name = var_name
+        self.itterable_name = itterable_name
+        self.true_node = true_node
+    def eval(self, scope):
+        output = ''
+        modified_scope = scope
+        itterable = eval(self.itterable_name ,scope)
+        for var in itterable:
+            modified_scope[self.var_name] = var
+            output += str(self.true_node.eval(modified_scope)).strip()
+        return output
+
 class Parser(object):
     '''
     >>> Parser("abcd{{1+1}}efgh{% if 1==1 %}2{% end if %}{% if 1==3 %}3{% end if %}1234").eval({})
@@ -63,10 +78,14 @@ class Parser(object):
     '2101234'
     >>> Parser("{{a+b}}{% if a==d %}{{str(b)*5}}{% end if %}").eval({'a':1, 'b':2, 'c':3, 'd':1})
     '322222'
-    >>> Parser("{{a+b}}{% if a==d %}{{str(b)*5}}{% end if %}\
-{% include templating/template_include_test.test %}\
-{{a+b}}{% if a==d %}{{str(b)*5}}{% end if %}").eval({'a':1, 'b':2, 'c':3, 'd':1})
+    >>> Parser("{{a+b}}{% if a==d %}{{str(b)*5}}{% end if %}{% include templating/template_include_test.test %}{{a+b}}{% if a==d %}{{str(b)*5}}{% end if %}").eval({'a':1, 'b':2, 'c':3, 'd':1})
     '322222abcd2efgh212342101234333333333322222'
+    >>> Parser("{% for i in items %}{{i}}{% end for %}").eval({'items':[1,2,3]})
+    '123'
+    >>> Parser("abc{% for i in items %}{{'something'+str(i)}}{% end for %}def").eval({'items':[1,2,3]})
+    'abcsomething1something2something3def'
+    >>> Parser("abc{% for i in items %}something{{i}}{% end for %}def").eval({'items':[1,2,3]})
+    'abcsomething1something2something3def'
     '''
     
     def __init__(self, tokens):
@@ -115,6 +134,42 @@ class Parser(object):
         true_node = self._parse_group_node('{% end if %}')
         return IfNode(predicate, true_node)
         
+    def _parse_for_node(self):
+        var_name = ''
+        itterable_name = ''
+        var_name += self.tokens[self.index]
+        while self.read_next() != ' ':
+            self.next()
+            var_name += self.tokens[self.index]
+            if self.is_end():
+                raise ParseError("Unexpected end of input.")   
+        if var_name=='':
+            raise ParseError('Missing variable name.')
+        self.next()
+        
+        if self.tokens[self.index:self.index+4]!= ' in ':
+            raise ParseError("'in' expected.")
+        self.index+=3
+        
+        while self.read_next() != ' ':
+            self.next()
+            itterable_name += self.tokens[self.index]
+            if self.is_end():
+                raise ParseError("Unexpected end of input.")
+        if itterable_name == '':
+            raise ParseError("Missing name for itterable.")
+            
+        self.next()
+        if self.read_next() != '%':
+            raise ParseError("'%' expected")
+        self.next()
+        if self.read_next() != '}':
+            raise ParseError("'}' expected")
+        self.next() 
+        self.next()
+        true_node = self._parse_group_node('{% end for %}')
+        return ForNode(var_name, itterable_name, true_node)
+        
     def _parse_include_node(self):
         path = ''
         path += self.tokens[self.index]
@@ -147,9 +202,13 @@ class Parser(object):
                         self.index += len(IF_TAG)
                         children.append(self._parse_if_node())
                 
-                    if self.tokens[self.index:self.index+len(INCLUDE_TAG)] == INCLUDE_TAG:
+                    elif self.tokens[self.index:self.index+len(INCLUDE_TAG)] == INCLUDE_TAG:
                         self.index += len(INCLUDE_TAG)
                         children.append(self._parse_include_node())
+                    
+                    elif self.tokens[self.index:self.index+len(FOR_TAG)] == FOR_TAG:
+                        self.index += len(FOR_TAG)
+                        children.append(self._parse_for_node())
                 else:
                     raise ParseError("Unexpected token after '{'")
             else:

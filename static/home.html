@@ -3,32 +3,28 @@
 	<head>
 		<link rel="stylesheet" href="static/css/reset.css" type = "text/css" >
 		<link rel="stylesheet" href="static/css/csstemplate.css" type = "text/css" >
-		<link rel="stylesheet" href="static/css/cssprofile.css" type = "text/css">
 	</head>
-
 	<body>
-        {% include static/header.html %}
-		<section class = "login-form">
-			<div class="boxed">
+	<body style="background-color: #dcf1f3">
+        {% include static/header.html%}
+		<section class="login-form">
+			<div style="background-color: blue; height: page-height; width: 0px; float: center">
 				<h1 class="title">
 					QUIZZI	
 				</h1>
 			</div>
-			<p>Description</p>
-			<button type="button">Play Now!</button>
-			<p><a href="#">Register</a>
-			|
-			<a href="#">Sign In</a></p>
+				<a href="pre_game"><button type="button" class="button-cta">Play Now!</button></a>
+			<menu>
+				<a href="login" class="login-action">Register</a><a href="login" class="login-action">Sign In</a>
+			</menu>
 		</section>
-		<footer>
-			<ul>
+		<footer class="home-facts">
+			<menu style="text-align: center" class="footer-margin-bottom">
 				<!-- each fact starts with a number and then what the fact is -->
 				<li>Fact 1</li>
-				<li> | </li>	
-				<li>Fact 2</li>
-				<li> | </li>
+				<li class="home-facts-format">Fact 2</li>
 				<li>Easy to Join</li>
-			</ul>
+			</menu>
 		</footer>
 	</body>
 		
