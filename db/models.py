@@ -27,7 +27,7 @@ class Model:
         >>> User.query("SELECT *", username='awesomealex').email
         'dummyemail@email.com'
         """ 
-        query = action.upper() + ' FROM {0}'.format(cls._table_name())
+        query = '{0} FROM {1}'.format(action, cls._table_name())
         if kwargs:
             query += ' WHERE'
             for key in kwargs:
@@ -109,8 +109,10 @@ class User(Model):
 
         >>> User.find(username='awesomealex').email
         'dummyemail@email.com'
+        >>> User.find(user_id=1).username
+        'awesomealex'
         """
-        return cls.query("SELECT user_id, username, email FROM", **kwargs)
+        return cls.query("SELECT user_id, username, email", **kwargs)
 
     def check_login(self, password):
         """Check whether a provided password is the user's password."""
@@ -190,19 +192,20 @@ class TriviaQuestion(Model):
     def _table_name(cls):
         return 'questions'
 	
-    def __init__(self, question_id, question, num_answered, num_correct, category):
+    def __init__(self, question_id, question, num_answered, num_correct, category, difficulty):
         self.id = question_id
         self.question = question
         self.num_answered = num_answered
         self.num_correct = num_correct
         self.category = category
+        self.difficulty = difficulty
 
     @classmethod
     def create(cls, question, category_id):
         cur=conn.cursor()
-        cur.execute('INSERT INTO questions VALUES(NULL,?,0,0,?)', (question, category_id))
+        cur.execute('INSERT INTO questions VALUES(NULL,?,0,0,?,0)', (question, category_id))
         conn.commit()
-        return cls(cur.lastrowid, question, 0, 0, category_id)
+        return cls(cur.lastrowid, question, 0, 0, category_id, 0)
 
     def flag(self):
         return Flag.create(self.id)
@@ -355,14 +358,19 @@ class Game(Model):
         self.score = score
 
     @classmethod
-    def create(cls, user_id, category_id, difficulty, n=10):
+    def create(cls, user_id, category_id, difficulty, n=4):
         cur=conn.cursor()
-        question_ids = ','.join(cur.execute('SELECT question_id FROM questions WHERE category_id = ? AND difficulty =?',
-                                (category_id, difficulty)).fetchone())
+<<<<<<< HEAD
+        question_ids = random.shuffle(','.join(cur.execute('SELECT question_id FROM questions WHERE category_id = ? AND difficulty =?',
+                                (category_id, difficulty)).fetchone()).split(","))[0:n]
+        
+=======
+        question_ids = ','.join(map(str, cur.execute('SELECT question_id FROM questions WHERE category = ?', 
+                                (category_id,)).fetchone()))
         rand_ids = []
         i=0
         while True:
-            random_number = random.randrange(1, len(question_ids.split(",")))
+            random_number = random.randrange(1, len(question_ids.split(",")) + 1)
             if random_number not in rand_ids:
                 i+=1
                 rand_ids.append(random_number)
@@ -375,6 +383,7 @@ class Game(Model):
         for id in questions:
             question_ids.append(id)
 
+>>>>>>> a6ec618068b7cf68340c0b1214fd8abea4a6eda5
         cur.execute('INSERT INTO games VALUES(NULL, ?, ?, 0, ?, 0, ?, ?, 0)',(user_id, question_ids, time.time(),category_id, difficulty))
         conn.commit()
         return cls(id, user_id, question_ids, 0, 0, time.time(), 0, difficulty, category_id, 0)
