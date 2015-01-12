@@ -4,10 +4,12 @@
 		<link rel="stylesheet" href="static/css/csstemplate.css" type = "text/css" >
 	</head>
 	<body>
-	{% include static/header.html %}
+	{% include static/header.html%}
 	<h1>Login</h1>
 		<form method="post">
-		<label>Email/Username:</label>
+		<p>
+			<label>Email/Username:</label>
+		</p>
 		<input type="text" name="username">
 			<p>
 			<label>Password:</label>
@@ -17,7 +19,9 @@
 		</form>
 	<h1>Registration</h1>
 		<form method="post" action="/user">
-			<label>Email/Username:</label>
+			<p>
+				<label>Email/Username:</label>
+			</p>
 			<input type="text" name="username">
 			<p>
 				<label>Password:</label>
