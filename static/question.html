@@ -8,12 +8,11 @@
 	<body>
 		{% include static/header.html %}
 		<h2>Question {{ question_index }}</h2>
-		<p id="question">{{ question }}</p>
+		<p id="question">{{ question.question }}</p>
 		<ol id="answers">
-			<li>{{ answers[0] }}</li>
-			<li>{{ answers[1] }}</li>
-			<li>{{ answers[2] }}</li>
-			<li>{{ answers[3] }}</li>
+			{% for answer in answers %}
+			<li><button>{{ answer.text }}</button></li>
+			{% end for %}
 		</ol>
 	</body>
 </html>
