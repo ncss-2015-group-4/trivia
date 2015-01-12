@@ -2,8 +2,6 @@ from templating import render_template
 from db.models import User
 from difficulty import skill_level
 
-
-
 def profile_handler(request):
     id = request.get_secure_cookie ('user_id')
     if id is None:
