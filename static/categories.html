@@ -13,8 +13,9 @@
             <body bgcolor="#dcf1f3">
         </div>
         <ul>
-            {% for category of list_of_categories %}
-            <li>{{category.category}}</li>
+            {% for category in list_of_categories %}
+            <li><a href="/category/{{category.id}}">{{category.name}}</a></li>
+            
             {% end for %}
         </ul>
     </body>
