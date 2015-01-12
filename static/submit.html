@@ -6,12 +6,14 @@
 	</head>
 	{% include static/header.html %}
 	<body>
-		<h1 class="submit">Submit Your Own Question</h1>
+		<h1 class="banner">Submit Your Own Question</h1>
 		<form class="submitform" method="post">
 			<h2>categories</h2>
 				<select name="categories">
-					  <option value="1">Harry Potter</option>
-					  <option value="2">Doctor Who</option>
+                {% for category in list_of_categories %}
+                <a href="/category/{{category.id}}"><button class="category-button">{{category.name}}</button></a></br>
+					  <option value="category.id">{{category.name}}</option>
+                {% end for %}
 				</select>
 			<p><input type="text" name="question" placeholder="Enter a Question" class="submitinputquestion"></p>
 			<p><input type="text" name="correct_answer" placeholder="Correct Answer" class="submitinputcorrect"></p>

@@ -14,11 +14,7 @@ import error_handler
 import leaderboard_handler
 import category_handler
 import lg_handler
-
-def return_404(response, *args, **kwargs):
-	response.set_status(404)
-	error = render_template('static/error.html', {})
-	response.write(error)
+import error_handler
 
 def default_handler(response, method, *args, **kwargs):
 	return return_404(response)
@@ -46,8 +42,7 @@ server.register('/user', user_handler.user_handler, post=login_handler.signup_ha
 server.register('/user/([0-9]+)', user_handler.edit_user_handler)
 server.register('/categories', category_handler.category_list_handler)
 server.register('/logout', lg_handler.logout)
-server.register('/.*', return_404)
-
+server.register('/.*', error_handler.error_handler)
 
 if __name__ == '__main__':
     server.run()

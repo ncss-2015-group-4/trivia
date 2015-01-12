@@ -1,181 +1,199 @@
-@font-face {
-    font-family: 'trashhandregular';
-    src: url('TrashHand-webfont.eot');
-    src: url('TrashHand-webfont.eot?#iefix') format('embedded-opentype'),
-         url('TrashHand-webfont.woff') format('woff'),
-         url('TrashHand-webfont.ttf') format('truetype'),
-         url('TrashHand-webfont.svg#trashhandregular') format('svg');
-    font-weight: normal;
-    font-style: normal;
+@import url('./fonts.css');
+@import url('./index.css');
 
-}
-	
-@font-face {
-    font-family: 'caviar_dreams';
-    src: url('CaviarDreams-webfont.eot');
-    src: url('CaviarDreams-webfont.eot?#iefix') format('embedded-opentype'),
-         url('CaviarDreams-webfont.woff') format('woff'),
-         url('CaviarDreams-webfont.ttf') format('truetype'),
-         url('CaviarDreams-webfont.svg#caviar_dreams') format('svg');
-    font-weight: normal;
-    font-style: normal;
-
+body {
+    font-family; caviar_dreams;
+    font-size: 14px;
+    margin: 0px;
+    font-size: 16px;
+    line-height: 24px;
+    background-color:#DCF1F3;
 }
 
-@font-face {
-    font-family: 'caviar_dreams';
-    src: url('Caviar_Dreams_Bold-webfont.eot');
-    src: url('Caviar_Dreams_Bold-webfont.eot?#iefix') format('embedded-opentype'),
-         url('Caviar_Dreams_Bold-webfont.woff') format('woff'),
-         url('Caviar_Dreams_Bold-webfont.ttf') format('truetype'),
-         url('Caviar_Dreams_Bold-webfont.svg#caviar_dreams') format('svg');
+h1,h2,h3,h4,h5,h5 {
+    font-family: trashhandregular;
     font-weight: bold;
-    font-style: normal;
-
+    color: #0e1e26;;
 }
 
 
-	body {
-		font-family; caviar_dreams;
-		font-size: 14px;
-		margin: 0px;
-		font-size: 16px;
-		line-height: 24px;
+h1 {
+    line-height: 81px;
+    font-size: 54px;
+    color: #e5ae00;
 }
 
-	h1,h2,h3,h4,h5,h5 {
-			font-family: trashhandregular;
-			font-weight: bold;
-			color: #0e1e26;;
-	}
-	
-	
-	h1{
-		line-height: 81px;
-		font-size: 54px;
-		color: #e5ae00;
-}
-	.title{
-			font-size: 250px;
-            text-align: center;
-}
-	.boxed {
-			width: 300px;
-			padding: 25px;
-			border: 25px solid #068bbc;
-			background-color: #068bbc;
-}
-	h2{
-		line-height: 54px;
-		font-size: 36px;
+h2 {
+    line-height: 54px;
+    font-size: 36px;
 }
 
-	h3{
-		line-height: 36px;
-		font-size: 24px;
+h3 {
+    line-height: 36px;
+    font-size: 24px;
 }
 
-
-	p{
-		margin-bottom: 11px;
-		font-size: 16px;
-		line-height: 24px;
-		margin-top: 11px;
-		color: #0e1e26;
-		font-family: caviar_dreams;
+p {
+    margin-bottom: 11px;
+    font-size: 16px;
+    line-height: 24px;
+    margin-top: 11px;
+    color: #0e1e26;
+    font-family: caviar_dreams;
 }
 
-	a {
-		margin-bottom: 11px;
-		font-size: 16px;
-		line-height: 24px;
-		font-family: caviar_dreams;
-}
-	
-	header{
-		background-color: #068bbc;
+a {
+    margin-bottom: 11px;
+    font-size: 16px;
+    line-height: 24px;
+    font-family: caviar_dreams;
 }
 
-	.page-width{
-		max-width: 960px;
-		margin: auto; 
-		padding: 0 48px;
+.page-width {
+    max-width: 960px;
+    margin: auto;
+    padding: 0 48px;
 }
 
-	button{
-		background-color: #068bbc;
-		font-weight: bold;
-		font-family: caviar_dreams;
-		color: #e5ae00;
-		padding: 5px;
-		border-radius: 5px;
-		line-height: 1.5em;
-		
+button {
+    background-color: #068bbc;
+    font-weight: bold;
+    font-family: caviar_dreams;
+    color: #e5ae00;
+    padding: 5px;
+    border-radius: 5px;
+    line-height: 1.5em;
+    cursor: pointer;
 }
 
-	li, dl, legend, td, th{ 
-		font-family: caviar_dreams;
-		font-size: 16px;
-		line-height: 24px;
-		margin-bottom: 11px;
+button:focus {
+    outline: 0;
 }
 
-	ul{
-		list-style-position: inside;
-		list-style-type: circle;
+li, dl, legend, td, th { 
+    font-family: caviar_dreams;
+    font-size: 16px;
+    line-height: 24px;
+    margin-bottom: 11px;
 }
 
-	ol{
-		list-style-position: inside;
-		list-style-type: upper-roman;
+ul {
+    list-style-position: inside;
+    list-style-type: circle;
 }
-	div{
-		font-family: caviar_dreams;
-		font-size: 16px;
-		line-height: 24px;
-}  
+
+ol {
+    list-style-position: inside;
+    list-style-type: upper-roman;
+}
+div {
+    font-family: caviar_dreams;
+    font-size: 16px;
+    line-height: 24px;
+}
+
+input:focus {
+    outline: 0;
+}
+
 .login-form {
-	margin: 150px auto auto auto;
-	text-align: center;
+    margin: 150px auto auto auto;
+    text-align: center;
 }
 
 .login-form .button-cta {
-	width: 300px;
-	height: 120px;
-	font-size: 45px;
-	font-weight: bold;
-	border-color: #e5ae00;
-    
-	border-radius: 10px;
-	margin: 100px 0 12px;
+    width: 300px;
+    height: 120px;
+    font-size: 45px;
+    font-weight: bold;
+    border-color: #e5ae00;
+    cursor: pointer;
+    border-radius: 10px;
+    margin: 100px 0 12px;
 }
 
 .login-form .login-action {
-	text-decoration: none;
-	font-weight: bold;
-	color: #0e1e26;
+    text-decoration: none;
+    font-weight: bold;
+    color: #0e1e26;
 }
 
 .login-form .login-action:first-child {
-	border-right: 1px solid #068bbc;
-	padding-right: 12px;
-	margin-right: 12px;
+    border-right: 1px solid #068bbc;
+    padding-right: 12px;
+    margin-right: 12px;
 }
-	
-.home-facts li{
-  display: inline;
+
+.footer-margin-bottom {
+    margin-top: -48px;
 }
+
 
 .home-facts {
 	width: 400px;
 	margin: 240px auto 10px auto;
-}
 
-.home-facts .home-facts-format {
-	border-right: 1px solid #068bbc;
-	border-left: 1px solid #068bbc;
-	padding: 0 20px;
-	margin: 0 20px;
+.submitform {
+    top: 20px;
+    padding-top: 30px;
+    background-color: #DCF1F3;
+    text-align: center;
+}
+.submitinputquestion {
+    padding: 15px 15px 15px 15px ;
+    border-width: 4px;
+    border-color: black;
+    width: 500px;
+    margin: 20px;
+    text-align: center;
+    border-radius: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    font-family: 'caviar_dreams';
+}
+.submitbutton {
+    margin: 20px;
+    height: 75px;
+    width: 200px;
+    text-align: center;
+    font-size: 30px;
+    border-color: #e5ae00;
+    border-radius: 20px;
+    margin: 40px;
+}
+.submitinputcorrect {
+    border-color: green;
+    border-width: 3px;
+    padding: 5px;
+    width: 250px;
+    margin: 20px;
+    text-align: center;
+    border-radius: 15px;
+    font-family: 'caviar_dreams';
+    font-size: 15px;
+}
+.submitinputincorrect {
+    border-color: red;
+    border-width: 3px;
+    padding: 5px;
+    width: 250px;
+    margin: 20px;
+    text-align: center;
+    border-radius: 15px;
+    font-family: 'caviar_dreams';
+    font-size: 15px;
+}
+.submitinputincorrect2 {
+    border-color: red;
+    border-width: 3px;
+    padding: 5px;
+    width: 250px;
+    margin: 20px 20px 0px 20px;
+    text-align: center;
+    border-radius: 15px;
+    font-family: 'caviar_dreams';
+    font-size: 15px;
+
 }
 	.footer-margin-bottom {
 		margin-top: -48px;
@@ -205,349 +223,279 @@
 	padding-top: 30px;
 	background-color: #068BBC;
 	text-align: center;
+.rules {
+    color: #e5ae00;
+    top: 20px;
+    padding-top: 30px;
+    background-color: #DCF1F3;
+    text-align: center;
 }
-.submitform{
-	top: 20px;
-	padding-top: 30px;
-	background-color: #DCF1F3;
-	text-align: center;
-}	
-.submitinputquestion{
-	padding: 15px 15px 15px 15px ;
-	border-width: 4px;
-	border-color: black;
-	width: 500px;
-	margin: 20px;
-	text-align: center;
-	border-radius: 20px;
-	font-size: 18px;
-	font-weight: bold;
-	font-family: 'caviar_dreams';
-}	
-.submitbutton{
-	margin: 20px;
-	height: 75px;
-	width: 200px;
-	text-align: center;
-	font-size: 30px;
-	border-color: #e5ae00;
-	border-radius: 20px;
-	margin: 40px;
-}	
-.submitinputcorrect{
-	border-color: green;
-	border-width: 3px;
-	padding: 5px;
-	width: 250px;
-	margin: 20px;
-	text-align: center;
-	border-radius: 15px;
-	font-family: 'caviar_dreams';
-	font-size: 15px;
-}	
-.submitinputincorrect{
-	border-color: red;
-	border-width: 3px;
-	padding: 5px;
-	width: 250px;
-	margin: 20px;
-	text-align: center;
-	border-radius: 15px;
-	font-family: 'caviar_dreams';
-	font-size: 15px;
-}	
-.submitinputincorrect2{
-	border-color: red;
-	border-width: 3px;
-	padding: 5px;
-	width: 250px;
-	margin: 20px 20px 0px 20px;
-	text-align: center;
-	border-radius: 15px;
-	font-family: 'caviar_dreams';
-	font-size: 15px;
-
-}	
-	.rules{
-		color: #e5ae00;
-		top: 20px;
-		padding-top: 30px;
-		background-color: #DCF1F3;
-		text-align: center;
-		
-}
-	.rulesdotpoints{
-		top: 20px;
-		padding-top: 30px;
-		padding-bottom: 50px;
-		background-color: #DCF1F3;
-		text-align: center;
+.rulesdotpoints {
+    top: 20px;
+    padding-top: 30px;
+    padding-bottom: 50px;
+    background-color: #DCF1F3;
+    text-align: center;
 }
 
-.header{
-	text-align: center;
-	
+/*header start */
+#header {
+    text-align: center;
+    background-color: #DCF1F3;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
-.headerlinks{
-	color: #e5ae00;
-	padding-right: 20px;
-	padding-left: 20px;
-	text-decoration: none;
-	font-size: 20px;
+.headerlinks {
+    color: #068BBC;
+    padding-right: 30px;
+    padding-left: 30px;
+    text-decoration: none;
+    font-size: 20px;
 }
-.postgameheader{
-	top: 20px;
-	padding-top: 30px;
-	background-color: #068BBC;
-	text-align: center;
+/*header end */
+/*postgame start*/
+.postgameoutcome {
+    background-color: #DCF1F3;
+    text-align: center;
+    padding: 50px;
 }
-.postgameoutcome{
-	background-color: #DCF1F3;
-	text-align: center;
-	padding: 50px;
+.postgameoutcometext {
+    text-align: center;
+    font-size: 30px;
 }
-.postgameoutcometext{
-	text-align: center;
-	font-size: 30px;
+.postgametime {
+    background-color: #DCF1F3;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0px;
 }
-.postgametime{
-	background-color: #DCF1F3;
-	text-align: center;
-	font-size: 20px;
-	font-weight: bold;
-	margin: 0px;
+.postgametime2 {
+    background-color: #DCF1F3;
+    margin: 0px;
+    text-align: center;
+    font-size: 30px;
+    padding: 20px;
+    padding-bottom: 80px;
 }
-.postgametime2{
-	background-color: #DCF1F3;
-	margin: 0px;
-	text-align: center;
-	font-size: 30px;
-	padding: 20px;
-	padding-bottom: 80px;
-}
-.postgametable{
-	text-align: left;
-	margin-left:auto; 
-	margin-right:auto;
-	background-color: #DCF1F3;
-	
-}
-.postgamebackground{
-	background-color: #DCF1F3;
-	padding-bottom: 133px;
-}		
-.postgameyouranswers{
-	width: 1000px;
+.postgametable {
+    text-align: left;
+    margin-left:auto;
+    margin-right:auto;
+    background-color: #DCF1F3;
 
 }
-.postgamecolumn{
-	text-align: center;
-}		
-.postgamehighscores{
-	width: 400px;
-	border-left: 5px solid #068BBC;
-	border-radius: 2px;
+.postgamebackground {
+    background-color: #DCF1F3;
+    padding-bottom: 133px;
 }
-.postgamequestion{
-	padding-left: 10px;
-	padding-right: 10px;
-	
-	
+.postgameyouranswers {
+    width: 1000px;
+
 }
-.postgamescores2{
-	padding-left: 100px;
-	padding-right: 100px;
-	
+.postgamecolumn {
+    text-align: center;
 }
-.postgamesubtitle {
-	margin-bottom: 25px;
+.postgamehighscores {
+    width: 400px;
+    border-left: 5px solid #068BBC;
+    border-radius: 2px;
 }
 .postgamequestion {
-	font-weight: bold;
-	list-style-type: none;
-	padding-top: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.postgamescores2 {
+    padding-left: 100px;
+    padding-right: 100px;
+
+}
+.postgamesubtitle {
+    margin-bottom: 25px;
+}
+.postgamequestion {
+    font-weight: bold;
+    list-style-type: none;
+    padding-top: 20px;
 }
 .postgamequestion2 {
-	font-weight: bold;
+    font-weight: bold;
 }
 .postgameanswer {
-	list-style-type: upper-alpha;
-	font-weight: normal;
+    list-style-type: upper-alpha;
+    font-weight: normal;
 }
-.header2{
-	text-align: center;
-	top: 20px;
-	padding-top: 30px;
-	text-align: center;
-	background-color: #068BBC;
-}
+
+/*postgame end */
+
 .table {
-	border: 1px;
+    border: 1px;
 }
-.topic{
-	padding: 15px 15px 15px 15px;
-	border-width: 4px;
-	border-color: black;
-	width: 500px;
-	margin: 20px;
-	border-radius: 20px;
-	font-size: 18px;
-	font-weight: bold;
-	font-family: 'caviar_dreams';
-	text-align: center;
-}
-
-.topic2{
-	text-align: center;
+.topic {
+    padding: 15px 15px 15px 15px;
+    border-width: 4px;
+    border-color: black;
+    width: 500px;
+    margin: 20px;
+    border-radius: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    font-family: 'caviar_dreams';
+    text-align: center;
 }
 
-.popular{
-	text-align: center;
-	padding: 10px;
+.topic2 {
+    text-align: center;
 }
 
-.recommended{
-	text-align: center;
-	padding: 20px;
+.popular {
+    text-align: center;
+    padding: 10px;
 }
 
-.difficulty{
-	text-align: center;
-	margin: auto;
+.difficulty {
+    text-align: center;
+    margin: auto;
 }
 
+/*banner start*/
+.banner {
+	padding-top: 5px;
+    padding-bottom: 5px;
+	background-color: #068BBC;
+	text-align: center;
+ }
+/*banner end*/
+
+ /*profile start */
 .profile {
 text-align: center;
 margin: auto;
 }
 
-
-
-.profilename {
-	top: 20px;
-	padding-top: 30px;
-	text-align: center;
-	line-height: 81px;
-	font-size: 54px;
-	color: #e5ae00;
-	font-family: trashhandregular;
-	font-weight: bold;
-	background-color: #068BBC;
-}
 .blue {
-	background-color: #dcf1f3;
+    background-color: #dcf1f3;
 }
 
-.start{
-	text-align: center;
-}
-
-.profileinfo {
-	width: 400px;
-	margin: 20px auto;
-}
-.profileinfo ul h2 {
-	text-align:center;
-	border: 4px solid black;
-	background-color: white;
-}
-.progress {
-	margin:10px auto;
-	text-align:center;
-	list-style-type: none;
-	background-color: 0e1e26;
-}
-.recentactivity{
-	margin:10px auto;
-	text-align:left;
-	background-color: 0e1e26;
-}
-
-.progress li {
-	margin-bottom:5px;
-}
-
-.recentactivity li {
-	margin-bottom:5px;
-}
-/*profile end*/
-
-.start{
-	text-align: center;
-
-}
-
-.start2{
-	height: 75px;
-	width: 200px;
-	text-align: center;
-	font-size: 30px;
-	border-color: #e5ae00;
-	border-radius: 20px;
-	margin: 40px;
-}
-		
-	.profile{
-	text-align: center;
-	margin: auto;
-}
-
-    .register{
+.start {
     text-align: center;
 }
 
-.login{
-	text-align: center;
+.profileinfo {
+    width: 400px;
+    margin: 20px auto;
+}
+.profileinfo ul h2 {
+    text-align:center;
+    border: 4px solid black;
+    background-color: white;
+}
+.progress {
+    margin-bottom: 20px;
+    padding:10px;
+    text-align:center;
+    list-style-type: none;
+    background-color: white;
+    border-left: 4px solid black;
+    border-right: 4px solid black;
+    border-bottom: 4px solid black;
+}
+.recentactivity {
+    margin-bottom:20px;
+    padding:10px;
+    text-align:left;
+    background-color: white;
+    border-left: 4px solid black;
+    border-right: 4px solid black;
+    border-bottom: 4px solid black;
+}
+
+.progress li {
+    margin-bottom:5px;
+}
+
+.recentactivity li {
+    margin-bottom:5px;
+}
+/*profile end*/
+
+.start {
+    text-align: center;
+
+}
+
+.start2 {
+    height: 75px;
+    width: 200px;
+    text-align: center;
+    font-size: 30px;
+    border-color: #e5ae00;
+    border-radius: 20px;
+    margin: 40px;
+}
+
+.profile {
+    text-align: center;
+    margin: auto;
+}
+
+.register {
+    text-align: center;
+}
+
+.login {
+    text-align: center;
 }
 .container {
-	width: 500px;
-	clear: both;
-	margin: 0px auto;
+    width: 500px;
+    clear: both;
+    margin: 0px auto;
 }
 
 .container input {
-	width: 100%;
-	clear: both;
+    width: 100%;
+    clear: both;
 }
 
 .container {
-	width: 350px;
-	clear: both;
-	margin: 0px auto;
+    width: 350px;
+    clear: both;
+    margin: 0px auto;
 }
 
 .container input {
-	width: 100%;
-	clear: both;
+    width: 100%;
+    clear: both;
 }
 
-.leaderboard{
-	top: 20px;
-	padding-top: 30px;
-	background-color: #068BBC;
-	text-align: center;
+.leadp {
+    text-align: center;
 }
 
-.leadp{
-	text-align: center;
-}
-	
 .whitespace {
-	padding-bottom: 50px
+    padding-top: 20px;
+    padding-bottom: 20px;
+    background-color: #068BBC;
+    text-align: center;
 }
 
-	.error_title{
-		font-size: 100px;
+.error_title {
+    font-size: 100px;
 }
 
-	.category-button {
-		margin-top: 30px;
-		height: 85px;
-		width: 450px;
-		text-align: center;
-		font-size: 30px;
-		border-color: #e5ae00;
-		border-radius: 20px;
-	}
-	
+.category-button {
+    margin-top: 30px;
+    height: 85px;
+    width: 450px;
+    text-align: center;
+    font-size: 30px;
+    border-color: #e5ae00;
+    border-radius: 20px;
+}
+
+.error {
+    margin: 0px auto;
+    color: red;
+    text-align: center;
+}
