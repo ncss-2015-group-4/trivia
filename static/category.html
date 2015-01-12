@@ -5,6 +5,13 @@
 	</head>
 	<body>
 	{% include static/header.html %}
-	<h1>Category</h1>
+	<h1>Category {{ category_name }}</h1>
+    <p>{{ list_of_questions }}</p>
+    <ul>
+      <li>Apples</li>
+      <li>Bananas</li>
+      <li>Lemons</li>
+      <li>Oranges</li>
+    </ul> 
 	</body>
 </html>
