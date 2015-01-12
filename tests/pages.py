@@ -2,7 +2,7 @@ from tornado.testing import AsyncHTTPTestCase
 import re
 #define regex patters to search for nav bar links
 pre_game_pattern = re.compile(r'href\ *\=\ *\"\/pre_game\"')
-submit_pattern = re.compile(r'href\ *\=\ *\"\/submit\"')
+submit_pattern = re.compile(r'href\ *\=\ *\"\/question\"')
 #prifile will need to take into account whether the user is logged in
 #profile_pattern = re.compile(r'href\ *\=\ *\"\/profile\"')
 home_pattern = re.compile(r'href\ *\=\ *\"\/"')
@@ -33,7 +33,7 @@ class HTTPTestCase(AsyncHTTPTestCase):
         html = self.check_page(url, **headers).decode()
         check_link(html, "home", "home")
         check_link(html, "pre_game", "home")
-        #check_link(html, "submit", "home")
+        check_link(html, "submit", "home")
         #check_link(html, "profile", "home")
         
     def test_01_login(self):
@@ -42,7 +42,7 @@ class HTTPTestCase(AsyncHTTPTestCase):
         html = self.check_page(url, **headers).decode()#test if the login page can be accessed
         check_link(html, "home", "login")
         check_link(html, "pre_game", "login")
-        #check_link(html, "submit", "login")
+        check_link(html, "submit", "login")
         #check_link(html, "profile", "login")
         
     def test_02_register(self):
@@ -72,7 +72,7 @@ class HTTPTestCase(AsyncHTTPTestCase):
         html = self.check_page(url, **headers).decode()
         check_link(html, "home", "profile")
         check_link(html,"pre_game", "profile")
-        #check_link(html, "submit", "profile")
+        check_link(html, "submit", "profile")
         #check_link(html, "profile", "profile")
         
     def test_04_question_submission_tests(self):
@@ -81,7 +81,7 @@ class HTTPTestCase(AsyncHTTPTestCase):
         html = self.check_page(url, **headers).decode()
         check_link(html, "home", "sumbission")
         check_link(html, "pre_game", "submission")
-        #check_link(html, "submit", "submission")
+        check_link(html, "submit", "submission")
         #check_link(html, "profile", "submission")
         
     def test_05_pre_game_tests(self):
@@ -90,7 +90,7 @@ class HTTPTestCase(AsyncHTTPTestCase):
         html = self.check_page(url, **headers).decode()
         check_link(html, "home", "pre_game")
         check_link(html, "pre_game", "pre_game")
-        #check_link(html, "submit", "pre_game")
+        check_link(html, "submit", "pre_game")
         #check_link(html, "profile", "pre_game")
         
     def test_06_game_tests(self):
@@ -99,7 +99,7 @@ class HTTPTestCase(AsyncHTTPTestCase):
         html = self.check_page(url, **headers).decode()
         check_link(html, "home", "game")
         check_link(html, "pre_game", "game")
-        #check_link(html, "submit", "game")
+        check_link(html, "submit", "game")
         #check_link(html, "profile", "game")
         
     def test_07_post_game_tests(self):
@@ -108,7 +108,7 @@ class HTTPTestCase(AsyncHTTPTestCase):
         html = self.check_page(url, **headers).decode()
         check_link(html, "home", "login")
         check_link(html, "pre_game", "login")
-        #check_link(html, "submit", "login")
+        check_link(html, "submit", "login")
         #check_link(html, "profile", "login")
     
     def check_page(self, url, **headers):
