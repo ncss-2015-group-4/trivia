@@ -1,5 +1,4 @@
-from db.models import Score
-from db.models import Category
+
 EASY = 1
 MEDIUM = 2
 HARD = 3
@@ -8,14 +7,10 @@ BEGINNER = 1
 INTERMEDIATE = 2
 EXPERT = 3
 
-def difficulty( ):
-    sum = 0
-    question_data = Score.find(user_id = '1')
-    print(question_data.num_answered)
-    print(question_data.num_correct)
-    category_data = Category.find(category_id = question_data.category_id)
-    print(category_data.category)
-    """
+def difficulty(people_answers):
+	'''This is finding the difficulty level of a question.
+	people_answers is a list of the skill level of the person and their answer to the question.'''
+	sum = 0
 	for person, correct in people_answers:
 		if correct:
 			if person == BEGINNER:
@@ -38,9 +33,8 @@ def difficulty( ):
 		return "Medium"
 	elif 3 < average:
 		return "Hard"
-        """
 
-def skill_level(questions_answers): 
+def skill_level(questions_answers):
 	''' This is findind the skill level of a user. 
 	questions_answers is a list of the questions the user has answered and if they got it right or wrong. '''
 	total = 0
@@ -60,5 +54,17 @@ def skill_level(questions_answers):
 		return 'Intermediate'	
 	elif 2.25 <= final:
 		return 'Expert'
-
-difficulty()
+	
+						
+if __name__ == '__main__':
+	print(difficulty([(INTERMEDIATE, True)]))
+	print(difficulty([(INTERMEDIATE, True), (BEGINNER, True)]))
+	print(difficulty([(BEGINNER, True), (INTERMEDIATE, True), (EXPERT, True)]))
+	
+	print(skill_level([(EASY, True)]))
+	print(skill_level([(EASY, True), (MEDIUM, True), (HARD, False)]))
+	print(skill_level([(EASY, True), (EASY, True), (EASY, True), (EASY, True)]))
+	print(skill_level([(HARD, True), (EASY, False), (EASY, True), (MEDIUM, False), (HARD, False), (MEDIUM, True), (MEDIUM, True)]))
+	print(skill_level([(EASY, False), (MEDIUM, True), (MEDIUM, True), (MEDIUM, True)]))
+	print(skill_level([(HARD, True), (HARD, True), (HARD, True)]))
+	print(skill_level([(HARD, True), (HARD, True), (HARD, True), (EASY, False), (EASY, False)]))

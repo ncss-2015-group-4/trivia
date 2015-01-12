@@ -6,7 +6,6 @@ submit_pattern = re.compile(r'href\ *\=\ *\"\/submit\"')
 #prifile will need to take into account whether the user is logged in
 #profile_pattern = re.compile(r'href\ *\=\ *\"\/profile\"')
 home_pattern = re.compile(r'href\ *\=\ *\"\/"')
-
 link_patterns = {'pre_game': pre_game_pattern, 'submit': submit_pattern, 'home':home_pattern}
 
 class MissingLink(Exception):
