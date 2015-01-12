@@ -12,7 +12,7 @@
 				<select name="categories">
                 {% for category in list_of_categories %}
                 <a href="/category/{{category.id}}"><button class="category-button">{{category.name}}</button></a></br>
-					  <option value="category.id">{{category.name}}</option>
+					  <option value="{{category.id}}">{{category.name}}</option>
                 {% end for %}
 				</select>
 			<p><input type="text" name="question" placeholder="Enter a Question" class="submitinputquestion"></p>
