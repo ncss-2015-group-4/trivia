@@ -39,7 +39,7 @@ def get_question_handler(request, question_index):
         answers = game.get_answers(game.question_ids[int(question_index)])
 
         request.write(render_template('static/question.html',
-                    {"question": question, "answers": answers, "question_index": map(str,question_index), "user_name":u_name}))
+                    {"question": question, "answers": answers, "question_index":str(question_index), "user_name":u_name}))
         return
     request.redirect("/404kid")
 
