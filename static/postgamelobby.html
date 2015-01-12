@@ -3,7 +3,6 @@
 	<head>
 		<link rel="stylesheet" href="static/CSS/reset.css" type = "text/css" >
 		<link rel="stylesheet" href="static/CSS/csstemplate.css" type = "text/css" >
-=======
 		<link rel="stylesheet" href="static/css/reset.css" type = "text/css" >
 		<link rel="stylesheet" href="static/css/csstemplate.css" type = "text/css" >
 	</head>
@@ -11,32 +10,119 @@
 	<!-- Summary of game -->
 	<body>
 		{% include static/header.html %}
-		<h1>CONGRATULATIONS!</h1>
-		<p>You completed x quiz on x difficulty!</p>
-		<p>Time:</p>
-		<p>xx:xx</p>
-		<ol>
-		<!--Player Answers -->
-			<h2>YOUR ANSWERS</h2>
-			<li>Answer 1</li>
-			<li>Answer 2</li>
-			<li>Answer 3</li>
-			<li>Answer 4</li>
-			<li>Answer 5</li>
-			<li>Answer 6</li>
-			<li>Answer 7</li>
-			<li>Answer 8</li>
-			<li>Answer 9</li>
-			<li>Answer 10</li>
-		</ol>
-		<!--Highscores-->
-		<ol>
-			<h2>HIGHSCORES</h2>
-			<li>Person 1</li>
-			<li>Person 2</li>
-			<li>Person 3</li>
-			<li>Person 4</li>
-			<li>Person 5</li>
-		</ol>
+		<h1 class="postgameheader">CONGRATULATIONS!</h1>
+			<div class="postgameoutcome">
+				<p class="postgameoutcometext">You completed the x quiz on x difficulty!</p>
+			</div>
+			<p class="postgametime">Time</p>
+			<p class="postgametime2">xx:xx</p>
+		<div class="postgamebackground">
+			<table style="width:40%" class="postgametable">
+			<!--Player Answers -->
+				<td class="postgameyouranswers"><h2 align="center" class="postgamesubtitle">YOUR ANSWERS</h2>
+					<ol id="results_questions">
+						<li class="postgamequestion">Question 1
+						<p class="postgamequestion2 results_question_text">blah blah blah bldfsdfsdfs dfgsfg sfdgsfgsfg</p>
+						<ol class="postgameanswer results_answers">
+						<li>Answer A</li>
+						<li>Answer B</li>
+						<li>Answer C</li>
+						<li>Answer D</li>
+						</ol>
+						</li>
+						<li class="postgamequestion">Question 2
+						<p class="postgamequestion2 results_question_text">blah blah blah bldfsdfsdfs dfgsfg sfdgsfgsfg</p>
+						<ol class="postgameanswer results_answers">
+						<li>Answer A</li>
+						<li>Answer B</li>
+						<li>Answer C</li>
+						<li>Answer D</li>
+						</ol>
+						</li>
+						<li class="postgamequestion">Question 3
+						<p class="postgamequestion2 results_question_text">blah blah blah bldfsdfsdfs dfgsfg sfdgsfgsfg</p>
+						<ol class="postgameanswer results_answers">
+						<li>Answer A</li>
+						<li>Answer B</li>
+						<li>Answer C</li>
+						<li>Answer D</li>
+						</ol>
+						</li>
+						<li class="postgamequestion">Question 4
+						<p class="postgamequestion2 results_question_text">blah blah blah bldfsdfsdfs dfgsfg sfdgsfgsfg</p>
+						<ol class="postgameanswer results_answers">
+						<li>Answer A</li>
+						<li>Answer B</li>
+						<li>Answer C</li>
+						<li>Answer D</li>
+						</ol>
+						</li>
+						<li class="postgamequestion">Question 5
+						<p class="postgamequestion2 results_question_text">blah blah blah bldfsdfsdfs dfgsfg sfdgsfgsfg</p>
+						<ol class="postgameanswer results_answers">
+						<li>Answer A</li>
+						<li>Answer B</li>
+						<li>Answer C</li>
+						<li>Answer D</li>
+						</ol>
+						</li>
+						<li class="postgamequestion">Question 6
+						<p class="postgamequestion2 results_question_text">blah blah blah bldfsdfsdfs dfgsfg sfdgsfgsfg</p>
+						<ol class="postgameanswer results_answers">
+						<li>Answer A</li>
+						<li>Answer B</li>
+						<li>Answer C</li>
+						<li>Answer D</li>
+						</ol>
+						</li>
+						<li class="postgamequestion">Question 7
+						<p class="postgamequestion2 results_question_text">blah blah blah bldfsdfsdfs dfgsfg sfdgsfgsfg</p>
+						<ol class="postgameanswer results_answers">
+						<li>Answer A</li>
+						<li>Answer B</li>
+						<li>Answer C</li>
+						<li>Answer D</li>
+						</ol>
+						</li>
+						<li class="postgamequestion">Question 8
+						<p class="postgamequestion2 results_question_text">blah blah blah bldfsdfsdfs dfgsfg sfdgsfgsfg</p>
+						<ol class="postgameanswer results_answers">
+						<li>Answer A</li>
+						<li>Answer B</li>
+						<li>Answer C</li>
+						<li>Answer D</li>
+						</ol>
+						</li>
+						<li class="postgamequestion">Question 9
+						<p class="postgamequestion2 results_question_text">blah blah blah bldfsdfsdfs dfgsfg sfdgsfgsfg</p>
+						<ol class="postgameanswer results_answers">
+						<li>Answer A</li>
+						<li>Answer B</li>
+						<li>Answer C</li>
+						<li>Answer D</li>
+						</ol>
+						</li>
+						<li class="postgamequestion">Question 10
+						<p class="postgamequestion2 results_question_text">blah blah blah bldfsdfsdfs dfgsfg sfdgsfgsfg</p>
+						<ol class="postgameanswer results_answers">
+						<li>Answer A</li>
+						<li>Answer B</li>
+						<li>Answer C</li>
+						<li>Answer D</li>
+						</ol>
+						</li>
+					</ol>
+			<!--Highscores-->
+				<td class="postgamehighscores">
+				<h2 align="center" class="postgamesubtitle">HIGHSCORES</h2>
+				<div class="postgamescores2">
+					<li>Person 1</li>
+					<li>Person 2</li>
+					<li>Person 3</li>
+					<li>Person 4</li>
+					<li>Person 5</li></td>
+				</div>
+			</div>
+		</div>
 	</body>
 </html>

@@ -8,13 +8,16 @@ BEGINNER = 1
 INTERMEDIATE = 2
 EXPERT = 3
 
-def difficulty( ):
+
+
+def difficulty(user_id):
+    data = []
     sum = 0
-    question_data = Score.find(user_id = '1')
-    print(question_data.num_answered)
-    print(question_data.num_correct)
-    category_data = Category.find(category_id = question_data.category_id)
-    print(category_data.category)
+    question_data = Score.find_all(user_id = user_id)
+    for i in question_data:
+        category_data = Category.find(category_id = i.category_id)
+        data.append((category_data.name, str(((i.num_correct / i.num_answered) * 100 )) + "%"))
+    return data
     """
 	for person, correct in people_answers:
 		if correct:
@@ -60,5 +63,3 @@ def skill_level(questions_answers):
 		return 'Intermediate'	
 	elif 2.25 <= final:
 		return 'Expert'
-
-difficulty()

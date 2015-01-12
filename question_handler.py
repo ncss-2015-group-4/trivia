@@ -1,19 +1,39 @@
+from db.models import TriviaQuestion
+from db.models import Answer
+from templating import render_template
+
 def new_question_handler(request):
   question = request.get_field("question")
   correct_answer = request.get_field("correct_answer")
   wrong_answer_1 = request.get_field("wrong_answer_1")
   wrong_answer_2 = request.get_field("wrong_answer_2")
   wrong_answer_3 = request.get_field("wrong_answer_3")
-  print(question, correct_answer, wrong_answer_1, wrong_answer_2, wrong_answer_3)
+  category = request.get_field("categories")
+  
+  #print(question, correct_answer, wrong_answer_1, wrong_answer_2, wrong_answer_3, category)
+  question = TriviaQuestion.create(question, category)
+  Answer.create(question.id, True, correct_answer)
+  Answer.create(question.id, False, wrong_answer_1)
+  Answer.create(question.id, False, wrong_answer_2)
+  Answer.create(question.id, False, wrong_answer_3)
+  request.redirect('/category/' + category)
   
 def new_question_form(request):
-    request.write("""<!DOCTYPE html>
+	question_new = render_template('static/submit.html', {})
+	request.write(question_new)
+'''
+   request.write("""<!DOCTYPE html>
 <html>
 <body>
 <h1>
 New Question Form :)
 </h1>
 <form method="post">
+<select name="categories">
+  <option value="1">Harry Potter</option>
+  <option value="2">Doctor Who</option>
+ 
+</select>
 Question:<br>
 <input type="text" name="question">
 <br>
@@ -34,6 +54,8 @@ Wrong answer 3:<br>
 </body>
 </html>
 """)
+
+'''
 
 def get_question_handler(request, question_id):
   request.write("""<!DOCTYPE html>

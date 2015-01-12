@@ -1,0 +1,22 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="/static/css/Reset.css" type = "text/css" >
+		<link rel="stylesheet" href="/static/css/csstemplate.css" type = "text/css" >
+	</head>
+	<body>
+	{% include static/header.html %}
+    
+        <div class="header2">
+            <header>
+                <h1>Categories</h1>
+            <header>
+            <body bgcolor="#dcf1f3">
+        </div>
+        <div align="center">
+            {% for category in list_of_categories %}
+            <a href="/category/{{category.id}}"><button class="category-button">{{category.name}}</button></a></br>
+            
+            {% end for %}
+		</div>
+    </body>
+</html>

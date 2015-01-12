@@ -1,14 +1,27 @@
 from db.models import User
 from templating import render_template
 
-def login_handler(request):
-    login_page = render_template('static/login.html', {})
-    request.write(login_page)
+error = ""
 
+def login_handler(request):
+    login_page = render_template('static/login.html', {"error_message": error})
+    request.write(login_page)
+    
 
 #--------------------------------------
 # By Ben
 #--------------------------------------
+
+#======================================
+# Handles cookie creation
+#======================================
+def login_start(response, user_id):
+    print("login started")
+    response.clear_cookie('user_id')
+    if not response.get_secure_cookie("user_id"): #checks for cookie
+        response.set_secure_cookie("user_id", str(user_id)) #creates a new cookie
+    response.redirect("/")
+    
 
 #======================================
 # Does all the login handling:
@@ -31,23 +44,24 @@ def login_handler_post(request):
     user_data = User.find(username=username_email) #checks db with username
     if user_data is not None: #if there is a row in the database
         if user_data.check_login(password):
-            request.redirect("/") #login
+            login_start(request, user_data.id)
             return
         else:
-            request.redirect("/") #username/password is incorrect
+            error = "Password/Username is incorrect"
+            #login_handler(request)
     else: #does a second check on db with email
         user_data = User.find(email=username_email) #may 
         if user_data is not None:
             if user_data.check_login(password):
-                request.redirect("/") #login
+                login_start(request, user_data.id)
                 return
             else:
-                request.redirect("/") #username/password is incorrect
-                return
+               error = "Password/Username is incorrect"
         else:
-            request.redirect("/") #username/password is incorrect
-            return
-
+            error = "User doesn't exist"
+    login_handler(request) #cannot find username or email in database!
+    print(error)
+    return
 #======================================
 # Does all the signup handling:
 #    - Takes in form data

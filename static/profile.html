@@ -6,39 +6,34 @@
 	</head>
 
 	<!--actual page w/ profile name, statistics, friends etc.-->
-	<body>
-		<div class="profile">
-			{% include static/header.html %}
-			<div class ="profileinfo">
-				<img src ="static/images/profilepic.jpg" class="profilepic">
-				<p>Name ('username')</p>
-				<table class="stats">
-					<tr>
-						<th>Games Played:</th>
-						<td>x</td>
-					</tr>
-					<tr>
-						<th>Games Won:</th>
-						<td>x</td>
-					</tr>
-					<tr>
-						<th>Answers Correct:</th>
-						<td>x</td>
-					</tr>
-				</table>
-			</div>
-			<div>
+	<body class="blue">
+		{% include static/header.html %}
+		<div class="profilename">
+			<h1>{{ user_name }}</h1>
+		</div>
+		<div class="profileinfo">
+			<p>Email: {{email}}</p>
 			<ul>
-				<p>Questions</p>
-				<li>Question 1</li>
-				<li>Question 2</li>
-				<li>Question 3</li>
+				<h2>Player Progress</h2>
+				<div class = "progress">
+                {% if len(score) != 0 %}
+                    {% for i in score %}
+                        <li>{{i[0]}}: {{i[1]}} correct.</li>
+                    {% end for %}
+                {% end if %}
+                {% if len(score) == 0 %}
+                    <li>No current progress...</li>
+                {% end if %}
+				</div>
 			</ul>
-			</div>
-			<a href = "#">See more ('no. of more qs)</a>
+			<ul>
+				<h2>Recent Activity</h2>
+				<div class = "recentactivity">
+					<li>I played...</li>
+					<li>I played...</li>
+					<li>I played...</li>
+				</div>
+			</ul>
 		</div>
 	</body>
-	<footer>
-		
-	</footer>
 </html>

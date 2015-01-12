@@ -1,0 +1,23 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="/static/css/Reset.css" type = "text/css" >
+		<link rel="stylesheet" href="/static/css/csstemplate.css" type = "text/css" >
+	</head>
+	<body>
+	{% include static/header.html %}
+    
+        <div class="header2">
+            <header>
+                <h1>Category: {{ category_name }}</h1>
+            <header>
+            <body bgcolor="#dcf1f3">
+        </div>
+        <div class="login">
+            <ul style="list-style-type: none">
+                {% for question in list_of_questions %}
+              <li>{{question.question}}</li>
+              {% end for %}
+            </ul> 
+        </div>
+    </body>
+</html>

@@ -5,34 +5,40 @@
 	</head>
 	<body style="background-color: #dcf1f3">
 	{% include static/header.html%}
+	<div class="whitespace"></div>
 	<h1 style="text-align: center;">Login</h1>
         <div class="container">
+        <h2>{{error_message}}</h2>
+        {% if error_message != "" %}
+            {{error_message}}
+        {% end if %}
 		<form class="login" method="post">
 		<p>
 			<label>Email/Username:</label>
-             <input type="text" name="username">
+             <input type="text" name="username" required>
 		</p>
 			<p>
 			<label>Password:</label>
-			<input type="text" name="password">
+			<input type="password" name="password" required>
 			</p>
 		<input type="submit" value="Submit">
 		</form>
         </div>
+		<div class="whitespace"></div>
 	<h1 style="text-align: center;">Registration</h1>
         <div class="container">
 		<form class="register" method="post" action="/user">
 			<p>
 				<label>Username:</label>
-                <input type="text" name="username">
+                <input type="text" name="username" required>
 			</p>
 			<p>
 				<label>Password:</label>
-				<input type="text" name="password">
+				<input type="password" name="password" required>
 			</p>
 			<p>
 				Email:
-				<input type="text" name="email">
+				<input type="text" name="email" required>
 				</p>
 		<input type="submit" value="Submit">
 		</form>
