@@ -1,0 +1,54 @@
+.title {
+    font-size: 250px;
+    text-align: center;
+}
+
+.boxed {
+    width: 300px;
+    padding: 25px;
+    border: 25px solid #068bbc;
+    background-color: #068bbc;
+}
+
+.banner {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: #068BBC;
+    text-align: center;
+}
+
+.home-facts {
+    width: 400px;
+    margin: 240px auto 10px auto;
+}
+
+    .home-facts li {
+      display: inline;
+    }
+
+    .home-facts .home-facts-format {
+        border-right: 1px solid #068bbc;
+        border-left: 1px solid #068bbc;
+        padding: 0 20px;
+        margin: 0 20px;
+    }
+
+.description {
+    text-align: center;
+    padding-top: 160px;
+    color: #068BBC;
+    font-size: 22px
+}
+.description2 {
+    text-align: center;
+    padding-top: 3px;
+    color: #068BBC;
+    font-size: 22px
+}
+.description3 {
+    text-align: center;
+    padding-top: 20px;
+    color: #068BBC;
+    font-size: 22px;
+    font-weight: bold;
+}
