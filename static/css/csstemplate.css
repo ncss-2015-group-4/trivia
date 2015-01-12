@@ -364,28 +364,51 @@
 	.difficulty{
 		text-align: center;
 }
-	
- .profile {
-	text-align: center;
-	margin: auto;
-}
-
-
-
+/*profile page */	
 .profilename {
 	top: 20px;
-	padding-top: 15px;
+	padding-top: 30px;
 	text-align: center;
 	line-height: 81px;
 	font-size: 54px;
 	color: #e5ae00;
 	font-family: trashhandregular;
 	font-weight: bold;
+	background-color: #068BBC;
 }
 .blue {
 	background-color: #dcf1f3;
 }
+
+.profileinfo {
+	width: 400px;
+	margin: 20px auto;
 }
+.profileinfo ul h2 {
+	text-align:center;
+	border: 4px solid black;
+	background-color: white;
+}
+.progress {
+	margin:10px auto;
+	text-align:center;
+	list-style-type: none;
+	background-color: 0e1e26;
+}
+.recentactivity{
+	margin:10px auto;
+	text-align:left;
+	background-color: 0e1e26;
+}
+
+.progress li {
+	margin-bottom:5px;
+}
+
+.recentactivity li {
+	margin-bottom:5px;
+}
+/*profile end*/
 
 	.start{
 		text-align: center;
