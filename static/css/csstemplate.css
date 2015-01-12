@@ -129,16 +129,6 @@
 		list-style-position: inside;
 		list-style-type: upper-roman;
 }
-
-.RecentlyPlayed {
-	display:inline-block;
-	float:left;
-}
-
-.Friends {
-	display:inline-block;
-	float:right;
-}
 	div{
 		font-family: caviar_dreams;
 		font-size: 16px;
@@ -375,6 +365,7 @@
 
 .difficulty{
 	text-align: center;
+	margin: auto;
 }
 
 .profile {
@@ -386,13 +377,14 @@ margin: auto;
 
 .profilename {
 	top: 20px;
-	padding-top: 15px;
+	padding-top: 30px;
 	text-align: center;
 	line-height: 81px;
 	font-size: 54px;
 	color: #e5ae00;
 	font-family: trashhandregular;
 	font-weight: bold;
+	background-color: #068BBC;
 }
 .blue {
 	background-color: #dcf1f3;
@@ -401,6 +393,42 @@ margin: auto;
 .start{
 	text-align: center;
 }
+
+.profileinfo {
+	width: 400px;
+	margin: 20px auto;
+}
+.profileinfo ul h2 {
+	text-align:center;
+	border: 4px solid black;
+	background-color: white;
+}
+.progress {
+	margin:10px auto;
+	text-align:center;
+	list-style-type: none;
+	background-color: 0e1e26;
+}
+.recentactivity{
+	margin:10px auto;
+	text-align:left;
+	background-color: 0e1e26;
+}
+
+.progress li {
+	margin-bottom:5px;
+}
+
+.recentactivity li {
+	margin-bottom:5px;
+}
+/*profile end*/
+
+.start{
+	text-align: center;
+
+}
+
 .start2{
 	height: 75px;
 	width: 200px;
