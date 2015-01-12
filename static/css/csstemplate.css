@@ -339,6 +339,8 @@
 		padding-left: 300px;
 		height: 600px;
 }
+
+/*profile page */
  .profile {
 	text-align: center;
 	margin: auto;
@@ -346,7 +348,7 @@
 }
 
 .profilepic {
-	display:block;
+	float:left;
 	margin: 20px;
 	border: 4px solid black;
 	float: left;
@@ -354,7 +356,7 @@
 
 .profilename {
 	top: 20px;
-	padding-top: 30px;
+	padding-top: 15px;
 	text-align: center;
 	line-height: 81px;
 	font-size: 54px;
@@ -363,24 +365,38 @@
 	font-weight: bold;
 }
 .profileinfo {
+	display:block;
 	width: 600px;
 	margin:auto;
 	height:inherit;
 }
 
+.stats table {
+	margin: 0px 10px;
+	border: 10px 
+}
+.stats table tr {
+	margin:0px 20px 0px 20px
+}
 
-.stats tr th, td {
+.stats table tr th, td {
 	font-family: trashhandregular;
 	line-height: 54px;
 	font-size: 36px;
 }
-.stats tr td{
+.stats table tr td{
 	text-align:center;
 }
 
 .stats tr th {
 	text-align:left;
 }
+.submittedquestions {
+	clear:both;
+}
+
+
+
     .register{
     text-align: center;
 }
