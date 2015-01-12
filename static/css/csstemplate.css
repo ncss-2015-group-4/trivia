@@ -129,28 +129,17 @@
 		list-style-position: inside;
 		list-style-type: upper-roman;
 }
-
-.RecentlyPlayed {
-	display:inline-block;
-	float:left;
-}
-
-.Friends {
-	display:inline-block;
-	float:right;
-}
-
 /**
  *
  *       home page
  *
  */
- .login-form {
+  
+.login-form {
 	width: 275px;
 	height: 183px;
 	margin: 150px auto auto auto;
 	text-align: center;
-	
 }
 
 .login-form .button-cta {
@@ -184,11 +173,16 @@
 	margin: 600px auto 10px auto;
 }
 
-.:second-child {
+.home-facts .home-facts-format {
 	border-right: 1px solid #068bbc;
-	padding-right: 12px;
-	margin-right: 12px;
+	border-left: 1px solid #068bbc;
+	padding: 0 36px;
+	margin: 0 36px;
 }
+
+	.footer-margin-bottom {
+		margin-top: -48px;
+	}
 
 	.submit{
 		top: 20px;
@@ -283,11 +277,7 @@
 		padding-left: 20px;
 		text-decoration: none;
 		font-size: 20px;
-		
-}
-/*
-CSS for Pre Game Lobby
-*/
+}		
 
 	.header2{
 		text-align: center;
@@ -315,4 +305,20 @@ CSS for Pre Game Lobby
 
 	.start{
 		text-align: center;
+
+ .profile {
+	text-align: center;
+	margin: auto;
+	background-color: #dcf1f3;
+}
+
+.profilepic {
+	padding: 15px 15px 15px 15px;
+	border-width: 4px;
+	border-color: black;
+}
+
+.stats tr th {
+	text-align:left;
+
 }
