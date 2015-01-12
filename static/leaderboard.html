@@ -13,11 +13,9 @@
 		<p>Daily Highscore</p>
 		<h2>Leaderboard/Top Ten</h2>
 		<ol> <!-- values to have profile picture with name and score beside -->
-			<li>one</li>
-			<li>two</li>
-			<li>three</li>
-			<li>four</li>
-			<li>five</li>
+        {% for person in people %}
+			<li>{{ person }}</li>
+        {% end for %}
 		</ol>
 	</body>
 </html>
