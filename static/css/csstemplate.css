@@ -367,10 +367,12 @@
 
 .popular{
 	text-align: center;
+	padding: 10px;
 }
 
 .recommended{
 	text-align: center;
+	padding: 20px;
 }
 
 .difficulty{
