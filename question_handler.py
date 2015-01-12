@@ -16,7 +16,7 @@ def new_question_handler(request):
   Answer.create(question.id, False, wrong_answer_1)
   Answer.create(question.id, False, wrong_answer_2)
   Answer.create(question.id, False, wrong_answer_3)
-  
+  request.redirect('/category/' + category)
   
 def new_question_form(request):
 	question_new = render_template('static/submit.html', {})
