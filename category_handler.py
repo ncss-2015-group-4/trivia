@@ -22,8 +22,16 @@ def category_handler(request, category_id):
     request.write(category_page)
     
 def category_list_handler(request):
+    u_id = request.get_secure_cookie('user_id')
+    u_name = ""
+    if u_id is not None:
+        u_id = u_id.decode("UTF-8")
+        u_name = User.find(user_id=id)
+        u_name = u_name.username
+        
     list_of_categories = Category.find_all()
     print(list_of_categories)
     list_categories_page = render_template('static/categories.html', {
+        "user_name": u_name,
         "list_of_categories": list_of_categories})
     request.write(list_categories_page)
