@@ -78,7 +78,7 @@ def signup_handler_post(request):
     username = request.get_field("username")
     password = request.get_field("password")
     email = request.get_field("email")
-   
+    error = ""
     if username == None or username == '' or password == None or password == '':
         request.redirect("/") #Says that the user is missing a feild
         return
@@ -89,6 +89,7 @@ def signup_handler_post(request):
         else:
             user_data = User.create(username, password, email) #Creates a new entry into the db
             login_start(request, user_data.id)
+			return
     else:
         error = "Username already in use"
     login_handler(request, error=error) 
