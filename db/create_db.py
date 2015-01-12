@@ -11,12 +11,11 @@ cur.execute("""CREATE TABLE IF NOT EXISTS users(
 
 cur.execute("""CREATE TABLE IF NOT EXISTS questions(
     question_id INTEGER PRIMARY KEY,
-    qustion TEXT NOT NULL,
+    question TEXT NOT NULL,
     questions_answered INTEGER NOT NULL,
     questions_correct INTEGER NOT NULL,
     category TEXT NOT NULL
-    );""")
-
+    );""")    
 
 cur.execute("""CREATE TABLE IF NOT EXISTS categories(
     category_id INTEGER PRIMARY KEY,
