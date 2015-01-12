@@ -145,7 +145,7 @@
 	font-size: 45px;
 	font-weight: bold;
 	border-color: #e5ae00;
-    
+    cursor: pointer;    
 	border-radius: 10px;
 	margin: 100px 0 12px;
 }
@@ -168,7 +168,7 @@
 
 .home-facts {
 	width: 400px;
-	margin: 240px auto 10px auto;
+	margin: 270px auto 10px auto;
 }
 
 .home-facts .home-facts-format {
@@ -183,19 +183,7 @@
     
 .description {
     text-align: center;
-    padding-top: 100px;
-    color: #068BBC;
-    font-size: 22px
-}
-.description2{
-    text-align: center;
-    padding-top: 3px;
-    color: #068BBC;
-    font-size: 22px
-}
-.description3{
-    text-align: center;
-    padding-top: 20px;
+    padding-top: 160px;
     color: #068BBC;
     font-size: 22px;
     font-weight: bold;
