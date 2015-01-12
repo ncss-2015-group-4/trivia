@@ -55,6 +55,5 @@ def submit_question_handler(request, answer_id):
         if game.question_index >= len(game.question_ids):
             request.redirect('/post_game/{0}'.format(score))
         else:
-            a = int(game.question_index) + 1
-            request.redirect('/game/{0}'.format(a))
+            request.redirect('/game/{0}'.format(int(game.question_index)))
         
