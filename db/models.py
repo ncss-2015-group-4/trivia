@@ -26,11 +26,12 @@ class Model:
         'Which house is Harry Potter in?'
         >>> User.query("SELECT *", username='awesomealex').email
         'dummyemail@email.com'
-        """
-
-        query = action.upper() + ' FROM {0} WHERE'.format(cls._table_name())
-        for key in kwargs:
-            query += ' ' + key + ' = ?'
+        """ 
+        query = action.upper() + ' FROM {0}'.format(cls._table_name())
+        if kwargs:
+            query += ' WHERE'
+            for key in kwargs:
+                query += ' ' + key + ' = ?'
         values = tuple(kwargs.values())
 
         cur = conn.cursor()
