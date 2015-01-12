@@ -1,6 +1,17 @@
 from templating import render_template
+from db.models import User
+
+
+
 
 def profile_handler(request):
-    profile_page = render_template('static/profile.html', {})
-    request.write(profile_page)
+    id = request.get_secure_cookie ('user_id')
+    if id is None:
+        request.redirect("/login")
+    else:
+        id = id.decode("UTF-8")
+        user_data = User.find(user_id=id)
+        profile_page = render_template('static/profile.html', {"user_name": user_data.username, "email": user_data.email})
+        request.write(profile_page)
+     
 
