@@ -10,7 +10,7 @@ import question_handler
 import user_handler
 import leaderboard_handler
 import category_handler
-
+import lg_handler
 
 server = Server()
 server.register('/', index_handler.index_handler)
@@ -31,6 +31,7 @@ server.register('/question/([0-9]+)',
 server.register('/category/([0-9]+)', category_handler.category_handler)
 server.register('/user', user_handler.user_handler, post=login_handler.signup_handler_post)
 server.register('/user/([0-9]+)', user_handler.edit_user_handler)
+server.register('/logout', lg_handler.logout)
 
 if __name__ == '__main__':
     server.run()
