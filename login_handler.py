@@ -24,7 +24,7 @@ def login_start(response, user_id):
     response.clear_cookie('user_id')
     if not response.get_secure_cookie("user_id"): #checks for cookie
         response.set_secure_cookie("user_id", str(user_id)) #creates a new cookie
-    response.redirect("/")
+    response.redirect("/profile")
     
 
 #======================================
@@ -99,4 +99,4 @@ def signup_handler_post(request):
     else:
         error="Username already in use!"
     login_handler(request, error = error)
-    request.redirect("/login")
+   # request.redirect("/login")
