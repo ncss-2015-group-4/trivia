@@ -109,6 +109,8 @@ class User(Model):
 
         >>> User.find(username='awesomealex').email
         'dummyemail@email.com'
+        >>> User.find(user_id=1).username
+        'awesomealex'
         """
         return cls.query("SELECT user_id, username, email", **kwargs)
 
