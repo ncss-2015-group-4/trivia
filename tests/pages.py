@@ -6,7 +6,8 @@ submit_pattern = re.compile(r'href\ *\=\ *\"\/submit\"')
 #prifile will need to take into account whether the user is logged in
 #profile_pattern = re.compile(r'href\ *\=\ *\"\/profile\"')
 home_pattern = re.compile(r'href\ *\=\ *\"\/"')
-link_patterns = {'pre_game': pre_game_pattern, 'submit': submit_pattern, 'home':home_pattern}
+logout_pattern = re.compile(r'href\ *\=\ *\"\/logout"')
+link_patterns = {'pre_game': pre_game_pattern, 'submit': submit_pattern, 'home':home_pattern, 'logout':logout_pattern}
 
 class MissingLink(Exception):
     '''
@@ -34,6 +35,7 @@ class HTTPTestCase(AsyncHTTPTestCase):
         check_link(html, "home", "home")
         check_link(html, "pre_game", "home")
         check_link(html, "submit", "home")
+        check_link(html, "logout", "home")
         #check_link(html, "profile", "home")
         
     def test_01_login(self):
@@ -43,6 +45,7 @@ class HTTPTestCase(AsyncHTTPTestCase):
         check_link(html, "home", "login")
         check_link(html, "pre_game", "login")
         check_link(html, "submit", "login")
+        check_link(html, "logout", "login")
         #check_link(html, "profile", "login")
         
     def test_02_register(self):
@@ -53,7 +56,7 @@ class HTTPTestCase(AsyncHTTPTestCase):
         check_link(html,"home","user")
         check_link(html,"pre_game","user")
         check_link(html,"submit","user")
-        #if not profile_pattern.search(html):
+        check_link(html, "submit", "user")
         #check_link(html,"profile","user")
         '''
         
@@ -73,6 +76,7 @@ class HTTPTestCase(AsyncHTTPTestCase):
         check_link(html, "home", "profile")
         check_link(html,"pre_game", "profile")
         check_link(html, "submit", "profile")
+        check_link(html, "logout", "profile")
         #check_link(html, "profile", "profile")
         
     def test_04_question_submission_tests(self):
@@ -82,6 +86,7 @@ class HTTPTestCase(AsyncHTTPTestCase):
         check_link(html, "home", "sumbission")
         check_link(html, "pre_game", "submission")
         check_link(html, "submit", "submission")
+        check_link(html, "logout", "submission")
         #check_link(html, "profile", "submission")
         
     def test_05_pre_game_tests(self):
@@ -91,6 +96,7 @@ class HTTPTestCase(AsyncHTTPTestCase):
         check_link(html, "home", "pre_game")
         check_link(html, "pre_game", "pre_game")
         check_link(html, "submit", "pre_game")
+        check_link(html, "logout", "pre_game")
         #check_link(html, "profile", "pre_game")
         
     def test_06_game_tests(self):
@@ -100,6 +106,7 @@ class HTTPTestCase(AsyncHTTPTestCase):
         check_link(html, "home", "game")
         check_link(html, "pre_game", "game")
         check_link(html, "submit", "game")
+        check_link(html, "logout", "game")
         #check_link(html, "profile", "game")
         
     def test_07_post_game_tests(self):
@@ -109,7 +116,17 @@ class HTTPTestCase(AsyncHTTPTestCase):
         check_link(html, "home", "login")
         check_link(html, "pre_game", "login")
         check_link(html, "submit", "login")
+        check_link(html, "logout", "login")
         #check_link(html, "profile", "login")
+        
+    def test_07_logout_tests(self):
+        url = '/logout'
+        headers = {'method': 'GET'}
+        html = self.check_page(url, **headers).decode()
+        check_link(html, "home", "logout")
+        check_link(html, "pre_game", "logout")
+        check_link(html, "submit", "logout")
+        #check_link(html, "profile", "logout")
     
     def check_page(self, url, **headers):
         response = self.fetch(url, **headers)
