@@ -27,6 +27,7 @@ def get_question_handler(request, question_index):
         question = game.get_question(int(question_index))
         if not question:
             request.write("that question does not exist")
+            return
         answers = game.get_answers(int(question_index))
 
         request.write(render_template('static/question.html',

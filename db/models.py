@@ -366,6 +366,7 @@ class Game(Model):
             question_ids.append(row["question_id"])
 
         random.shuffle(question_ids)
+        question_ids = question_ids[:n]
         print("number of questions generated: " + str(len(question_ids)))
 
         cur.execute('INSERT INTO games VALUES(NULL, ?, ?, 0, ?, 0, ?, ?, 0)',(user_id, str(question_ids), time.time(),category_id, difficulty))
