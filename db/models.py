@@ -27,7 +27,7 @@ class Model:
         >>> User.query("SELECT *", username='awesomealex').email
         'dummyemail@email.com'
         """ 
-        query = action.upper() + ' FROM {0}'.format(cls._table_name())
+        query = '{0} FROM {1}'.format(action, cls._table_name())
         if kwargs:
             query += ' WHERE'
             for key in kwargs:
@@ -110,7 +110,7 @@ class User(Model):
         >>> User.find(username='awesomealex').email
         'dummyemail@email.com'
         """
-        return cls.query("SELECT user_id, username, email FROM", **kwargs)
+        return cls.query("SELECT user_id, username, email", **kwargs)
 
     def check_login(self, password):
         """Check whether a provided password is the user's password."""

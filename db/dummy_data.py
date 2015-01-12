@@ -8,6 +8,7 @@ cur.execute("INSERT INTO users VALUES(NULL,'amazingaretha','d8578edf8458ce06fbc5
 cur.execute("INSERT INTO categories VALUES(NULL,'Harry Potter');")
 cur.execute("INSERT INTO categories VALUES(NULL,'Doctor Who');")
 
+<<<<<<< HEAD
 cur.execute("INSERT INTO questions VALUES(NULL,'Which house is Harry Potter in?',20,8,1,0);")
 cur.execute("INSERT INTO questions VALUES(NULL,'Who played the 10th Doctor?',20,18,2,0);")
 cur.execute("INSERT INTO questions VALUES(NULL,'What year was Doctor Who first aired?',20,6,2,0);")
@@ -35,6 +36,26 @@ cur.execute("INSERT INTO answers VALUES(NULL,1,1,'Voldemort');")
 cur.execute("INSERT INTO answers VALUES(NULL,1,0,'Harry Potter');")
 cur.execute("INSERT INTO answers VALUES(NULL,1,0,'Dumbledore');")
 cur.execute("INSERT INTO answers VALUES(NULL,1,0,'Bellatrix');")
+=======
+cur.execute("INSERT INTO questions VALUES(NULL,'Which house is Harry Potter in?',20,8,1);")
+cur.execute("INSERT INTO questions VALUES(NULL,'Who played the 10th Doctor?',20,18,2);")
+cur.execute("INSERT INTO questions VALUES(NULL,'What year was Doctor Who first aired?',20,6,2);")
+cur.execute("""INSERT INTO questions VALUES(NULL,"Who was the 9th Doctor's companion?",20,17,2);""")
+cur.execute("INSERT INTO questions VALUES(NULL,'Who played the first Doctor?',20,17,2);")
+cur.execute("INSERT INTO questions VALUES(NULL,'Who is RTD??',20,8,2);")
+cur.execute("""INSERT INTO questions VALUES(NULL,"What is John Hurt's Doctor referred to as?",20,17,2);""")
+cur.execute("INSERT INTO questions VALUES(NULL,'Which of these is a spin off series from Doctor Who?',20,4,2);")
+cur.execute("INSERT INTO questions VALUES(NULL,'What planet is The Doctor from?',20,14,2);")
+cur.execute("INSERT INTO questions VALUES(NULL,'What species is The Doctor?',20,20,2);")
+cur.execute("INSERT INTO questions VALUES(NULL,'What is the best ranked Pokemon?',20,0,2);")
+cur.execute("INSERT INTO questions VALUES(NULL,'Who killed Snape',20,17,1);")
+cur.execute("INSERT INTO questions VALUES(NULL,'How many Horcru?',10,8,1);")
+
+cur.execute("INSERT INTO answers VALUES(NULL,1,1,'Gryffindor');")
+cur.execute("INSERT INTO answers VALUES(NULL,1,0,'Ravenclaw');")
+cur.execute("INSERT INTO answers VALUES(NULL,1,0,'Hufflepuff');")
+cur.execute("INSERT INTO answers VALUES(NULL,1,0,'Slytherin');")
+>>>>>>> origin/database
 
 cur.execute("INSERT INTO answers VALUES(NULL,2,1,'David Tennant');")
 cur.execute("INSERT INTO answers VALUES(NULL,2,0,'Matt Smith');")

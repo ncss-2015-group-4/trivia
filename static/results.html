@@ -15,7 +15,7 @@
 				<p class="results_question_text">{{ question.question }}</p>
 				<ol class="results_answers">
 					{% for answer in answers[idx] %}
-					<li><button {% if answer.correct %} class="results_correct_answer" {% end if %}>{{ answer.text }}</button></li>
+					<li {% if answer.correct %} class="results_correct_answer" {% end if %}>{{ answer.text }}</li>
 					{% end for %}
 				</ol>
 			</li>
