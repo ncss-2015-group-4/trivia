@@ -324,6 +324,23 @@ class Score(Model):
         
         cur.commit()
     
+class Game(Model):
+    """docstring for Game"""
+    def __init__(self, game_id, user_id, time_started, time_completed, difficulty, category_id, score):
+        self.id = game_id
+        self.user_id = user_id
+        self.time_started = time_started
+        self.time_completed = time_completed
+        self.difficulty = difficulty
+        self.category = category_id
+        self.score = score
+
+    @classmethod
+    def create(cls, user_id, category_id):
+        ...
+
+    def get_questions():
+        ...
 
 
 conn = sqlite3.connect('db/trivia.db')
