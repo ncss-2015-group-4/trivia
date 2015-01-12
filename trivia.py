@@ -31,4 +31,4 @@ server.register('/user', user_handler.user_handler, post=login_handler.signup_ha
 server.register('/user/([0-9]+)', user_handler.edit_user_handler)
 
 if __name__ == '__main__':
-	server.run()
+    server.run()
