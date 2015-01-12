@@ -285,3 +285,34 @@
 		font-size: 20px;
 		
 }
+/*
+CSS for Pre Game Lobby
+*/
+
+	.header2{
+		text-align: center;
+		top: 20px;
+		padding-top: 30px;
+		text-align: center;
+		background-color: #068BBC;
+}
+
+	.topic{
+		text-align: center;
+}
+
+	.popular{
+		text-align: center;
+}
+
+	.recommended{
+		text-align: center;
+}
+
+	.difficulty{
+		text-align: center;
+}
+
+	.start{
+		text-align: center;
+}
