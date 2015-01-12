@@ -14,7 +14,7 @@
 				<h3>Question {{ idx+1 }}</h3>
 				<p class="results_question_text">{{ question.question }}</p>
 				<ol class="results_answers">
-					{% for answer in answers[idx] %}
+					{% for answer in question.get_answers() %}
 					<li {% if answer.correct %} class="results_correct_answer" {% end if %}>{{ answer.text }}</li>
 					{% end for %}
 				</ol>

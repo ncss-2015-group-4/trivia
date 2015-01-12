@@ -178,8 +178,8 @@ class TriviaQuestion(Model):
     Properties:
     * id           - the question's unique ID
     * question     - the question text
-    * num_answered - the number of times the question has been answered
-    * num_correct  - the number of times the question has been answered correctly
+    * questions_answered - the number of times the question has been answered
+    * questions_correct  - the number of times the question has been answered correctly
 
     Methods:
     * question.flag()
@@ -191,12 +191,12 @@ class TriviaQuestion(Model):
     @classmethod
     def _table_name(cls):
         return 'questions'
-	
-    def __init__(self, question_id, question, num_answered, num_correct, category, difficulty):
+
+    def __init__(self, question_id, question, questions_answered, questions_correct, category, difficulty):
         self.id = question_id
         self.question = question
-        self.num_answered = num_answered
-        self.num_correct = num_correct
+        self.questions_answered = questions_answered
+        self.questions_correct = questions_correct
         self.category = category
         self.difficulty = difficulty
 
@@ -307,8 +307,8 @@ class Score(Model):
     Properties:
     * user_id      - the user's ID
     * category_id  - the category ID
-    * num_answered - the number of questions the user has answered
-    * num_correct  - the number of questions the user answered correctly
+    * questions_answered - the number of questions the user has answered
+    * questions_correct  - the number of questions the user answered correctly
     """
 
     def __init__(self, user_id, category_id, num_answered, num_correct):
@@ -330,7 +330,6 @@ class Score(Model):
         self.num_answered += 1
         cur = conn.cursor()
         cur.execute('UPDATE scores SET num_answered=?,num_correct=? WHERE user_id=? AND category_id=?', (self.num_answered, self.num_correct, self.user_id, self.category_id))
-
         cur.commit()
 
 class Game(Model):
@@ -349,6 +348,8 @@ class Game(Model):
     def __init__(self, game_id, user_id, question_ids, question_index, time_started, time_completed, difficulty, category_id, score):
         self.id = game_id
         self.user_id = user_id
+        if isinstance(question_ids, str):
+            question_ids = [int(x) for x in question_ids.split(',')]
         self.question_ids = question_ids
         self.question_index = question_index
         self.time_started = time_started
@@ -358,41 +359,52 @@ class Game(Model):
         self.score = score
 
     @classmethod
-    def create(cls, user_id, category_id, difficulty, n=4):
+    def create(cls, user_id, category_id, difficulty, n=5):
         cur=conn.cursor()
-        question_ids = random.shuffle(','.join(cur.execute('SELECT question_id FROM questions WHERE category_id = ? AND difficulty =?',
-                                (category_id, difficulty)).fetchone()).split(","))[0:n]
-        cur.execute('INSERT INTO games VALUES(NULL, ?, ?, 0, ?, 0, ?, ?, 0)',(user_id, question_ids, time.time(),category_id, difficulty))
+        question_ids = []
+        for row in cur.execute('SELECT question_id FROM questions WHERE category = ? AND difficulty =?', (category_id, difficulty)):
+            question_ids.append(row["question_id"])
+
+        random.shuffle(question_ids)
+        question_ids = question_ids[:n]
+        print("number of questions generated: " + str(len(question_ids)))
+
+        cur.execute('INSERT INTO games VALUES(NULL, ?, ?, 0, ?, 0, ?, ?, 0)',(user_id, ','.join(map(str, question_ids)), time.time(),category_id, difficulty))
         conn.commit()
-        return cls(id, user_id, question_ids, 0, 0, time.time(), 0, difficulty, category_id, 0)
+        return cls(cur.lastrowid, user_id, question_ids, 0, time.time(), 0, difficulty, category_id, 0)
 
     def submit_answer(cls, question_id, answer_id):
         cur=conn.cursor()
         correct = 0
-        answer = Answer.find(id=answer_id)
+        answer = Answer.find(answer_id=answer_id)
         if answer.correct:
             correct = 1
-        cur.execute('UPDATE questions SET num_answered = num_answered + 1, num_correct = num_correct + ? WHERE question_id = ? AND category = ? ',
-                        (correct, question_id, category))
+        cur.execute('UPDATE questions SET questions_answered = questions_answered + 1, questions_correct = questions_correct + ? WHERE question_id = ?',
+                        (correct, question_id))
         conn.commit()
+        return correct
 
 
     def get_question(self, index):
+        print(repr(self.question_ids), index)
         current_question_id = self.question_ids[index]
-
-        question = Question.find(id=current_question_id)
+        print(current_question_id)
+        question = TriviaQuestion.find(question_id=current_question_id)
 
         return question
 
     def get_answers(self, question_id):
-        return Answers.find_all(question_id=question_id)
+        cur=conn.cursor()
+        cur.execute('SELECT * FROM answers WHERE question_id = ?',(question_id,))
+        result = cur.fetchall()
+        return [Answer(*x) for x in result]
 
+    def game_nextquestion(self):
+        cur=conn.cursor()
+    
+        cur.execute('UPDATE games SET question_index = question_index + 1 WHERE game_id=?',(self.id,))
+        self.question_index += 1
+        conn.commit()
 
 conn = sqlite3.connect('db/trivia.db')
 conn.row_factory = sqlite3.Row
-
-
-
-
-
-

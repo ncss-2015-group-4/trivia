@@ -5,47 +5,36 @@
 		<link rel="stylesheet" href="static/css/csstemplate.css" type = "text/css" >
 		<link rel="stylesheet" href="static/css/pregamelobby.css" type = "text/css" >
 	</head>
+	<body bgcolor="#dcf1f3">
 	{% include static/header.html %}
 		<div class="banner">
 			<h1>Lobby</h1>
 		</div>
-	<body bgcolor="#dcf1f3">
-	<body>	
-		<div class ="topic2">
+		<div class="topic2">
 			<form>
 				<input type="text" placeholder="Search" class="topic">
 			</form>
 		</div>
+		<form method="post" action="/game/create">
 		<div class="popular">
-			<h2>Most Popular Topics</h2>
-			<select>
-				  <option value="harry potter">Harry Potter</option>
-				  <option value="doctor who">Doctor Who</option> 
-				  <option value="myth and magic">Myth and Magic</option>
-				  <option value="world of warcraft">World of Warcraft</option>
-				  <option value="league of legends">League of Legends</option>
-			</select>
-		</div>
-		<div class="recommended">
-			<h2>Recommended</h2>
-			<select>
-				  <option value="x">x</option>
-				  <option value="x">x</option>
-				  <option value="x">x</option>
-				  <option value="x">x</option>
+			<h2>Topics</h2>
+			<select name="category_id">
+				{% for category in categories %}
+				<option value="{{ category.id }}">{{ category.name }}</option>
+				{% end for %}
 			</select>
 		</div>
 		<div class="difficulty">
 			<h2>Difficulty</h2>
-			<select>
-				  <option value="easy">Easy</option>
-				  <option value="medium">Medium</option>
-				  <option value="hard">Hard</option>
+			<select name="difficulty">
+				  <option value="0">Easy</option>
+				  <option value="1">Medium</option>
+				  <option value="2">Hard</option>
 			</select>
 		</div>
 		<div class="start">
-			<button class="start2">Start Game!</button>
+			<input type="submit" class="start2" value="Start Game!">
 		</div>
-		</div>
+		</form>
 	</body>
 </html>

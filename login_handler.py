@@ -1,11 +1,17 @@
 from db.models import User
 from templating import render_template
 
+error = ""
+
 def login_handler(request, **kwargs):
-    scope = {"error_message": kwargs.get("error","")}
-    login_page = render_template('static/login.html', scope)
+    u_id = request.get_secure_cookie('user_id')
+    u_name = ""
+    if u_id is not None:
+        u_id = u_id.decode("UTF-8")
+        u_name = User.find(user_id=u_id)
+        u_name = u_name.username
+    login_page = render_template('static/login.html', {"error_message": kwargs.get("error",""),"user_name": u_name})
     request.write(login_page)
-    
 
 #--------------------------------------
 # By Ben

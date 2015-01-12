@@ -2,8 +2,8 @@
 <html>
 	<head>
 		<title></title>
-		<link rel="stylesheet" href="static/css/reset.css" type="text/css">
-		<link rel="stylesheet" href="static/css/csstemplate.css" type="text/css">
+		<link rel="stylesheet" href="/static/css/reset.css" type="text/css">
+		<link rel="stylesheet" href="/static/css/csstemplate.css" type="text/css">
 	</head>
 	<body>
 		{% include static/header.html %}
@@ -11,7 +11,7 @@
 		<p id="question">{{ question.question }}</p>
 		<ol id="answers">
 			{% for answer in answers %}
-			<li><button>{{ answer.text }}</button></li>
+			<li><a href="/game/submit/{{ answer.id }}">{{ answer.text }}</a></li>
 			{% end for %}
 		</ol>
 	</body>
