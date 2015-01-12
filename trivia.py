@@ -14,7 +14,7 @@ import error_handler
 import leaderboard_handler
 import category_handler
 import lg_handler
-from error_handler import return_404
+import error_handler
 
 def default_handler(response, method, *args, **kwargs):
 	return return_404(response)
@@ -22,7 +22,9 @@ def default_handler(response, method, *args, **kwargs):
 server = Server()
 server.register('/', index_handler.index_handler)
 server.register('/profile', profile_handler.profile_handler)
-server.register('/game', game_handler.game_handler)
+server.register('/game/([0-9]+)', game_handler.get_question_handler)
+server.register('/game/submit/', game_handler.submit_question_handler)
+server.register('/game/create', game_handler.game_handler)
 server.register('/pre_game', pre_game_handler.pre_game_handler)
 server.register('/post_game', post_game_handler.post_game_handler)
 server.register('/submit', submit_handler.submit_handler)
@@ -38,8 +40,9 @@ server.register('/question/([0-9]+)',
 server.register('/category/([0-9]+)', category_handler.category_handler)
 server.register('/user', user_handler.user_handler, post=login_handler.signup_handler_post)
 server.register('/user/([0-9]+)', user_handler.edit_user_handler)
+server.register('/categories', category_handler.category_list_handler)
 server.register('/logout', lg_handler.logout)
-server.register('/.*', return_404)
+server.register('/.*', error_handler.error_handler)
 
 if __name__ == '__main__':
     server.run()

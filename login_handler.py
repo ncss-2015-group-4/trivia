@@ -1,18 +1,18 @@
 from db.models import User
 from templating import render_template
 
+error = ""
+
 def login_handler(request):
-    id = request.get_secure_cookie ('user_id')
+    u_id = request.get_secure_cookie('user_id')
     u_name = ""
-    if id is not None:
-        id = id.decode("UTF-8")
+    if u_id is not None:
+        u_id = u_id.decode("UTF-8")
         u_name = User.find(user_id=id)
         u_name = u_name.username
-    login_page = render_template('static/login.html', {"user_name": u_name})
+    login_page = render_template('static/login.html', {"error_message": error,"user_name": u_name})
     request.write(login_page)
     
-
-
 #--------------------------------------
 # By Ben
 #--------------------------------------
@@ -20,10 +20,12 @@ def login_handler(request):
 #======================================
 # Handles cookie creation
 #======================================
-def login_start(request, user_id):
-    if not request.get_secure_cookie("user_id"): #checks for cookie
-        request.set_secure_cookie("user_id", str(user_id)) #creates a new cookie
-    request.redirect("/")
+def login_start(response, user_id):
+    print("login started")
+    response.clear_cookie('user_id')
+    if not response.get_secure_cookie("user_id"): #checks for cookie
+        response.set_secure_cookie("user_id", str(user_id)) #creates a new cookie
+    response.redirect("/")
     
 
 #======================================
@@ -50,7 +52,8 @@ def login_handler_post(request):
             login_start(request, user_data.id)
             return
         else:
-            request.redirect("/") #username/password is incorrect
+            error = "Password/Username is incorrect"
+            #login_handler(request)
     else: #does a second check on db with email
         user_data = User.find(email=username_email) #may 
         if user_data is not None:
@@ -58,12 +61,12 @@ def login_handler_post(request):
                 login_start(request, user_data.id)
                 return
             else:
-                request.redirect("/") #username/password is incorrect
-                return
+               error = "Password/Username is incorrect"
         else:
-            request.redirect("/") #username/password is incorrect
-            return
-
+            error = "User doesn't exist"
+    login_handler(request) #cannot find username or email in database!
+    print(error)
+    return
 #======================================
 # Does all the signup handling:
 #    - Takes in form data

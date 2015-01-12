@@ -7,17 +7,23 @@ def category_handler(request, category_id):
     cat = Category.find(category_id=category_id)
     
     list_of_questions = TriviaQuestion.find_all(category=category_id)
-    print(list_of_questions)
-    
-    id = request.get_secure_cookie('user_id')
+    #print(list_of_questions)    
+    u_id = request.get_secure_cookie('user_id')
     u_name = ""
-    
-    if id is not None:
-        id = id.decode("UTF-8")
+    if u_id is not None:
+        u_id = u_id.decode("UTF-8")
         u_name = User.find(user_id=id)
-        u_name = User.username
+        u_name = u_name.username
+
     category_page = render_template('static/category.html', {
         "user_name": u_name,
         "category_name": cat.name,
         'list_of_questions': list_of_questions})
     request.write(category_page)
+    
+def category_list_handler(request):
+    list_of_categories = Category.find_all()
+    print(list_of_categories)
+    list_categories_page = render_template('static/categories.html', {
+        "list_of_categories": list_of_categories})
+    request.write(list_categories_page)
