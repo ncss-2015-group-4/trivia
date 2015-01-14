@@ -2,6 +2,16 @@ import sqlite3
 
 conn = sqlite3.connect('trivia.db')
 cur = conn.cursor()
+cur.execute("""DROP TABLE users""")
+cur.execute("""DROP TABLE questions""")
+cur.execute("""DROP TABLE categories""")
+cur.execute("""DROP TABLE answers""")
+cur.execute("""DROP TABLE flags""")
+cur.execute("""DROP TABLE scores""")
+cur.execute("""DROP TABLE games""")
+
+conn.commit()
+
 cur.execute("""CREATE TABLE IF NOT EXISTS users(
     user_id INTEGER PRIMARY KEY,
     username TEXT NOT NULL,
@@ -60,3 +70,5 @@ cur.execute("""CREATE TABLE IF NOT EXISTS games(
     FOREIGN KEY (user_id) REFERENCES users (user_id),
 	FOREIGN KEY (category_id) REFERENCES categories (category_id)
     );""")
+
+conn.commit()
