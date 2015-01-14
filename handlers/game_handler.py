@@ -3,7 +3,7 @@ from templating import render_template
 from db.models import User
 from . import template_paths
 
-
+import random
 def game_handler(request):
     category_id = request.get_field("category_id")
     difficulty = request.get_field("difficulty")
@@ -39,9 +39,9 @@ def get_question_handler(request, question_index):
             request.write("that question does not exist")
             return
         answers = game.get_answers(game.question_ids[int(question_index)])
-
+        random.shuffle(answers)
         request.write(render_template(template_paths["questions"],
-                    {"question": question, "answers": answers, "question_index": str(int(question_index)+1), "user_name":u_name}))
+	    {"question": question, "answers": answers, "question_index": str(int(question_index)+1), "user_name":u_name}))
         return
     request.redirect("/404kid")
 
@@ -51,11 +51,10 @@ def submit_question_handler(request, answer_id):
 
     if game_id and user_id_cookie and answer_id:
         game = Game.find(game_id=int(game_id.decode()))
-        user = User.find(user_id=int(user_id_cookie.decode()))
-        game.submit_answer(game.question_ids[game.question_index],answer_id)
+        game.submit_answer(game.question_ids[game.question_index], answer_id)
         score = game.game_nextquestion()
         if game.question_index >= len(game.question_ids):
-            request.redirect('/post_game'.format(score))
+            request.redirect('/post_game')
         else:
             request.redirect('/game/{0}'.format(int(game.question_index)))
 
