@@ -111,7 +111,8 @@ class HTTPTestCase(AsyncHTTPTestCase):
         check_link(html, "logout", "game")
         #check_link(html, "profile", "game")
         '''
-        
+
+    '''
     def test_07_post_game_tests(self):
         url = '/post_game'
         headers = {'method': 'GET'}
@@ -121,7 +122,8 @@ class HTTPTestCase(AsyncHTTPTestCase):
         check_link(html, "submit", "login")
         #check_link(html, "logout", "login")
         #check_link(html, "profile", "login")
-        
+    '''
+
     def test_07_logout_tests(self):
         url = '/logout'
         headers = {'method': 'GET'}
