@@ -1,3 +1,4 @@
+from . import template_paths
 from templating import render_template
 from db.models import User
 
@@ -10,5 +11,5 @@ def error_handler(request):
         u_name = User.find(user_id=u_id)
         u_name = u_name.username
 
-    error_page = render_template('static/error.html', {"user_name": u_name})
+    error_page = render_template(template_paths["error"], {"user_name": u_name})
     request.write(error_page)

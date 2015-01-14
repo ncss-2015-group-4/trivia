@@ -3,6 +3,8 @@ from db.models import Answer
 from db.models import Category
 from templating import render_template
 from db.models import User
+from . import template_paths
+
 
 def new_question_handler(request):
   question = request.get_field("question")
@@ -28,7 +30,7 @@ def new_question_form(request):
         u_name = User.find(user_id=u_id)
         u_name = u_name.username
     list_of_categories = Category.find_all()
-    question_new = render_template('static/submit.html', {"list_of_categories": list_of_categories,"user_name":u_name})
+    question_new = render_template(template_paths["submit"], {"list_of_categories": list_of_categories,"user_name":u_name})
     request.write(question_new)
 
 def get_question_handler(request, question_id):

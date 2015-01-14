@@ -1,5 +1,6 @@
 from templating import render_template
 from db.models import User,Score
+from . import template_paths
 
 
 def leaderboard_handler(request):
@@ -36,5 +37,5 @@ def leaderboard_handler(request):
         u_name = User.find(user_id=u_id)
         u_name = u_name.username
     variables['user_name'] = u_name
-    leaderboard = render_template('static/leaderboard.html', variables)
+    leaderboard = render_template(template_paths["leaderboard"], variables)
     request.write(leaderboard)

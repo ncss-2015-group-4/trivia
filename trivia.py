@@ -1,45 +1,53 @@
 from tornado.ncss import Server
-import index_handler
 from templating import render_template
 
-import profile_handler
-import game_handler
-import pre_game_handler
-import post_game_handler
-import submit_handler
-import login_handler
-import question_handler
-import user_handler
-import error_handler
-import leaderboard_handler
-import category_handler
-import lg_handler
-import error_handler
+from handlers.index_handler import index_handler
+from handlers.profile_handler import profile_handler
+from handlers.game_handler import game_handler
+from handlers.game_handler import get_question_handler
+from handlers.game_handler import submit_question_handler
+from handlers.pre_game_handler import pre_game_handler
+from handlers.post_game_handler import post_game_handler
+from handlers.submit_handler import submit_handler
+from handlers.login_handler import login_handler
+from handlers.login_handler import login_handler_post
+from handlers.login_handler import signup_handler_post
+from handlers.user_handler import user_handler
+from handlers.error_handler import error_handler
+from handlers.leaderboard_handler import leaderboard_handler
+from handlers.category_handler import category_handler
+from handlers.category_handler import category_list_handler
+from handlers.question_handler import new_question_handler
+from handlers.question_handler import new_question_form
+from handlers.question_handler import edit_question_handler
+from handlers.lg_handler import logout
+from handlers.error_handler import error_handler
 
 server = Server()
-server.register('/', index_handler.index_handler)
-server.register('/profile', profile_handler.profile_handler)
-server.register('/game/([0-9]+)', game_handler.get_question_handler)
-server.register('/game/submit/([0-9]+)', game_handler.submit_question_handler)
-server.register('/game/create', game_handler.game_handler)
-server.register('/pre_game', pre_game_handler.pre_game_handler)
-server.register('/post_game', post_game_handler.post_game_handler)
-server.register('/submit', submit_handler.submit_handler)
-server.register('/leaderboard', leaderboard_handler.leaderboard_handler)
+server.register('/', index_handler)
+server.register('/profile', profile_handler)
+server.register('/game/([0-9]+)', get_question_handler)
+server.register('/game/submit/([0-9]+)', submit_question_handler)
+server.register('/game/create', game_handler)
+server.register('/pre_game', pre_game_handler)
+server.register('/post_game', post_game_handler)
+server.register('/submit', submit_handler)
+server.register('/leaderboard', leaderboard_handler)
 server.register('/login',
-                login_handler.login_handler,
-                post=login_handler.login_handler_post)
-server.register('/question', question_handler.new_question_form,
-                post=question_handler.new_question_handler)
+                login_handler,
+                post=login_handler_post)
+server.register('/question',new_question_form,
+                post=new_question_handler)
 server.register('/question/([0-9]+)',
-                question_handler.get_question_handler,
-                post=question_handler.edit_question_handler)
-server.register('/category/([0-9]+)', category_handler.category_handler)
-server.register('/user', user_handler.user_handler, post=login_handler.signup_handler_post)
-server.register('/user/([0-9]+)', user_handler.edit_user_handler)
-server.register('/categories', category_handler.category_list_handler)
-server.register('/logout', lg_handler.logout)
-server.register('/.*', error_handler.error_handler)
+                get_question_handler,
+                post=edit_question_handler)
+server.register('/category/([0-9]+)', category_handler)
+server.register('/user', user_handler, post=signup_handler_post)
+# server.register('/user/([0-9]+)', edit_user_handler)
+server.register('/categories', category_list_handler)
+server.register('/logout', logout)
+server.register('/.*', error_handler)
+
 
 if __name__ == '__main__':
     server.run()

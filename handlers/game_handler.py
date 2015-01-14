@@ -1,6 +1,8 @@
 from db.models import User, Game
 from templating import render_template
 from db.models import User
+from . import template_paths
+
 
 def game_handler(request):
     category_id = request.get_field("category_id")
@@ -38,7 +40,7 @@ def get_question_handler(request, question_index):
             return
         answers = game.get_answers(game.question_ids[int(question_index)])
 
-        request.write(render_template('static/question.html',
+        request.write(render_template(template_paths["questions"],
                     {"question": question, "answers": answers, "question_index": str(int(question_index)+1), "user_name":u_name}))
         return
     request.redirect("/404kid")

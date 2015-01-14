@@ -2,6 +2,7 @@ from templating import render_template
 from db.models import Category
 from db.models import User
 from db.models import TriviaQuestion
+from . import template_paths
 
 def category_handler(request, category_id):
     cat = Category.find(category_id=category_id)
@@ -15,7 +16,7 @@ def category_handler(request, category_id):
         u_name = User.find(user_id=u_id)
         u_name = u_name.username
 
-    category_page = render_template('static/category.html', {
+    category_page = render_template(template["submit_category"], {
         "user_name": u_name,
         "category_name": cat.name,
         'list_of_questions': list_of_questions})
@@ -31,7 +32,7 @@ def category_list_handler(request):
         
     list_of_categories = Category.find_all()
     print(list_of_categories)
-    list_categories_page = render_template('static/categories.html', {
+    list_categories_page = render_template(template_paths["categories"], {
         "user_name": u_name,
         "list_of_categories": list_of_categories})
     request.write(list_categories_page)

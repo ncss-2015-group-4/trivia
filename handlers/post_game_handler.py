@@ -1,6 +1,8 @@
 from templating import render_template
 from db.models import User, Game
-from error_handler import error_handler
+from .error_handler import error_handler
+from . import template_paths
+
 
 def post_game_handler(request):
     game_id = request.get_secure_cookie('game_id')
@@ -16,5 +18,5 @@ def post_game_handler(request):
         u_id = u_id.decode("UTF-8")
         u_name = User.find(user_id=u_id)
         u_name = u_name.username.lower().capitalize()
-    post_game_page = render_template('static/postgamelobby.html', {"user_name": u_name, "score":score})
+    post_game_page = render_template(template_paths["post_game"], {"user_name": u_name, "score":score})
     request.write(post_game_page)

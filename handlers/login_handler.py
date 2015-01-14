@@ -1,5 +1,6 @@
 from db.models import User
 from templating import render_template
+from . import template_paths
 
 def login_handler(request, **kwargs):
     error=kwargs.get("error","")
@@ -9,7 +10,7 @@ def login_handler(request, **kwargs):
         u_id = u_id.decode("UTF-8")
         u_name = User.find(user_id=u_id)
         u_name = u_name.username
-    login_page = render_template('static/login.html', {"error_message": error,"user_name": u_name})
+    login_page = render_template(template_paths["login"], {"error_message": error,"user_name": u_name})
     request.write(login_page)
 
 #--------------------------------------

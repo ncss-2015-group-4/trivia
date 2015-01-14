@@ -1,3 +1,5 @@
+from . import template_paths
+
 def user_handler(request):
     #this is a login thingy ben needs to do here.
     pass
