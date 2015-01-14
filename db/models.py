@@ -29,9 +29,7 @@ class Model:
         """ 
         query = '{0} FROM {1}'.format(action, cls._table_name())
         if kwargs:
-            query += ' WHERE'
-            for key in kwargs:
-                query += ' ' + key + ' = ?'
+            query += ' WHERE ' + ' AND '.join(key + ' = ?' for key in kwargs)
         values = tuple(kwargs.values())
 
         cur = conn.cursor()
