@@ -2,13 +2,13 @@ import sqlite3
 
 conn = sqlite3.connect('trivia.db')
 cur = conn.cursor()
-cur.execute("""DROP TABLE users""")
-cur.execute("""DROP TABLE questions""")
-cur.execute("""DROP TABLE categories""")
-cur.execute("""DROP TABLE answers""")
-cur.execute("""DROP TABLE flags""")
-cur.execute("""DROP TABLE scores""")
-cur.execute("""DROP TABLE games""")
+cur.execute("""DROP TABLE IF EXISTS users""")
+cur.execute("""DROP TABLE IF EXISTS questions""")
+cur.execute("""DROP TABLE IF EXISTS categories""")
+cur.execute("""DROP TABLE IF EXISTS answers""")
+cur.execute("""DROP TABLE IF EXISTS flags""")
+cur.execute("""DROP TABLE IF EXISTS scores""")
+cur.execute("""DROP TABLE IF EXISTS games""")
 
 conn.commit()
 
