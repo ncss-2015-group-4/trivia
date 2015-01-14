@@ -1,11 +1,17 @@
 from templating import render_template
+from db.models import User, Game
+from error_handler import error_handler
 
-from db.models import User
+def post_game_handler(request):
+    game_id = request.get_secure_cookie('game_id')
+    if game_id is None:
+        error_handler(request)
+        return
+    game_id = int(game_id.decode())
 
-def post_game_handler(request, score):
-    u_id = request.get_secure_cookie ('user_id')
+    u_id = request.get_secure_cookie('user_id')
     u_name = ""
-    score = str(int(score))
+    score = Game.find(game_id=game_id).score
     if u_id is not None:
         u_id = u_id.decode("UTF-8")
         u_name = User.find(user_id=u_id)
