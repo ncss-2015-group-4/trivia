@@ -25,21 +25,23 @@ from handlers.question_handler import edit_question_handler
 from handlers.lg_handler import logout
 from handlers.error_handler import error_handler
 
-parser = argparse.ArgumentParser()
-parser.add_argument("--port", help="what port do you want the server to listen on?", type=int)
-parser.add_argument("--hostname", help="what host do you want the server to run on?", type=str)
-args = parser.parse_args()
+server = Server()
 
-port = 8888
-hostname = ""
-if args.port:
-	port = args.port
+if __name__ == '__main__':
+	parser = argparse.ArgumentParser()
+	parser.add_argument("--port", help="what port do you want the server to listen on?", type=int)
+	parser.add_argument("--hostname", help="what host do you want the server to run on?", type=str)
+	args = parser.parse_args()
 
-if args.hostname:
-	hostname = args.hostname
+	port = 8888
+	hostname = ""
+	if args.port:
+		port = args.port
 
+	if args.hostname:
+		hostname = args.hostname
+	server = Server(port=port, hostname=hostname)
 
-server = Server(port=port, hostname=hostname)
 server.register('/', index_handler)
 server.register('/profile', profile_handler)
 server.register('/game/([0-9]+)', get_question_handler)
