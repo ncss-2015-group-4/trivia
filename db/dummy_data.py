@@ -4,9 +4,18 @@ from hasher import new_salt
 
 conn = sqlite3.connect('trivia.db')
 cur = conn.cursor()
-categories = {"Harry Potter":1, "Doctor Who":2, "Star Trek":3, "Legue of Lengends":4}
-category_files = {"Harry Potter":"harry_potter_questions.csv", "Doctor Who":"doctor_who_questions.csv", "Star Trek":"star_trek_questions.csv", "Legue of Lengends":"league_of_lengends_questions.csv"}
+categories = {} 
+category_files = {} 
 difficulties = {"easy":0, "medium":1, "hard":2}
+with open("categories.csv") as f:
+    category_reader = csv.DictReader(f)
+    #Get the list of categories
+    for i,category in enumerate(category_reader):
+        #store the category id
+        categories[category["Category"]] = i
+        #store the category csv file name
+        category_files[category["Category"]] = category["CSV File"]
+
 for category in categories:
     #category id, category name
     cur.execute("INSERT INTO categories VALUES(?, ?)", (categories[category], category))
