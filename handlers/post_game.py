@@ -1,6 +1,6 @@
 from templating import render_template
 from db.models import User, Game
-from .error_handler import error_handler
+from .error import error_handler
 from . import template_paths
 
 

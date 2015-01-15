@@ -26,7 +26,7 @@ def login_start(response, user_id):
     if not response.get_secure_cookie("user_id"): #checks for cookie
         response.set_secure_cookie("user_id", str(user_id)) #creates a new cookie
     response.redirect("/profile")
-    
+
 
 #======================================
 # Does all the login handling:
@@ -35,7 +35,7 @@ def login_start(response, user_id):
 #    - If there is no row:
 #        - Show an error to user or redirect
 #    - Else:
-#        - Hashes the entered password 
+#        - Hashes the entered password
 #        - Grabs the hash pass from row
 #        - Compares the two pass values
 #======================================
@@ -55,7 +55,7 @@ def login_handler_post(request):
             error = "Password/Username is incorrect"
             #login_handler(request)
     else: #does a second check on db with email
-        user_data = User.find(email=username_email) #may 
+        user_data = User.find(email=username_email) #may
         if user_data is not None:
             if user_data.check_login(password):
                 login_start(request, user_data.id)
@@ -89,14 +89,14 @@ def signup_handler_post(request):
         request.redirect("/") #Says that the user is missing a feild
         return
     user_data = User.find(username=username) #requests a database entry with the user's username
-    if user_data == None:    #checks that there is a row in the database that 
+    if user_data == None:    #checks that there is a row in the database that
         if User.find(email=email) != None:#Says that the user email address is already in use
             error = "Email already in use!"
         else:
             User.create(username, password, email) #Creates a new entry into the db
             login_handler_post(request)
             request.redirect("/profile") #sends user a thanks pafe or profile page?
-            return 
+            return
     else:
         error="Username already in use!"
     login_handler(request, error = error)

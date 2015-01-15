@@ -7,21 +7,21 @@ from . import template_paths
 
 
 def new_question_handler(request):
-  question = request.get_field("question")
-  correct_answer = request.get_field("correct_answer")
-  wrong_answer_1 = request.get_field("wrong_answer_1")
-  wrong_answer_2 = request.get_field("wrong_answer_2")
-  wrong_answer_3 = request.get_field("wrong_answer_3")
-  category = request.get_field("categories")
-  
-  #print(question, correct_answer, wrong_answer_1, wrong_answer_2, wrong_answer_3, category)
-  question = TriviaQuestion.create(question, category)
-  Answer.create(question.id, True, correct_answer)
-  Answer.create(question.id, False, wrong_answer_1)
-  Answer.create(question.id, False, wrong_answer_2)
-  Answer.create(question.id, False, wrong_answer_3)
-  request.redirect('/category/' + category) 
- 
+    question = request.get_field("question")
+    correct_answer = request.get_field("correct_answer")
+    wrong_answer_1 = request.get_field("wrong_answer_1")
+    wrong_answer_2 = request.get_field("wrong_answer_2")
+    wrong_answer_3 = request.get_field("wrong_answer_3")
+    category = request.get_field("categories")
+
+    #print(question, correct_answer, wrong_answer_1, wrong_answer_2, wrong_answer_3, category)
+    question = TriviaQuestion.create(question, category)
+    Answer.create(question.id, True, correct_answer)
+    Answer.create(question.id, False, wrong_answer_1)
+    Answer.create(question.id, False, wrong_answer_2)
+    Answer.create(question.id, False, wrong_answer_3)
+    request.redirect('/category/' + category)
+
 def new_question_form(request):
     u_id = request.get_secure_cookie ('user_id')
     u_name = ""

@@ -13,5 +13,3 @@ def profile_handler(request):
         user_data = User.find(user_id=u_id)
         profile_page = render_template(template_paths["profile"], {"user_name": user_data.username, "email": user_data.email, "score": difficulty(int(u_id))})
         request.write(profile_page)
-     
-

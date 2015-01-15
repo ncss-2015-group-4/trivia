@@ -41,7 +41,7 @@ def get_question_handler(request, question_index):
         answers = game.get_answers(game.question_ids[int(question_index)])
         random.shuffle(answers)
         request.write(render_template(template_paths["questions"],
-	    {"question": question, "answers": answers, "question_index": str(int(question_index)+1), "user_name":u_name}))
+            {"question": question, "answers": answers, "question_index": str(int(question_index)+1), "user_name":u_name}))
         return
     request.redirect("/404kid")
 

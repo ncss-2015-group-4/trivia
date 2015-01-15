@@ -16,20 +16,20 @@ def leaderboard_handler(request):
             scores_per_person[name]=percentage
         else:
             scores_per_person[name]=(scores_per_person[name] + percentage)/2
-        
+
     score_list = list(scores_per_person.items())
     score_list.sort(key=lambda score_entry: score_entry[1], reverse=True)
-    
+
     new_score_list=[]
     for score_entry in score_list:
         score_entry=list(score_entry)
         score_entry[1] = str(round(score_entry[1],2))+"%"
         new_score_list.append(score_entry)
-    
+
     variables['score_list'] = new_score_list
 
     names = ["John", "Jack", "Kenni", "Ben", "Tony"]
-    
+
     u_id = request.get_secure_cookie ('user_id')
     u_name = ""
     if u_id is not None:
