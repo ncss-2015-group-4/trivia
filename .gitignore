@@ -58,3 +58,6 @@ target/
 
 #SQLite3 databases
 db/*.db
+
+#mac stuff
+.DS_Store
