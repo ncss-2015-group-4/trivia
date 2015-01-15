@@ -1,11 +1,16 @@
 import sqlite3
 import csv
-from hasher import new_salt
+import hasher
 
 conn = sqlite3.connect('trivia.db')
 cur = conn.cursor()
-categories = {"Harry Potter":1, "Doctor Who":2, "Star Trek":3, "Legue of Lengends":4}
-category_files = {"Harry Potter":"harry_potter_questions.csv", "Doctor Who":"doctor_who_questions.csv", "Star Trek":"star_trek_questions.csv", "Legue of Lengends":"league_of_lengends_questions.csv"}
+categories = {"Harry Potter":1, "Doctor Who":2, "Star Trek":3, "League of Legends":4}
+category_files = {
+    "Harry Potter":"harry_potter_questions.csv",
+    "Doctor Who":"doctor_who_questions.csv",
+    "Star Trek":"star_trek_questions.csv",
+    "League of Legends":"league_of_lengends_questions.csv"
+}
 difficulties = {"easy":0, "medium":1, "hard":2}
 for category in categories:
     #category id, category name
@@ -31,9 +36,13 @@ for category, category_file in category_files.items():
                 answer_count += 1
             question_count+=1
 
-cur.execute('INSERT INTO users VALUES(NULL,"awesomealex","5f4dcc3b5aa765d61d8327deb882cf99", ?,"dummyemail@email.com");', (new_salt(),))
-cur.execute('INSERT INTO users VALUES(NULL,"fantasticfeddie","25d55ad283aa400af464c76d713c07ad", ?, "dummyemail1@email.com");', (new_salt(),))
-cur.execute('INSERT INTO users VALUES(NULL,"amazingaretha","d8578edf8458ce06fbc5bb76a58c5ca4", ?, "dummyemail2@email.com");', (new_salt(),))
+def add_user(username, password, email):
+    salt = new_salt()
+    cur.execute('INSERT INTO users VALUES(NULL, ?, ?, ?, ?);', (username, hasher.hash(password, salt), salt, email))
+
+add_user('awesomealex', 'password', 'dummy@example.com')
+add_user('fantasticfeddie', 'pword', 'dummy1@example.com')
+add_user('amazingaretha', 'admin', 'dummy2@example.com')
 
 cur.execute('INSERT INTO flags VALUES(NULL,3);')
 cur.execute('INSERT INTO flags VALUES(NULL,3);')
