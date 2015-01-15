@@ -1,9 +1,15 @@
 import sqlite3
+import hasher
+
 conn= sqlite3.connect('trivia.db')
 cur= conn.cursor()
-cur.execute('INSERT INTO users VALUES(NULL,"awesomealex","5f4dcc3b5aa765d61d8327deb882cf99","dummyemail@email.com");')
-cur.execute('INSERT INTO users VALUES(NULL,"fantasticfeddie","25d55ad283aa400af464c76d713c07ad","dummyemail1@email.com");')
-cur.execute('INSERT INTO users VALUES(NULL,"amazingaretha","d8578edf8458ce06fbc5bb76a58c5ca4","dummyemail2@email.com");')
+
+salt = hasher.new_salt()
+cur.execute('INSERT INTO users VALUES(NULL,"awesomealex", ?, ?,"dummyemail@email.com");', (hasher.hash("password", salt), salt,))
+salt = hasher.new_salt()
+cur.execute('INSERT INTO users VALUES(NULL,"fantasticfeddie",?, ?,"dummyemail1@email.com");', (hasher.hash("pword", salt), salt,))
+salt = hasher.new_salt()
+cur.execute('INSERT INTO users VALUES(NULL,"amazingaretha",?, ?,"dummyemail2@email.com");', (hasher.hash("admin", salt), salt,))
 
 cur.execute('INSERT INTO categories VALUES(1,"Harry Potter");')
 cur.execute('INSERT INTO categories VALUES(2,"Doctor Who");')

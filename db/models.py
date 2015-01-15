@@ -114,11 +114,10 @@ class User(Model):
 
     def check_login(self, password):
         """Check whether a provided password is the user's password."""
-
         cur = conn.cursor()
-        cur.execute('SELECT password FROM users WHERE user_id = ?', (self.id,))
+        cur.execute('SELECT password, salt FROM users WHERE user_id = ?', (self.id,))
         result = cur.fetchone()
-        return hasher.hash(password) == result['password']
+        return hasher.hash(password, result['salt']) == result['password']
 
     @classmethod
     def create(cls, username, password, email):
@@ -129,7 +128,9 @@ class User(Model):
         """
 
         cur=conn.cursor()
-        cur.execute('INSERT INTO users VALUES(NULL,?,?,?)',(username,hasher.hash(password),email,))
+        cur.execute('INSERT INTO users VALUES(NULL,?,?,?,?)',(username,hasher.hash(password)
+                                                            ,hasher.new_salt(),
+                                                            email,))
         conn.commit()
         return cls(cur.lastrowid,username,email)
 
