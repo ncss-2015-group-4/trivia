@@ -127,9 +127,10 @@ class User(Model):
         Example: User.create('drowsydavid', 'lol', 'devnull@vovo')
         """
 
+        salt = hasher.new_salt()
         cur=conn.cursor()
-        cur.execute('INSERT INTO users VALUES(NULL,?,?,?,?)',(username,hasher.hash(password)
-                                                            ,hasher.new_salt(),
+        cur.execute('INSERT INTO users VALUES(NULL,?,?,?,?)',(username,hasher.hash(password, salt)
+                                                            ,salt,
                                                             email,))
         conn.commit()
         return cls(cur.lastrowid,username,email)
