@@ -16,6 +16,7 @@ from handlers.leaderboard import leaderboard_handler
 from handlers.category import category_handler, category_list_handler
 from handlers.question import new_question_handler, new_question_form, edit_question_handler
 from handlers.logout import logout_handler
+from handlers.flag import flag_question_handler
 
 
 def new_server(port=8888, hostname='', debug=True):
@@ -36,6 +37,7 @@ def new_server(port=8888, hostname='', debug=True):
     server.register('/user', user_handler, post=signup_handler_post)
     server.register('/categories', category_list_handler)
     server.register('/logout', logout_handler)
+    server.register(r'/flag/([0-9]+)', flag_question_handler)
     server.register(r'/.*', error_handler)
 
     return server
