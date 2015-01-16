@@ -185,7 +185,7 @@ class Question(Model):
     * question.flag()
 
     Class methods:
-    * TriviaQuestion.create(question_text, category_id)
+    * Question.create(question_text, category_id)
     """
 
     def __init__(self, question_id, question, questions_answered, questions_correct, category, difficulty):
@@ -269,8 +269,8 @@ class Flag(Model):
 
 
 class Answer(Model):
-    """
-    A model that represents an answer for a TriviaQuestion.
+    """Q
+    A model that represents an answer for a Question.
 
     Properties:
     * id          - the unique answer ID
@@ -398,7 +398,7 @@ class Game(Model):
         print(repr(self.question_ids), index)
         current_question_id = self.question_ids[index]
         print(current_question_id)
-        question = TriviaQuestion.find(question_id=current_question_id)
+        question = Question.find(question_id=current_question_id)
 
         return question
 
