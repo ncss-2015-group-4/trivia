@@ -394,6 +394,13 @@ class Game(Model):
                 return correct
         return False
 
+    def get_questions(self):
+        questions = []
+        for id in self.question_ids:
+            questions.append(Question.find(question_id=id))
+
+        return questions
+
     def get_question(self, index):
         print(repr(self.question_ids), index)
         current_question_id = self.question_ids[index]
