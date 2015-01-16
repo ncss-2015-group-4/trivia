@@ -365,6 +365,9 @@ class Game(Model):
         for row in cur.execute('SELECT question_id FROM questions WHERE category = ? AND difficulty =?', (category_id, difficulty)):
             question_ids.append(row["question_id"])
 
+        if not question_ids:
+            return None
+
         random.shuffle(question_ids)
         question_ids = question_ids[:n]
         print("number of questions generated: " + str(len(question_ids)))
