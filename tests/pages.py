@@ -1,5 +1,7 @@
 from tornado.testing import AsyncHTTPTestCase
+from tornado.web import create_signed_value
 import re
+from db.models import User
 #define regex patters to search for nav bar links
 pre_game_pattern = re.compile(r'href\ *\=\ *\"\/pre_game\"')
 submit_pattern = re.compile(r'href\ *\=\ *\"\/question\"')
@@ -14,6 +16,12 @@ class MissingLink(Exception):
     Exception for if a link is missing in html
     '''
     pass
+
+def LoginError(Exception):
+    '''
+    Exception for an issue with login/register
+    '''
+    pass
     
 def check_link(html, link, page):
     '''
@@ -21,17 +29,18 @@ def check_link(html, link, page):
     '''
     if not link_patterns[link].search(html):
         raise MissingLink("The "+link+" link is missing from the "+page+" page.")
-    
+
+
 class HTTPTestCase(AsyncHTTPTestCase):
     def get_app(self):
         from trivia import server
-        self.app = server.app()
+        self.app = server.app(cookie_secret='test')
         return self.app
         
     def test_00_homepage_tests(self):
         url = '/'
         headers = {'method': 'GET'}
-        html = self.check_page(url, **headers).decode()
+        html = self.check_page(url, **headers)
         check_link(html, "home", "home")
         check_link(html, "pre_game", "home")
         check_link(html, "submit", "home")
@@ -41,7 +50,7 @@ class HTTPTestCase(AsyncHTTPTestCase):
     def test_01_login(self):
         url = '/login'
         headers = {'method': 'GET'}
-        html = self.check_page(url, **headers).decode()#test if the login page can be accessed
+        html = self.check_page(url, **headers)#test if the login page can be accessed
         check_link(html, "home", "login")
         check_link(html, "pre_game", "login")
         check_link(html, "submit", "login")
@@ -51,7 +60,7 @@ class HTTPTestCase(AsyncHTTPTestCase):
     def test_02_register(self):
         url = '/user'
         headers = {'method': 'GET'}
-        html = self.check_page(url, **headers).decode()#test if the user page can be accessed
+        html = self.check_page(url, **headers)#test if the user page can be accessed
         '''
         check_link(html,"home","user")
         check_link(html,"pre_game","user")
@@ -59,20 +68,26 @@ class HTTPTestCase(AsyncHTTPTestCase):
         check_link(html, "submit", "user")
         #check_link(html,"profile","user")
         '''
-        
-        #the databases are not currently finished. I will uncomment the following when they are
-        #url = '/user'
-        #headers = {'method': 'POST', 'body': b'username=someUser&password=pass&email=someUser@someDomain.com'}
-        #self.check_page(url, **headers)#test if the registration form works
-        
-        #url = '/login'
-        #headers = {'method': 'POST', 'body': b'username=someUser&password=pass'}
-        #self.check_page(url, **headers)#test if the login form works
+        #test registration
+        url= '/user'
+        headers = {'method': 'POST', 'body': b'username=testUser&password=testPass&email=testUser%40someDomain.com'}
+        html=self.check_page(url, **headers)
+        user_id=User.find(username='testUser').id
+        cookie_value = create_signed_value(self.app.settings['cookie_secret'], 'user_id', str(user_id))
+        cookies = 'user_id='+cookie_value.decode('utf-8')
+        #check if user name appears on homepage
+        url='/'
+        headers = {'method': 'GET', 'headers': {'Cookie': cookies}}
+        html = self.check_page(url, **headers)
+        if 'testUser' not in html:
+            raise LoginError('Username not on the homepage')
+        else:
+            print('Logged in after registering')
         
     def test_03_profile_tests(self):
         url = '/profile'
         headers = {'method': 'GET'}
-        html = self.check_page(url, **headers).decode()
+        html = self.check_page(url, **headers)
         check_link(html, "home", "profile")
         check_link(html,"pre_game", "profile")
         check_link(html, "submit", "profile")
@@ -82,7 +97,7 @@ class HTTPTestCase(AsyncHTTPTestCase):
     def test_04_question_submission_tests(self):
         url = '/submit'
         headers = {'method': 'GET'}
-        html = self.check_page(url, **headers).decode()
+        html = self.check_page(url, **headers)
         check_link(html, "home", "sumbission")
         check_link(html, "pre_game", "submission")
         check_link(html, "submit", "submission")
@@ -92,7 +107,7 @@ class HTTPTestCase(AsyncHTTPTestCase):
     def test_05_pre_game_tests(self):
         url = '/pre_game'
         headers = {'method': 'GET'}
-        html = self.check_page(url, **headers).decode()
+        html = self.check_page(url, **headers)
         check_link(html, "home", "pre_game")
         check_link(html, "pre_game", "pre_game")
         check_link(html, "submit", "pre_game")
@@ -127,7 +142,7 @@ class HTTPTestCase(AsyncHTTPTestCase):
     def test_07_logout_tests(self):
         url = '/logout'
         headers = {'method': 'GET'}
-        html = self.check_page(url, **headers).decode()
+        html = self.check_page(url, **headers)
         check_link(html, "home", "logout")
         check_link(html, "pre_game", "logout")
         #check_link(html, "submit", "logout")
@@ -138,4 +153,4 @@ class HTTPTestCase(AsyncHTTPTestCase):
         if response.error:
             raise Exception('{}: {} {} {}'.format(response.error, response.code, response.request.method, response.request.url))
         else:
-            return response.body
+            return response.body.decode()
