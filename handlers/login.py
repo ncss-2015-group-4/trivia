@@ -42,31 +42,26 @@ def login_start(response, user_id):
 #======================================
 
 def login_handler_post(request):
-    username_email = request.get_field("username")
+    username = request.get_field("username")
     password = request.get_field("password")
-    if username_email == None or username_email == '' or password == None or password == '':
-        request.redirect("/") #field isn't filled in
+
+    if not (username and password) or (username == "" or password == ""):
+        request.redirect("/")
         return
-    user_data = User.find(username=username_email) #checks db with username
-    if user_data is not None: #if there is a row in the database
-        if user_data.check_login(password):
-            login_start(request, user_data.id)
+
+    user = User.find(username=username)
+
+    if user:
+        if user.check_login(password):
+            login_start(request, user.id)
             return
         else:
-            error = "Password/Username is incorrect"
-            #login_handler(request)
-    else: #does a second check on db with email
-        user_data = User.find(email=username_email) #may
-        if user_data is not None:
-            if user_data.check_login(password):
-                login_start(request, user_data.id)
-                return
-            else:
-               error = "Password/Username is incorrect"
-        else:
-            error = "User doesn't exist"
-    login_handler(request, error=error) #cannot find username or email in database!
-    return
+            login_handler(request, error="That username and password combination does not exist.")
+            return
+
+    login_handler(request, error="That user does not exist")
+
+    
 #======================================
 # Does all the signup handling:
 #    - Takes in form data
