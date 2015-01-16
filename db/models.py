@@ -171,7 +171,7 @@ class User(Model):
         cur.commit()
 
 
-class TriviaQuestion(Model):
+class Question(Model):
     """
     A model representing trivia questions in the database.
 
@@ -239,7 +239,7 @@ class Category(Model):
         return cls(cur.lastrowid,name)
 
     def create_question(self, question, answers):
-        question = TriviaQuestion.create(question, self.id)
+        question = Question.create(question, self.id)
         for index, answer in enumerate(answers):
             if index == 0:
                 Answer.create(question.id, 1, answer)
@@ -250,7 +250,7 @@ class Category(Model):
 
 class Flag(Model):
     """
-    A model that represents a flag on a TriviaQuestion.
+    A model that represents a flag on a Question.
 
     Properties:
     * id          - the unique flag ID
@@ -380,7 +380,7 @@ class Game(Model):
     def submit_answer(self, question_id, answer_id):
         cur=conn.cursor()
         correct = 0
-        question = TriviaQuestion.find(question_id=question_id)
+        question = Question.find(question_id=question_id)
         answer = Answer.find(answer_id=answer_id)
         if question and answer:
             if question.id == answer.question_id:

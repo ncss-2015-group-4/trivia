@@ -1,13 +1,13 @@
 from templating import render_template
 from db.models import Category
 from db.models import User
-from db.models import TriviaQuestion
+from db.models import Question
 from . import template_paths
 
 def category_handler(request, category_id):
     cat = Category.find(category_id=category_id)
 
-    list_of_questions = TriviaQuestion.find_all(category=category_id)
+    list_of_questions = Question.find_all(category=category_id)
     #print(list_of_questions)
     u_id = request.get_secure_cookie('user_id')
     u_name = ""
