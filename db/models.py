@@ -377,19 +377,23 @@ class Game(Model):
     def submit_answer(self, question_id, answer_id):
         cur=conn.cursor()
         correct = 0
+        question = TriviaQuestion.find(question_id=question_id)
         answer = Answer.find(answer_id=answer_id)
-        if answer.correct:
-            correct = 1
-            cur.execute('UPDATE games SET score = score + 1 WHERE game_id = ?',(self.id,))
-            self.score += 1
-            print("SCORE INCREMENTED")
-        else:
-            print("answer:",answer)
-        cur.execute('UPDATE questions SET questions_answered = questions_answered + 1, questions_correct = questions_correct + ? WHERE question_id = ?',
-                        (correct, question_id))
-        conn.commit()
-        return correct
-
+        if question and answer:
+            if question.id == answer.question_id:
+                if answer.correct:
+                    correct = 1
+                    cur.execute('UPDATE games SET score = score + 1 WHERE game_id = ?',(self.id,))
+                    self.score += 1
+                    print("SCORE INCREMENTED")
+                else:
+                    print("answer:",answer)
+                cur.execute('UPDATE questions SET questions_answered = questions_answered + 1, questions_correct = questions_correct + ? WHERE question_id = ?',
+                                (correct, question_id))
+                conn.commit()
+                
+                return correct
+        return False
 
     def get_question(self, index):
         print(repr(self.question_ids), index)
