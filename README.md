@@ -3,6 +3,10 @@
 
 A social trivia website built by group 4 for NCSS 2015
 
+
+##Is it live?
+Currently you can see a reasonably up to date version of the site [here](https://quizzi.vovo.id.au/) (thanks @auscompgeek)
+
 ## How do I do this?
 First, clone this repo:
 ```
