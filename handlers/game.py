@@ -4,6 +4,7 @@ from db.models import User
 from . import template_paths
 
 import random
+
 def game_handler(request):
     category_id = request.get_field("category_id")
     difficulty = request.get_field("difficulty")
@@ -14,9 +15,16 @@ def game_handler(request):
         user = User.find(user_id=int(user_id_cookie.decode()))
         if category_id is not None and difficulty is not None:
             game = Game.create(user.id, int(category_id), float(difficulty))
+            if not game:
+                request.write('There are no questions in this category and difficulty. :(')
+                return
+
             request.set_secure_cookie("game_id", str(game.id))
             print('game_id set to', game.id)
             request.redirect('/game/0')
+            return
+
+    request.redirect('/login')
 
 def get_question_handler(request, question_index):
     u_id = request.get_secure_cookie('user_id')
