@@ -4,7 +4,7 @@ PROPERTY OF THE HOLY SOCIETY OF TEMPLATEIA. UNAUTHORISED EDITING WILL BE PROSECU
 This code parses the templates into python and html.
 The python code can then be evaluated and added to the html to be displayed by a web browser
 '''
-import cgi
+import html
 IF_TAG = ' if '
 INCLUDE_TAG = ' include '
 FOR_TAG = ' for '
@@ -32,7 +32,7 @@ class PythonNode(Node):
     '''
     def eval(self, scope):
         #return the execution of the python code
-        return cgi.escape(str(eval(self.content, scope)))
+        return html.escape(str(eval(self.content, scope)))
 
 class TextNode(Node):
     '''
