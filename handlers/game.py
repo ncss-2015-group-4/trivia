@@ -4,6 +4,7 @@ from db.models import User
 from . import template_paths
 
 import random
+
 def game_handler(request):
     category_id = request.get_field("category_id")
     difficulty = request.get_field("difficulty")
@@ -17,6 +18,8 @@ def game_handler(request):
             request.set_secure_cookie("game_id", str(game.id))
             print('game_id set to', game.id)
             request.redirect('/game/0')
+
+    request.redirect('/login')
 
 def get_question_handler(request, question_index):
     u_id = request.get_secure_cookie('user_id')
