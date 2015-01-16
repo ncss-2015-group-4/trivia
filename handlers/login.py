@@ -1,6 +1,7 @@
 from db.models import User
 from templating import render_template
 from . import template_paths
+import re
 
 def login_handler(request, **kwargs):
     error=kwargs.get("error","")
@@ -85,19 +86,25 @@ def signup_handler_post(request):
     password = request.get_field("password")
     email = request.get_field("email")
     error=""
-    if username == None or username == '' or password == None or password == '':
-        request.redirect("/") #Says that the user is missing a feild
+    regex = r"^[a-zA-Z][a-zA-Z0-9]*[a-zA-Z]$"
+
+    if not (username and password and email):
+        login_handler(request, error="Fill in all the fields!")
         return
-    user_data = User.find(username=username) #requests a database entry with the user's username
-    if user_data == None:    #checks that there is a row in the database that
-        if User.find(email=email) != None:#Says that the user email address is already in use
+
+    if not (re.match(regex, username) and re.match(regex, password)):
+        login_handler(request, error="That is not a valid username or password")
+        return
+
+    if not User.find(username=username):
+        if User.find(email=email):
             error = "Email already in use!"
         else:
-            User.create(username, password, email) #Creates a new entry into the db
+            User.create(username, password, email)
             login_handler_post(request)
-            request.redirect("/profile") #sends user a thanks pafe or profile page?
+            request.redirect("/profile")
             return
     else:
         error="Username already in use!"
+
     login_handler(request, error = error)
-   # request.redirect("/login")
