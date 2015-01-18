@@ -5,6 +5,7 @@ from db.models import User
 from db.models import Category
 from db.models import Question
 import html
+import os
 #define regex patters to search for nav bar links
 pre_game_pattern = re.compile(r'href\ *\=\ *\"\/pre_game\"')
 submit_pattern = re.compile(r'href\ *\=\ *\"\/question\"')
@@ -37,6 +38,12 @@ class PageError(Exception):
     Exception for an error with a page
     '''
     pass
+
+class SubmitError(Exception):
+    '''
+    Exception for submitting questions
+    '''
+    pass
     
 def check_link(page_html, link, page):
     '''
@@ -45,7 +52,7 @@ def check_link(page_html, link, page):
     if not link_patterns[link].search(page_html):
         raise MissingLink("The "+link+" link is missing from the "+page+" page.")
 
-
+cookies=''
 class HTTPTestCase(AsyncHTTPTestCase):
     def get_app(self):
         from trivia import server
@@ -61,18 +68,9 @@ class HTTPTestCase(AsyncHTTPTestCase):
         check_link(page_html, "submit", "home")
         #check_link(page_html, "logout", "home")
         #check_link(page_html, "profile", "home")
-        
-    def test_01_login(self):
-        url = '/login'
-        headers = {'method': 'GET'}
-        page_html = self.check_page(url, **headers)#test if the login page can be accessed
-        check_link(page_html, "home", "login")
-        check_link(page_html, "pre_game", "login")
-        check_link(page_html, "submit", "login")
-        #check_link(page_html, "logout", "login")
-        #check_link(page_html, "profile", "login")
-        
-    def test_02_register(self):
+         
+    def test_01_register(self):
+        global cookies
         url = '/user'
         headers = {'method': 'GET'}
         page_html = self.check_page(url, **headers)#test if the user page can be accessed
@@ -98,10 +96,21 @@ class HTTPTestCase(AsyncHTTPTestCase):
             raise LoginError('Username not on the homepage')
         else:
             print('Logged in after registering')
-        
-    def test_03_profile_tests(self):
-        url = '/profile'
+    
+    def test_02_login(self):
+        url = '/login'
         headers = {'method': 'GET'}
+        page_html = self.check_page(url, **headers)#test if the login page can be accessed
+        check_link(page_html, "home", "login")
+        check_link(page_html, "pre_game", "login")
+        check_link(page_html, "submit", "login")
+        #check_link(page_html, "logout", "login")
+        #check_link(page_html, "profile", "login")
+
+    def test_03_profile_tests(self):
+        global cookies
+        url = '/profile'
+        headers = {'method': 'GET', 'headers': {'Cookie': cookies}}
         page_html = self.check_page(url, **headers)
         check_link(page_html, "home", "profile")
         check_link(page_html,"pre_game", "profile")
@@ -110,14 +119,22 @@ class HTTPTestCase(AsyncHTTPTestCase):
         #check_link(page_html, "profile", "profile")
         
     def test_04_question_submission_tests(self):
+        global cookies
         url = '/submit'
-        headers = {'method': 'GET'}
+        headers = {'method': 'GET', 'headers': {'Cookie':cookies}}
         page_html = self.check_page(url, **headers)
         check_link(page_html, "home", "sumbission")
         check_link(page_html, "pre_game", "submission")
         check_link(page_html, "submit", "submission")
-        #check_link(page_html, "logout", "submission")
-        #check_link(page_html, "profile", "submission")
+
+        #Try making a question in each category
+        for category in Category.find_all():
+            print("Making a test question for category "+str(category.id))
+            url= '/question'
+            headers = {'method': 'POST', 'body': b'categories='+bytes(str(category.id),'utf-8')+b'&question=testQuestion&correct_answer=correct&wrong_answer_1=wrong1&wrong_answer_2=wrong2&wrong_answer_3=wrong3'}
+            page_html=self.check_page(url, **headers)
+            if 'testQuestion' not in page_html:
+                raise SubmitError('testQuestion was not submitted to category '+str(category.id))
         
     def test_05_category_tests(self):
         url = '/categories'
@@ -169,13 +186,26 @@ class HTTPTestCase(AsyncHTTPTestCase):
     '''
 
     def test_07_logout_tests(self):
+        print("Checking logout tests")
         url = '/logout'
         headers = {'method': 'GET'}
         page_html = self.check_page(url, **headers)
         check_link(page_html, "home", "logout")
         check_link(page_html, "pre_game", "logout")
+        self.reset()
         #check_link(page_html, "submit", "logout")
         #check_link(page_html, "profile", "logout")
+
+    def reset(self):
+        #reset the database after the tests have modified it
+        #change directory to the database scripts
+        print("Resetting database")
+        cwd = os.getcwd()
+        os.chdir(cwd+'/db')
+        #run the databse scripts
+        import create_db
+        import dummy_data
+        os.chdir(cwd)
     
     def check_page(self, url, **headers):
         response = self.fetch(url, **headers)
@@ -183,3 +213,4 @@ class HTTPTestCase(AsyncHTTPTestCase):
             raise Exception('{}: {} {} {}'.format(response.error, response.code, response.request.method, response.request.url))
         else:
             return response.body.decode()
+
