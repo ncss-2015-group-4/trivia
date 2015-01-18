@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<link rel="stylesheet" href="/static/css/reset.css" type = "text/css" >
-		<link rel="stylesheet" href="/static/css/csstemplate.css" type = "text/css" >
+		<link rel="stylesheet" href="/static/css/reset.css" type="text/css">
+		<link rel="stylesheet" href="/static/css/csstemplate.css" type="text/css">
 	</head>
 
 	<!-- Summary of game -->
@@ -12,8 +12,14 @@
             <h1>CONGRATULATIONS!</h1>
         </div>
 			<div class="postgameoutcome">
-				<p>{{ user_name }}, you completed the quiz!</br></br>Your score was...</p>
-				<p>{{ score }} / 5</h2>
+				<p>{{ user_name }}, you completed the quiz!<br><br>Your score was...</p>
+				<h2>{{ score }} / 5</h2>
+				<br>
+				<ul>
+		            {% for question in questions %}
+		            <li>{{question.question}} <a href="/flag/{{question.id}}">Flag?</a></li>
+		            {% end for %}
+				</ul>
 			</div>
 				
 		<div class="postgamebackground">

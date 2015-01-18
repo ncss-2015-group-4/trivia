@@ -1,5 +1,5 @@
 from templating import render_template
-from db.models import User, Game
+from db.models import User, Game, Question, Answer
 from .error import error_handler
 from . import template_paths
 
@@ -13,10 +13,13 @@ def post_game_handler(request):
 
     u_id = request.get_secure_cookie('user_id')
     u_name = ""
-    score = Game.find(game_id=game_id).score
+
+    game = Game.find(game_id=game_id)
+    score = game.score
     if u_id is not None:
         u_id = u_id.decode("UTF-8")
         u_name = User.find(user_id=u_id)
         u_name = u_name.username.lower().capitalize()
-    post_game_page = render_template(template_paths["post_game"], {"user_name": u_name, "score":score})
+
+    post_game_page = render_template(template_paths["post_game"], {"user_name": u_name, "score":score, "questions": game.get_questions()})
     request.write(post_game_page)
