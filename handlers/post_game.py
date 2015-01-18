@@ -21,5 +21,10 @@ def post_game_handler(request):
         u_name = User.find(user_id=u_id)
         u_name = u_name.username.lower().capitalize()
 
-    post_game_page = render_template(template_paths["post_game"], {"user_name": u_name, "score":score, "questions": game.get_questions()})
+    template_values = {}
+    template_values['user_name'] = u_name
+    template_values['score'] = score
+    template_values['questions'] = game.get_questions()
+    template_values['question_results'] = game.get_question_results()
+    post_game_page = render_template(template_paths["post_game"], template_values)
     request.write(post_game_page)

@@ -328,6 +328,45 @@ class Score(Model):
         cur.execute('UPDATE scores SET num_answered=?,num_correct=? WHERE user_id=? AND category_id=?', (self.num_answered, self.num_correct, self.user_id, self.category_id))
         cur.commit()
 
+class QuestionResult(Model):
+    """
+    A model that represents a single user's answers to the questions in a single game.
+
+    Properties:
+    * game_id     - the id of the Game the user played
+    * question_id - the question the user answered
+    * user_id     - the id of the user that answered (perhaps multiple users can play a game in future)
+    * answer_id   - the answer the user selected (either correctly or incorrectly)
+    * correct     - whether the answer was correct or not (mostly for convenience)
+    """
+
+    def __init__(self, game_id, question_id, user_id, answer_id, correct):
+        self.game_id = game_id
+        self.question_id = question_id
+        self.user_id = user_id
+        self.answer_id = answer_id
+        self.correct = correct
+
+    @classmethod
+    def create(cls, game_id, question_id, user_id, answer_id, correct):
+        cur = conn.cursor()
+        cur.execute('INSERT INTO questionresults VALUES(?, ?, ?, ?, ?)',
+                (game_id, question_id, user_id, answer_id, correct))
+        conn.commit()
+        return cls(game_id, question_id, user_id, answer_id, correct)
+
+    def question(self):
+        """Returns the question object that represents the question asked."""
+        return Question.find(question_id=self.question_id)
+
+    def users_answer(self):
+        """Returns the Answer object that the user selected."""
+        return Answer.find(answer_id=self.answer_id)
+
+    def correct_answer(self):
+        """Returns the Answer object for the correct answer to the question."""
+        return Answer.find(question_id=self.question_id, correct=True)
+
 class Game(Model):
     """
     A model that represents a Game that a user is/was playing
@@ -387,12 +426,20 @@ class Game(Model):
                     print("SCORE INCREMENTED")
                 else:
                     print("answer:",answer)
+                question_result = QuestionResult.create(self.id, question_id, self.user_id, answer_id, correct)
                 cur.execute('UPDATE questions SET questions_answered = questions_answered + 1, questions_correct = questions_correct + ? WHERE question_id = ?',
                                 (correct, question_id))
                 conn.commit()
                 
                 return correct
         return False
+
+    def get_question_results(self):
+        """Returns the list of results for each question answered."""
+        # TODO: Make this the same order as the questions were asked (currently random order)
+        # We probably need to store the index in the db as well.
+        results = QuestionResult.find_all(game_id=self.id)
+        return results
 
     def get_questions(self):
         questions = []
