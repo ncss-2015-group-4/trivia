@@ -72,4 +72,20 @@ cur.execute("""CREATE TABLE IF NOT EXISTS games(
 	FOREIGN KEY (category_id) REFERENCES categories (category_id)
     );""")
 
+cur.execute("""CREATE TABLE IF NOT EXISTS questionresults(
+    game_id INTEGER NOT NULL,
+    question_id INTEGER NOT NULL,
+    user_id INTEGER NOT NULL,
+    answer_id INTEGER,
+    correct BOOLEAN,
+    PRIMARY KEY (game_id, question_id, user_id),
+    FOREIGN KEY (game_id) REFERENCES games (game_id),
+    FOREIGN KEY (question_id) REFERENCES questions (question_id),
+    FOREIGN KEY (user_id) REFERENCES users (user_id),
+    FOREIGN KEY (answer_id) REFERENCES answers (answer_id)
+    );""")
+
+
+
+
 conn.commit()

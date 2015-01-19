@@ -16,8 +16,13 @@
 				<h2>{{ score }} / 5</h2>
 				<br>
 				<ul>
-		            {% for question in questions %}
-		            <li>{{question.question}} <a href="/flag/{{question.id}}">Flag?</a></li>
+		            {% for question_result in question_results %}
+                    <li>
+                        {{ question_result.question().question }}&nbsp; 
+                        <a href="/flag/{{ question_result.question_id }}">Flag?</a>&nbsp;
+                        {% if question_result.correct %}Correct!{% end if %}
+                        {% if question_result.correct == False %}Your answer: {{ question_result.users_answer().text }}, Correct answer: {{ question_result.correct_answer().text }} {% end if %}
+                    </li>
 		            {% end for %}
 				</ul>
 			</div>
