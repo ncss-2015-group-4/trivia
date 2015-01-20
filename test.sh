@@ -1,3 +1,5 @@
+#!/bin/sh
+
 cd db
 python3 create_db.py
 python3 dummy_data.py
