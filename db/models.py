@@ -166,8 +166,9 @@ class User(Model):
         True
         """
 
+        salt = hasher.new_salt()
         cur = conn.cursor()
-        cur.execute('UPDATE users SET password_hash = ? WHERE user_id = ?', (hasher.hash(password), self.id))
+        cur.execute('UPDATE users SET password = ?, salt = ? WHERE user_id = ?', (hasher.hash(password, salt), salt, self.id))
         cur.commit()
 
 
