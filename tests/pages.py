@@ -4,8 +4,10 @@ import re
 from db.models import User
 from db.models import Category
 from db.models import Question
+from db.models import Answer
 import html
 import os
+import sqlite3
 #define regex patters to search for nav bar links
 pre_game_pattern = re.compile(r'href\ *\=\ *\"\/pre_game\"')
 submit_pattern = re.compile(r'href\ *\=\ *\"\/question\"')
@@ -14,6 +16,8 @@ submit_pattern = re.compile(r'href\ *\=\ *\"\/question\"')
 home_pattern = re.compile(r'href\ *\=\ *\"\/"')
 logout_pattern = re.compile(r'href\ *\=\ *\"\/logout"')
 link_patterns = {'pre_game': pre_game_pattern, 'submit': submit_pattern, 'home':home_pattern, 'logout':logout_pattern}
+#Apparently some questions end with a newline.
+question_pattern = re.compile(r'\<p\ id\=\"question\"\>(.+\n?)\<\/p\>')
 
 class MissingLink(Exception):
     '''
@@ -161,29 +165,76 @@ class HTTPTestCase(AsyncHTTPTestCase):
                     raise PageError(str(question.question)+' is missing from '+url)
  
     def test_06_game_tests(self):
-        pass
-        '''
-        url = '/game'
-        headers = {'method': 'GET'}
-        page_html = self.check_page(url, **headers).decode()
-        check_link(page_html, "home", "game")
-        check_link(page_html, "pre_game", "game")
-        check_link(page_html, "submit", "game")
-        check_link(page_html, "logout", "game")
-        #check_link(page_html, "profile", "game")
-        '''
-
-    '''
-    def test_07_post_game_tests(self):
-        url = '/post_game'
-        headers = {'method': 'GET'}
-        page_html = self.check_page(url, **headers).decode()
-        check_link(page_html, "home", "login")
-        check_link(page_html, "pre_game", "login")
-        check_link(page_html, "submit", "login")
-        #check_link(page_html, "logout", "login")
-        #check_link(page_html, "profile", "login")
-    '''
+        #Todo: Document this mess, I am too lazy to do it right now
+        global cookies
+        print("Testing game")
+        game_cookie=''
+        game_id=0
+        #there is no function in the models.Question class to get the all the question answers. As I do not want to access the game directly I will use sql
+        conn = sqlite3.connect('db/trivia.db')
+        cur=conn.cursor()
+        #for each category
+        for category in Category.find_all():
+            #for each difficulty
+            for difficulty in range(3):
+                #Some combinations of categories and difficulties may have less than 5 questions
+                #if this is the case the quiz will be shorter
+                cur.execute('SELECT * FROM questions WHERE category = ? AND difficulty = ?', (category.id, difficulty))
+                max_questions = len(cur.fetchall())
+                if max_questions > 5:
+                    max_questions = 5
+                print('Max questions: {}'.format(max_questions))
+                #score to test
+                final_scores=[]
+                if max_questions > 0:
+                    final_scores.append(0)
+                if max_questions > 1:
+                    final_scores.append(1)
+                final_scores.append(max_questions)
+                for final_score in final_scores:
+                    if max_questions == 0:
+                        break #If there are no questions in the category there will be a 404 error when accessing /game/0
+                    game_id+=1
+                    url = '/game/create'
+                    headers = {'method': 'POST', 'body': b'category_id='+bytes(str(category.id),'utf-8')+b'&difficulty='+bytes(str(difficulty),'utf-8'), 'headers': {'Cookie':cookies}}
+                    self.fetch(url, **headers).body.decode()#Start the game, this will result in a 404 error as the redirect to /game/0 will be missing the game_id cookie. This is due to AsyncHTTPTestCase lack of cookie support (same reason why I am calculating the cookies rather then retreving them from the responce.)
+                    cookie_value = create_signed_value(self.app.settings['cookie_secret'], 'game_id', str(game_id))
+                    game_cookie = 'game_id='+cookie_value.decode('utf-8')
+                    #for each question to get correct
+                    question_number=0
+                    game_headers = {'method':'GET', 'headers':{'Cookie':game_cookie+'; '+cookies}}
+                    for i in range(final_score):
+                        page_html = self.check_page('/game/'+str(question_number), **game_headers)
+                        print("Submitting correct answer")
+                        question_text = html.unescape(question_pattern.search(page_html).groups()[0])
+                        question_id = Question.find(question=question_text).id
+                        cur.execute('SELECT * FROM answers WHERE question_id = ?',(question_id,))#get the answers to the question
+                        answers = cur.fetchall()
+                        for answer in answers: #check if the answers are on the page
+                            if html.escape(answer[3]) not in page_html:
+                                raise GameError('Answer {} missing from question {}'.format(answer[0],question_id))
+                        answers.sort(key=lambda x: x[2], reverse=True)#sort the answers so that the correct answer is first
+                        url = '/game/submit/'+str(answers[0][0])
+                        self.fetch(url, **game_headers)
+                        question_number+=1
+                    
+                    for i in range(max_questions-final_score):                        
+                        page_html = self.check_page('/game/'+str(question_number), **game_headers)
+                        print("Submitting incorrect answer")
+                        if question_pattern.search(page_html) is None:
+                            print(page_html)
+                        question_text = html.unescape(question_pattern.search(page_html).groups()[0])
+                        question_id = Question.find(question=question_text).id
+                        cur.execute('SELECT * FROM answers WHERE question_id = ?',(question_id,))
+                        answers = cur.fetchall()
+                        for answer in answers:
+                            if html.escape(answer[3]) not in page_html:
+                                raise GameError('Answer {} missing from question {}'.format(answer[0],question_id))
+                        answers.sort(key=lambda x: x[2], reverse=True)
+                        url = '/game/submit/'+str(answers[2][0])
+                        self.fetch(url, **game_headers)
+                        question_number+=1
+                    print("Finished game category:{} difficulty:{} final score:{}".format(category.id,difficulty,final_score))
 
     def test_07_logout_tests(self):
         print("Checking logout tests")
@@ -192,25 +243,13 @@ class HTTPTestCase(AsyncHTTPTestCase):
         page_html = self.check_page(url, **headers)
         check_link(page_html, "home", "logout")
         check_link(page_html, "pre_game", "logout")
-        self.reset()
         #check_link(page_html, "submit", "logout")
         #check_link(page_html, "profile", "logout")
 
-    def reset(self):
-        #reset the database after the tests have modified it
-        #change directory to the database scripts
-        print("Resetting database")
-        cwd = os.getcwd()
-        os.chdir(cwd+'/db')
-        #run the databse scripts
-        import create_db
-        import dummy_data
-        os.chdir(cwd)
-    
     def check_page(self, url, **headers):
         response = self.fetch(url, **headers)
         if response.error:
-            raise Exception('{}: {} {} {}'.format(response.error, response.code, response.request.method, response.request.url))
+            raise Exception('{}: {} {} {} {}'.format(response.error, response.code, response.request.method, response.request.url, response.request.headers))
         else:
             return response.body.decode()
 
