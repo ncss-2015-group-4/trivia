@@ -15,16 +15,11 @@
 			<p>Email: {{email}}</p>
 			<ul>
 				<h2>Player Progress</h2>
-				<div class = "progress">
-                {% if len(score) != 0 %}
-                    {% for i in score %}
-                        <li>{{i[0]}}: {{i[1]}} correct.</li>
-                    {% end for %}
-                {% end if %}
-                {% if len(score) == 0 %}
-                    <li>No current progress...</li>
-                {% end if %}
-				</div>
+				<ul class = "progress">
+					{% for game in games %}
+						<li>Scored {{game.score}}</li>
+					{% end for %}
+				</ul>
 			</ul>
 			<!--<ul>
 				<h2>Recent Activity</h2>
