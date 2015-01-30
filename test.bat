@@ -1,3 +1,4 @@
+@echo off
 cd db
 echo Backing up database (If one exists)
 if exist trivia.db ren trivia.db triviaBackup.db
