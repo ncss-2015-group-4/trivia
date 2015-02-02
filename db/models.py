@@ -2,8 +2,9 @@
 
 import sqlite3
 import random
-import db.hasher as hasher
 import time
+
+from . import hasher
 
 class Model:
     """Base class for models defined in this module."""
