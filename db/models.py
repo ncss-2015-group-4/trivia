@@ -18,59 +18,72 @@ class Model:
         return cls.__name__.lower() + 's'
 
     @classmethod
-    def query(cls, action, single=True, **kwargs):
-        """
-        Run a query with a specified action where keyword arguments are equal
-        to its values, and then return an instance of the model.
+    def _id_field(cls):
+        """Internal: returns the correct id field of the model's table."""
+        return cls.__name__.lower() + '_id'
 
-        >>> Question.query("SELECT *", question_id=1).question
+    @classmethod
+    def _query(cls, action, single=True, **kwargs):
+        """
+        Execute a query against the class' database table (given by
+        `cls._table_name()`) of a specified action (e.g. `SELECT columns`,
+        `DELETE`) where each keyword argument is treated as a corresponding
+        field, value pair in the table, returning results as necessary.
+
+        If 'id' is given as a field name, it is translated to the correct id
+        field of the table, for example, `user_id` for the users table.
+
+        If single is True (default), returns the first row from the database.
+        Otherwise, returns a list of all the matching rows.
+
+        NB: This should not be called directly outside of any Model class,
+        consider using the find* methods instead.
+
+        >>> Question._query("SELECT question", question_id=1)['question']
         'Which house is Harry Potter in?'
-        >>> User.query("SELECT *", username='awesomealex').email
-        'dummyemail@email.com'
+        >>> Question._query("SELECT question", id=1)['question']
+        'Which house is Harry Potter in?'
+        >>> User._query("SELECT email", username='awesomealex')['email']
+        'dummy@example.com'
         """ 
+
         query = '{0} FROM {1}'.format(action, cls._table_name())
         if kwargs:
-            query += ' WHERE ' + ' AND '.join(key + ' = ?' for key in kwargs)
+            query += ' WHERE ' + ' AND '.join((cls._id_field() if key == 'id' else key) + ' = ?' for key in kwargs)
         values = tuple(kwargs.values())
 
         cur = conn.cursor()
         cur.execute(query, values)
 
         if single:
-            result = cur.fetchone()
-            if result:
-                return cls(*result)
-        else:
-            results = cur.fetchall()
-            objects = []
-            for result in results:
-                objects.append(cls(*result))
-            return objects
+            return cur.fetchone()
 
+        return cur.fetchall()
 
     @classmethod
     def find(cls, **kwargs):
         """
-        A shortcut for `Model.query("SELECT *", **kwargs)`.
+        A shortcut for `Model(*Model._query("SELECT *", **kwargs))`.
 
         >>> Question.find(question_id=1).question
         'Which house is Harry Potter in?'
-        >>> User.find(username='awesomealex').email
-        'dummyemail@email.com'
         """
-        return cls.query("SELECT *", **kwargs)
+
+        row = cls._query("SELECT *", **kwargs)
+        if row:
+            return cls(*row)
 
     @classmethod
     def delete(cls, **kwargs):
-        cls.query("DELETE", **kwargs)
+        cls._query("DELETE", **kwargs)
 
     @classmethod
     def find_all(cls, **kwargs):
-        return cls.query("SELECT *", single=False, **kwargs)
+        return [cls(*row) for row in cls._query("SELECT *", single=False, **kwargs)]
 
     @classmethod
     def delete_all(cls, **kwargs):
-        cls.query("DELETE", single=False, **kwargs)
+        cls._query("DELETE", **kwargs)
 
     @classmethod
     def create():
@@ -111,7 +124,10 @@ class User(Model):
         >>> User.find(user_id=1).username
         'awesomealex'
         """
-        return cls.query("SELECT user_id, username, email", **kwargs)
+
+        row = cls._query("SELECT user_id, username, email", **kwargs)
+        if row:
+            return cls(*row)
 
     def check_login(self, password):
         """Check whether a provided password is the user's password."""
