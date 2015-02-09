@@ -166,8 +166,8 @@ class User(Model):
 
         cur = conn.cursor()
         cur.execute('UPDATE users SET email = ? WHERE user_id = ?', (new_email, self.id))
-        self.email = self.new_email
-        cur.commit()
+        self.email = new_email
+        conn.commit()
 
     def set_password(self, new_password):
         """
@@ -181,12 +181,13 @@ class User(Model):
         False
         >>> user.check_login('helloworld')
         True
+        >>> user.set_password('password')
         """
 
         salt = hasher.new_salt()
         cur = conn.cursor()
-        cur.execute('UPDATE users SET password = ?, salt = ? WHERE user_id = ?', (hasher.hash(password, salt), salt, self.id))
-        cur.commit()
+        cur.execute('UPDATE users SET password = ?, salt = ? WHERE user_id = ?', (hasher.hash(new_password, salt), salt, self.id))
+        conn.commit()
 
 
 class Question(Model):
@@ -344,7 +345,7 @@ class Score(Model):
         self.num_answered += 1
         cur = conn.cursor()
         cur.execute('UPDATE scores SET num_answered=?,num_correct=? WHERE user_id=? AND category_id=?', (self.num_answered, self.num_correct, self.user_id, self.category_id))
-        cur.commit()
+        conn.commit()
 
 class QuestionResult(Model):
     """
