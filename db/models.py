@@ -74,16 +74,15 @@ class Model:
             return cls(*row)
 
     @classmethod
-    def delete(cls, **kwargs):
+    def delete_where(cls, **kwargs):
         cls._query("DELETE", **kwargs)
+
+    def delete(self):
+        self.delete_where(id=self.id)
 
     @classmethod
     def find_all(cls, **kwargs):
         return [cls(*row) for row in cls._query("SELECT *", single=False, **kwargs)]
-
-    @classmethod
-    def delete_all(cls, **kwargs):
-        cls._query("DELETE", **kwargs)
 
     @classmethod
     def create():
