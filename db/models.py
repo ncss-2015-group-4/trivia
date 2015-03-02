@@ -201,6 +201,7 @@ class Question(Model):
 
     Methods:
     * question.flag()
+    * question.get_answers()
 
     Class methods:
     * Question.create(question_text, category_id)
@@ -223,6 +224,9 @@ class Question(Model):
 
     def flag(self):
         return Flag.create(self.id)
+
+    def get_answers(self):
+        return Answer.find_all(question_id=self.id)
 
 
 class Category(Model):
@@ -473,12 +477,6 @@ class Game(Model):
         question = Question.find(question_id=current_question_id)
 
         return question
-
-    def get_answers(self, question_id):
-        cur=conn.cursor()
-        cur.execute('SELECT * FROM answers WHERE question_id = ?',(question_id,))
-        result = cur.fetchall()
-        return [Answer(*x) for x in result]
 
     def game_nextquestion(self):
         cur=conn.cursor()
