@@ -130,9 +130,8 @@ class User(Model):
 
     def check_login(self, password):
         """Check whether a provided password is the user's password."""
-        cur = conn.cursor()
-        cur.execute('SELECT password, salt FROM users WHERE user_id = ?', (self.id,))
-        result = cur.fetchone()
+
+        result = User._query("SELECT password, salt", id=self.id)
         return hasher.hash(password, result['salt']) == result['password']
 
     @classmethod
