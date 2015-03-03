@@ -10,8 +10,8 @@ from . import hasher
 class Model(object):
     """Base class for models defined in this module."""
 
-    def __init__():
-        pass
+    def __init__(self):
+        raise NotImplementedError()
 
     @classmethod
     def _table_name(cls):
@@ -98,7 +98,7 @@ class Model(object):
             yield cls(*row)
 
     @classmethod
-    def create():
+    def create(cls):
         raise NotImplementedError()
 
 
