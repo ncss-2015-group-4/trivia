@@ -1,10 +1,14 @@
-# The models for Trivia
+'''
+Provides an interface to the database.
+'''
 
 import sqlite3
 import random
 import time
 
 from . import hasher
+
+__all__ = ['User', 'Question', 'Category', 'Flag', 'Answer', 'Score', 'QuestionResult', 'Game']
 
 
 class Model(object):
