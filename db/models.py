@@ -6,7 +6,8 @@ import time
 
 from . import hasher
 
-class Model:
+
+class Model(object):
     """Base class for models defined in this module."""
 
     def __init__():
