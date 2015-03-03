@@ -13,7 +13,7 @@
         </div>
 			<div class="postgameoutcome">
 				<p>{{ user_name }}, you completed the quiz!<br><br>Your score was...</p>
-				<h2>{{ score }} / 5</h2>
+				<h2>{{ score }} / {{ len(questions) }}</h2>
 				<br>
 				<ul>
 		            {% for question_result in question_results %}
