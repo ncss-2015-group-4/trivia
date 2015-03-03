@@ -2,6 +2,7 @@ from db.models import User, Game
 from templating import render_template
 from db.models import User
 from . import template_paths
+from .error import create_error
 
 import random
 
@@ -36,7 +37,7 @@ def get_question_handler(request, question_index):
 
     game_id = request.get_secure_cookie('game_id')
     if not game_id:
-        request.redirect("/404punk")
+        create_error(request, "You aren't in a game!")
         return
 
     game_id = game_id.decode()
@@ -44,14 +45,15 @@ def get_question_handler(request, question_index):
     if game:
         question = game.get_question(int(question_index))
         if not question:
-            request.write("that question does not exist")
+            create_error(request, "That question doesn't exist!")
             return
         answers = game.get_answers(game.question_ids[int(question_index)])
         random.shuffle(answers)
         request.write(render_template(template_paths["questions"],
             {"question": question, "answers": answers, "question_index": str(int(question_index)+1), "user_name":u_name}))
         return
-    request.redirect("/404kid")
+    
+    create_error(request, "Could not handle that question!")
 
 def submit_question_handler(request, answer_id):
     game_id = request.get_secure_cookie("game_id")
