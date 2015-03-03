@@ -18,6 +18,7 @@ logout_pattern = re.compile(r'href\ *\=\ *\"\/logout"')
 link_patterns = {'pre_game': pre_game_pattern, 'submit': submit_pattern, 'home':home_pattern, 'logout':logout_pattern}
 #Apparently some questions end with a newline.
 question_pattern = re.compile(r'\<p\ id\=\"question\"\>(.+\n?)\<\/p\>')
+score_pattern = re.compile(r'([0-9]*)\ \/\ ([0-9]*)')
 
 class MissingLink(Exception):
     '''
@@ -132,10 +133,10 @@ class HTTPTestCase(AsyncHTTPTestCase):
         check_link(page_html, "submit", "submission")
 
         #Try making a question in each category
-        for category in Category.find_all():
+        for i,category in enumerate(Category.find_all()):
             print("Making a test question for category "+str(category.id))
             url= '/question'
-            headers = {'method': 'POST', 'body': b'categories='+bytes(str(category.id),'utf-8')+b'&question=testQuestion&correct_answer=correct&wrong_answer_1=wrong1&wrong_answer_2=wrong2&wrong_answer_3=wrong3'}
+            headers = {'method': 'POST', 'body': b'categories='+bytes(str(category.id),'utf-8')+b'&question=testQuestion'+bytes(str(i),"utf-8")+b'&correct_answer=correct&wrong_answer_1=wrong1&wrong_answer_2=wrong2&wrong_answer_3=wrong3'}
             page_html=self.check_page(url, **headers)
             if 'testQuestion' not in page_html:
                 raise SubmitError('testQuestion was not submitted to category '+str(category.id))
@@ -208,6 +209,7 @@ class HTTPTestCase(AsyncHTTPTestCase):
                         print("Submitting correct answer")
                         question_text = html.unescape(question_pattern.search(page_html).groups()[0])
                         question_id = Question.find(question=question_text).id
+                        print("question_id = {}".format(question_id))
                         cur.execute('SELECT * FROM answers WHERE question_id = ?',(question_id,))#get the answers to the question
                         answers = cur.fetchall()
                         for answer in answers: #check if the answers are on the page
@@ -225,6 +227,7 @@ class HTTPTestCase(AsyncHTTPTestCase):
                             print(page_html)
                         question_text = html.unescape(question_pattern.search(page_html).groups()[0])
                         question_id = Question.find(question=question_text).id
+                        print("question_id = {}".format(question_id))
                         cur.execute('SELECT * FROM answers WHERE question_id = ?',(question_id,))
                         answers = cur.fetchall()
                         for answer in answers:
@@ -234,7 +237,14 @@ class HTTPTestCase(AsyncHTTPTestCase):
                         url = '/game/submit/'+str(answers[2][0])
                         self.fetch(url, **game_headers)
                         question_number+=1
-                    print("Finished game category:{} difficulty:{} final score:{}".format(category.id,difficulty,final_score))
+                    page_html = self.check_page("/post_game", **game_headers)
+                    returned_score = score_pattern.search(page_html)
+                    if int(returned_score.group(1)) != final_score:
+                        raise GameError("Incorrect final game score\n {} returned, expecting {} for category:{} diffculty{}".format(returned_score.group(1), final_score, category.id, difficulty))
+                    if int(returned_score.group(2)) != max_questions:
+                        raise GameError("Incorrect final game score denominator\n {} returned, expecting {} for category:{} diffculty{}".format(returned_score.group(2), max_questions, category.id, difficulty))
+                    
+                    print("Finished game category:{} difficulty:{} final score:{}".format(category.id, difficulty, final_score))
 
     def test_07_logout_tests(self):
         print("Checking logout tests")
