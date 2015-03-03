@@ -1,3 +1,5 @@
+#!/bin/sh
+
 cd db
 echo Backing up database \(If one exists\)
 if [ -a trivia.db  ]; then mv trivia.db triviaBackup.db; fi

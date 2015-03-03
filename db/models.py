@@ -2,8 +2,9 @@
 
 import sqlite3
 import random
-import db.hasher as hasher
 import time
+
+from . import hasher
 
 class Model:
     """Base class for models defined in this module."""
@@ -166,8 +167,9 @@ class User(Model):
         True
         """
 
+        salt = hasher.new_salt()
         cur = conn.cursor()
-        cur.execute('UPDATE users SET password_hash = ? WHERE user_id = ?', (hasher.hash(password), self.id))
+        cur.execute('UPDATE users SET password = ?, salt = ? WHERE user_id = ?', (hasher.hash(password, salt), salt, self.id))
         cur.commit()
 
 
