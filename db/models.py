@@ -23,29 +23,32 @@ class Model:
         return cls.__name__.lower() + '_id'
 
     @classmethod
-    def _query(cls, action, single=True, **kwargs):
+    def _query(cls, action, single=True, _iter=False, **kwargs):
         """
         Execute a query against the class' database table (given by
         `cls._table_name()`) of a specified action (e.g. `SELECT columns`,
         `DELETE`) where each keyword argument is treated as a corresponding
-        field, value pair in the table, returning results as necessary.
+        (field, value) pair in the table, returning results as necessary.
 
         If 'id' is given as a field name, it is translated to the correct id
         field of the table, for example, `user_id` for the users table.
 
-        If single is True (default), returns the first row from the database.
-        Otherwise, returns a list of all the matching rows.
-
         NB: This should not be called directly outside of any Model class,
         consider using the find* methods instead.
 
-        >>> Question._query("SELECT question", question_id=1)['question']
-        'Which house is Harry Potter in?'
-        >>> Question._query("SELECT question", id=1)['question']
-        'Which house is Harry Potter in?'
+        :param action: The type of query to perform, such as
+            "SELECT columns" or "DELETE".
+
+        :param single: If True (default), returns the first row from the
+            database; otherwise, returns a list of all the matching rows.
+
+        :param _iter: If True, return an iterator of rows.
+
+        >>> Question._query("SELECT question", question_id=1)['question'] == Question._query("SELECT question", id=1)['question']
+        True
         >>> User._query("SELECT email", username='awesomealex')['email']
         'dummy@example.com'
-        """ 
+        """
 
         query = '{0} FROM {1}'.format(action, cls._table_name())
         if kwargs:
@@ -57,6 +60,10 @@ class Model:
 
         if single:
             return cur.fetchone()
+
+        if _iter:
+            # XXX: Should this really return the cursor itself?
+            return cur
 
         return cur.fetchall()
 
@@ -83,6 +90,11 @@ class Model:
     @classmethod
     def find_all(cls, **kwargs):
         return [cls(*row) for row in cls._query("SELECT *", single=False, **kwargs)]
+
+    @classmethod
+    def find_iter(cls, **kwargs):
+        for row in cls._query("SELECT *", single=False, _iter=True, **kwargs):
+            yield cls(*row)
 
     @classmethod
     def create():
