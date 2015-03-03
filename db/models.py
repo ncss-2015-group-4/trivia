@@ -73,8 +73,8 @@ class Model(object):
         """
         A shortcut for `Model(*Model._query("SELECT *", **kwargs))`.
 
-        >>> Question.find(question_id=1).question
-        'Which house is Harry Potter in?'
+        >>> Question.find(question_id=1).question == Question.find(id=1).question
+        True
         """
 
         row = cls._query("SELECT *", **kwargs)
@@ -132,7 +132,7 @@ class User(Model):
         Find and return a user where the kwargs match their records.
 
         >>> User.find(username='awesomealex').email
-        'dummyemail@email.com'
+        'dummy@example.com'
         >>> User.find(user_id=1).username
         'awesomealex'
         """
@@ -167,12 +167,13 @@ class User(Model):
         """
         Set a user's email address in the database.
 
-        >>> user = User.find(username='fantasticfeddy')
+        >>> user = User.find(username='fantasticfeddie')
         >>> user.email
-        'dummyemail1@email.com'
+        'dummy1@example.com'
         >>> user.set_email('feddie@example.com')
         >>> user.email
         'feddie@example.com'
+        >>> user.set_email('dummy1@example.com')
         """
 
         cur = conn.cursor()
@@ -500,3 +501,7 @@ class Game(Model):
 
 conn = sqlite3.connect('db/trivia.db')
 conn.row_factory = sqlite3.Row
+
+if __name__ == '__main__':
+    import doctest
+    doctest.testmod()
