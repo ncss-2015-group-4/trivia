@@ -420,6 +420,9 @@ class Game(Model):
     * score             - the current score in the game
     """
     def __init__(self, game_id, user_id, question_ids, question_index, time_started, time_completed, difficulty, category_id, score):
+        if not question_ids:
+            raise ValueError('a game must have questions (id {})'.format(game_id))
+
         self.id = game_id
         self.user_id = user_id
         if isinstance(question_ids, str):
