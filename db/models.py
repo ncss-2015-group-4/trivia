@@ -440,7 +440,6 @@ class Game(Model):
 
         random.shuffle(question_ids)
         question_ids = question_ids[:n]
-        print("number of questions generated: " + str(len(question_ids)))
 
         cur.execute('INSERT INTO games VALUES(NULL, ?, ?, 0, ?, 0, ?, ?, 0)',(user_id, ','.join(map(str, question_ids)), time.time(),category_id, difficulty))
         conn.commit()
@@ -458,9 +457,6 @@ class Game(Model):
                     correct = 1
                     cur.execute('UPDATE games SET score = score + 1 WHERE game_id = ?',(self.id,))
                     self.score += 1
-                    print("SCORE INCREMENTED")
-                else:
-                    print("answer:",answer)
                 question_result = QuestionResult.create(self.id, question_id, self.user_id, answer_id, correct)
                 cur.execute('UPDATE questions SET questions_answered = questions_answered + 1, questions_correct = questions_correct + ? WHERE question_id = ?',
                                 (correct, question_id))
@@ -484,9 +480,7 @@ class Game(Model):
         return questions
 
     def get_question(self, index):
-        print(repr(self.question_ids), index)
         current_question_id = self.question_ids[index]
-        print(current_question_id)
         question = Question.find(question_id=current_question_id)
 
         return question
