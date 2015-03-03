@@ -269,7 +269,7 @@ class Category(Model):
     @classmethod
     def create(cls, name):
         cur=conn.cursor()
-        cur.execute('INSERT INTO categories VALUES(NULL,?)',(name))
+        cur.execute('INSERT INTO categories VALUES(NULL,?)', (name,))
         conn.commit()
         return cls(cur.lastrowid,name)
 
