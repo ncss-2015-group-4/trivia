@@ -17,6 +17,11 @@ class Model(object):
     def __init__(self):
         raise NotImplementedError()
 
+    def __repr__(self):
+        if hasattr(self, 'id'):
+            return '<{} {}>'.format(type(self).__name__, self.id)
+        return object.__repr__(self)
+
     @classmethod
     def _table_name(cls):
         """Internal use: returns the database table name for a model class."""
