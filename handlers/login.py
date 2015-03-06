@@ -15,7 +15,8 @@ def login_handler(request, **kwargs):
     request.write(login_page)
 
 #--------------------------------------
-# By Ben
+# Original code by Ben, refractored by
+# Harrison
 #--------------------------------------
 
 #======================================
@@ -45,11 +46,13 @@ def login_handler_post(request):
     username = request.get_field("username")
     password = request.get_field("password")
 
-    if not (username and password) or (username == "" or password == ""):
+    if not (username and password): 
         request.redirect("/")
         return
 
     user = User.find(username=username)
+    if "@" in username:
+        user = User.find(email=username)
 
     if user:
         if user.check_login(password):
