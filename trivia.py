@@ -28,7 +28,7 @@ if __name__ == '__main__':
 
     server = Server(port=args.port or 8888, hostname=args.hostname or '')
 else:
-    server = Server()
+    server = Server(debug=False)
 
 server.register('/', index_handler)
 server.register('/profile', profile_handler)
