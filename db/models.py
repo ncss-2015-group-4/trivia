@@ -1,4 +1,6 @@
-# The models for Trivia
+'''
+Provides an interface to the database.
+'''
 
 import sqlite3
 import random
@@ -6,74 +8,106 @@ import time
 
 from . import hasher
 
-class Model:
+__all__ = ['User', 'Question', 'Category', 'Flag', 'Answer', 'Score', 'QuestionResult', 'Game']
+
+
+class Model(object):
     """Base class for models defined in this module."""
 
-    def __init__():
-        pass
+    def __init__(self):
+        raise NotImplementedError()
+
+    def __repr__(self):
+        if hasattr(self, 'id'):
+            return '<{} {}>'.format(type(self).__name__, self.id)
+        return object.__repr__(self)
 
     @classmethod
     def _table_name(cls):
-        """Internal use only: returns the database table name for a model class."""
+        """Internal use: returns the database table name for a model class."""
         return cls.__name__.lower() + 's'
 
     @classmethod
-    def query(cls, action, single=True, **kwargs):
-        """
-        Run a query with a specified action where keyword arguments are equal
-        to its values, and then return an instance of the model.
+    def _id_field(cls):
+        """Internal use: returns the correct id field of the model's table."""
+        return cls.__name__.lower() + '_id'
 
-        >>> Question.query("SELECT *", question_id=1).question
-        'Which house is Harry Potter in?'
-        >>> User.query("SELECT *", username='awesomealex').email
-        'dummyemail@email.com'
-        """ 
+    @classmethod
+    def _query(cls, action, single=True, _iter=False, **kwargs):
+        """
+        Execute a query against the class' database table (given by
+        `cls._table_name()`) of a specified action (e.g. `SELECT columns`,
+        `DELETE`) where each keyword argument is treated as a corresponding
+        (field, value) pair in the table, returning results as necessary.
+
+        If 'id' is given as a field name, it is translated to the correct id
+        field of the table, for example, `user_id` for the users table.
+
+        NB: This should not be called directly outside of any Model class,
+        consider using the find* methods instead.
+
+        :param action: The type of query to perform, such as
+            "SELECT columns" or "DELETE".
+
+        :param single: If True (default), returns the first row from the
+            database; otherwise, returns a list of all the matching rows.
+
+        :param _iter: If True, return an iterator of rows.
+
+        >>> Question._query("SELECT question", question_id=1)['question'] == Question._query("SELECT question", id=1)['question']
+        True
+        >>> User._query("SELECT email", username='awesomealex')['email']
+        'dummy@example.com'
+        """
+
         query = '{0} FROM {1}'.format(action, cls._table_name())
         if kwargs:
-            query += ' WHERE ' + ' AND '.join(key + ' = ?' for key in kwargs)
+            query += ' WHERE ' + ' AND '.join((cls._id_field() if key == 'id' else key) + ' = ?' for key in kwargs)
         values = tuple(kwargs.values())
 
         cur = conn.cursor()
         cur.execute(query, values)
 
         if single:
-            result = cur.fetchone()
-            if result:
-                return cls(*result)
-        else:
-            results = cur.fetchall()
-            objects = []
-            for result in results:
-                objects.append(cls(*result))
-            return objects
+            return cur.fetchone()
 
+        if _iter:
+            # XXX: Should this really return the cursor itself?
+            return cur
+
+        return cur.fetchall()
 
     @classmethod
     def find(cls, **kwargs):
         """
-        A shortcut for `Model.query("SELECT *", **kwargs)`.
+        A shortcut for `Model(*Model._query("SELECT *", **kwargs))`.
 
-        >>> Question.find(question_id=1).question
-        'Which house is Harry Potter in?'
-        >>> User.find(username='awesomealex').email
-        'dummyemail@email.com'
+        >>> Question.find(question_id=1).question == Question.find(id=1).question
+        True
         """
-        return cls.query("SELECT *", **kwargs)
+
+        row = cls._query("SELECT *", **kwargs)
+        if row:
+            return cls(*row)
 
     @classmethod
-    def delete(cls, **kwargs):
-        cls.query("DELETE", **kwargs)
+    def delete_where(cls, **kwargs):
+        cls._query("DELETE", **kwargs)
+
+    def delete(self):
+        self.delete_where(id=self.id)
 
     @classmethod
     def find_all(cls, **kwargs):
-        return cls.query("SELECT *", single=False, **kwargs)
+        return [cls(*row) for row in cls._query("SELECT *", single=False, **kwargs)]
 
     @classmethod
-    def delete_all(cls, **kwargs):
-        cls.query("DELETE", single=False, **kwargs)
+    def find_iter(cls, **kwargs):
+        for row in cls._query("SELECT *", single=False, _iter=True, **kwargs):
+            yield cls(*row)
 
     @classmethod
-    def create():
+    def create(cls):
         raise NotImplementedError()
 
 
@@ -107,17 +141,19 @@ class User(Model):
         Find and return a user where the kwargs match their records.
 
         >>> User.find(username='awesomealex').email
-        'dummyemail@email.com'
+        'dummy@example.com'
         >>> User.find(user_id=1).username
         'awesomealex'
         """
-        return cls.query("SELECT user_id, username, email", **kwargs)
+
+        row = cls._query("SELECT user_id, username, email", **kwargs)
+        if row:
+            return cls(*row)
 
     def check_login(self, password):
         """Check whether a provided password is the user's password."""
-        cur = conn.cursor()
-        cur.execute('SELECT password, salt FROM users WHERE user_id = ?', (self.id,))
-        result = cur.fetchone()
+
+        result = User._query("SELECT password, salt", id=self.id)
         return hasher.hash(password, result['salt']) == result['password']
 
     @classmethod
@@ -129,29 +165,29 @@ class User(Model):
         """
 
         salt = hasher.new_salt()
-        cur=conn.cursor()
-        cur.execute('INSERT INTO users VALUES(NULL,?,?,?,?)',(username,hasher.hash(password, salt)
-                                                            ,salt,
-                                                            email,))
+        cur = conn.cursor()
+        cur.execute('INSERT INTO users VALUES(NULL,?,?,?,?)',
+                    (username, hasher.hash(password, salt), salt, email))
         conn.commit()
-        return cls(cur.lastrowid,username,email)
+        return cls(cur.lastrowid, username, email)
 
     def set_email(self, new_email):
         """
         Set a user's email address in the database.
 
-        >>> user = User.find(username='fantasticfeddy')
+        >>> user = User.find(username='fantasticfeddie')
         >>> user.email
-        'dummyemail1@email.com'
+        'dummy1@example.com'
         >>> user.set_email('feddie@example.com')
         >>> user.email
         'feddie@example.com'
+        >>> user.set_email('dummy1@example.com')
         """
 
         cur = conn.cursor()
         cur.execute('UPDATE users SET email = ? WHERE user_id = ?', (new_email, self.id))
-        self.email = self.new_email
-        cur.commit()
+        self.email = new_email
+        conn.commit()
 
     def set_password(self, new_password):
         """
@@ -165,12 +201,14 @@ class User(Model):
         False
         >>> user.check_login('helloworld')
         True
+        >>> user.set_password('password')
         """
 
         salt = hasher.new_salt()
         cur = conn.cursor()
-        cur.execute('UPDATE users SET password = ?, salt = ? WHERE user_id = ?', (hasher.hash(password, salt), salt, self.id))
-        cur.commit()
+        cur.execute('UPDATE users SET password = ?, salt = ? WHERE user_id = ?',
+                    (hasher.hash(new_password, salt), salt, self.id))
+        conn.commit()
 
 
 class Question(Model):
@@ -185,6 +223,7 @@ class Question(Model):
 
     Methods:
     * question.flag()
+    * question.get_answers()
 
     Class methods:
     * Question.create(question_text, category_id)
@@ -200,13 +239,16 @@ class Question(Model):
 
     @classmethod
     def create(cls, question, category_id):
-        cur=conn.cursor()
+        cur = conn.cursor()
         cur.execute('INSERT INTO questions VALUES(NULL,?,0,0,?,0)', (question, category_id))
         conn.commit()
         return cls(cur.lastrowid, question, 0, 0, category_id, 0)
 
     def flag(self):
         return Flag.create(self.id)
+
+    def get_answers(self):
+        return Answer.find_all(question_id=self.id)
 
 
 class Category(Model):
@@ -231,10 +273,10 @@ class Category(Model):
 
     @classmethod
     def create(cls, name):
-        cur=conn.cursor()
-        cur.execute('INSERT INTO categories VALUES(NULL,?)',(name))
+        cur = conn.cursor()
+        cur.execute('INSERT INTO categories VALUES(NULL,?)', (name,))
         conn.commit()
-        return cls(cur.lastrowid,name)
+        return cls(cur.lastrowid, name)
 
     def create_question(self, question, answers):
         question = Question.create(question, self.id)
@@ -264,14 +306,14 @@ class Flag(Model):
 
     @classmethod
     def create(cls, question_id):
-        cur=conn.cursor()
-        cur.execute('INSERT INTO flags VALUES(NULL,?)',(question_id,))
+        cur = conn.cursor()
+        cur.execute('INSERT INTO flags VALUES(NULL,?)', (question_id,))
         conn.commit()
-        return cls(cur.lastrowid,question_id)
+        return cls(cur.lastrowid, question_id)
 
 
 class Answer(Model):
-    """Q
+    """
     A model that represents an answer for a Question.
 
     Properties:
@@ -292,8 +334,8 @@ class Answer(Model):
 
     @classmethod
     def create(cls, question_id, correct, text):
-        cur=conn.cursor()
-        cur.execute('INSERT INTO answers VALUES(NULL,?,?,?)',(question_id,correct,text))
+        cur = conn.cursor()
+        cur.execute('INSERT INTO answers VALUES(NULL,?,?,?)', (question_id, correct, text))
         conn.commit()
         return cls(cur.lastrowid, question_id, correct, text)
 
@@ -317,18 +359,20 @@ class Score(Model):
 
     @classmethod
     def create(cls, user_id, category_id):
-        cur=conn.cursor()
-        cur.execute('INSERT INTO scores VALUES(?,?,0,0)',(user_id,category_id))
+        cur = conn.cursor()
+        cur.execute('INSERT INTO scores VALUES(?,?,0,0)', (user_id, category_id))
         conn.commit()
-        return cls(user_id,category_id,0,0)
+        return cls(user_id, category_id, 0, 0)
 
-    def update_score(self,correct_answer):
+    def update_score(self, correct_answer):
         if correct_answer:
             self.num_correct += 1
         self.num_answered += 1
         cur = conn.cursor()
-        cur.execute('UPDATE scores SET num_answered=?,num_correct=? WHERE user_id=? AND category_id=?', (self.num_answered, self.num_correct, self.user_id, self.category_id))
-        cur.commit()
+        cur.execute('UPDATE scores SET num_answered=?,num_correct=? WHERE user_id=? AND category_id=?',
+                    (self.num_answered, self.num_correct, self.user_id, self.category_id))
+        conn.commit()
+
 
 class QuestionResult(Model):
     """
@@ -353,7 +397,7 @@ class QuestionResult(Model):
     def create(cls, game_id, question_id, user_id, answer_id, correct):
         cur = conn.cursor()
         cur.execute('INSERT INTO questionresults VALUES(?, ?, ?, ?, ?)',
-                (game_id, question_id, user_id, answer_id, correct))
+                    (game_id, question_id, user_id, answer_id, correct))
         conn.commit()
         return cls(game_id, question_id, user_id, answer_id, correct)
 
@@ -369,6 +413,7 @@ class QuestionResult(Model):
         """Returns the Answer object for the correct answer to the question."""
         return Answer.find(question_id=self.question_id, correct=True)
 
+
 class Game(Model):
     """
     A model that represents a Game that a user is/was playing
@@ -382,7 +427,11 @@ class Game(Model):
     * category_id       - what category the game is in
     * score             - the current score in the game
     """
+
     def __init__(self, game_id, user_id, question_ids, question_index, time_started, time_completed, difficulty, category_id, score):
+        if not question_ids:
+            raise ValueError('a game must have questions (id {})'.format(game_id))
+
         self.id = game_id
         self.user_id = user_id
         if isinstance(question_ids, str):
@@ -397,7 +446,7 @@ class Game(Model):
 
     @classmethod
     def create(cls, user_id, category_id, difficulty, n=5):
-        cur=conn.cursor()
+        cur = conn.cursor()
         question_ids = []
         for row in cur.execute('SELECT question_id FROM questions WHERE category = ? AND difficulty =?', (category_id, difficulty)):
             question_ids.append(row["question_id"])
@@ -407,34 +456,32 @@ class Game(Model):
 
         random.shuffle(question_ids)
         question_ids = question_ids[:n]
-        print("number of questions generated: " + str(len(question_ids)))
 
-        cur.execute('INSERT INTO games VALUES(NULL, ?, ?, 0, ?, 0, ?, ?, 0)',(user_id, ','.join(map(str, question_ids)), time.time(),category_id, difficulty))
+        cur.execute('INSERT INTO games VALUES(NULL, ?, ?, 0, ?, 0, ?, ?, 0)',
+                    (user_id, ','.join(map(str, question_ids)), time.time(), category_id, difficulty))
         conn.commit()
         return cls(cur.lastrowid, user_id, question_ids, 0, time.time(), 0, difficulty, category_id, 0)
 
-
     def submit_answer(self, question_id, answer_id):
-        cur=conn.cursor()
         correct = 0
         question = Question.find(question_id=question_id)
         answer = Answer.find(answer_id=answer_id)
+
         if question and answer:
             if question.id == answer.question_id:
+                cur = conn.cursor()
+
                 if answer.correct:
                     correct = 1
-                    cur.execute('UPDATE games SET score = score + 1 WHERE game_id = ?',(self.id,))
+                    cur.execute('UPDATE games SET score = score + 1 WHERE game_id = ?', (self.id,))
                     self.score += 1
-                    print("SCORE INCREMENTED")
-                else:
-                    print("answer:",answer)
-                question_result = QuestionResult.create(self.id, question_id, self.user_id, answer_id, correct)
+
+                QuestionResult.create(self.id, question_id, self.user_id, answer_id, correct)
                 cur.execute('UPDATE questions SET questions_answered = questions_answered + 1, questions_correct = questions_correct + ? WHERE question_id = ?',
-                                (correct, question_id))
+                            (correct, question_id))
                 conn.commit()
-                
-                return correct
-        return False
+
+        return correct
 
     def get_question_results(self):
         """Returns the list of results for each question answered."""
@@ -451,26 +498,21 @@ class Game(Model):
         return questions
 
     def get_question(self, index):
-        print(repr(self.question_ids), index)
         current_question_id = self.question_ids[index]
-        print(current_question_id)
         question = Question.find(question_id=current_question_id)
 
         return question
 
-    def get_answers(self, question_id):
-        cur=conn.cursor()
-        cur.execute('SELECT * FROM answers WHERE question_id = ?',(question_id,))
-        result = cur.fetchall()
-        return [Answer(*x) for x in result]
-
     def game_nextquestion(self):
-        cur=conn.cursor()
-    
-        cur.execute('UPDATE games SET question_index = question_index + 1 WHERE game_id=?',(self.id,))
+        cur = conn.cursor()
+        cur.execute('UPDATE games SET question_index = question_index + 1 WHERE game_id=?', (self.id,))
         self.question_index += 1
         conn.commit()
         return self.score
 
 conn = sqlite3.connect('db/trivia.db')
 conn.row_factory = sqlite3.Row
+
+if __name__ == '__main__':
+    import doctest
+    doctest.testmod()
