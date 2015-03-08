@@ -45,19 +45,22 @@ for logger in (tornado.log.access_log, tornado.log.app_log, tornado.log.gen_log,
 
 
 class Server:
-    __slots__ = ('handlers', 'hostname', 'port', 'static_path')
+    __slots__ = ('debug', 'handlers', 'hostname', 'port', 'static_path')
 
-    def __init__(self, *, hostname='', port=8888, static_path='static'):
+    def __init__(self, *, hostname='', port=8888, static_path='static', debug=True):
         if type(hostname) is not str:
             raise ValueError('hostname must be a string')
         if type(port) is not int or port <= 0:
             raise ValueError('port must be a positive integer')
         if type(static_path) is not str or not static_path:
             raise ValueError('static must be a non-empty string')
+        if type(debug) is not bool:
+            raise ValueError('debug must be a boolean')
 
         self.hostname = hostname
         self.port = port
         self.static_path = static_path
+        self.debug = debug
         self.handlers = []
 
     def register(self, url_pattern, handler, *, delete=None, get=None, patch=None, post=None, put=None, url_name=None, write_error=None, **kwargs):
@@ -140,7 +143,7 @@ class Server:
             kwargs['cookie_secret'] = cookie_secret
 
         # Create the app in debug mode (autoreload)
-        app = tornado.web.Application(self.handlers, static_path=self.static_path, debug=True, **kwargs)
+        app = tornado.web.Application(self.handlers, static_path=self.static_path, debug=self.debug, **kwargs)
         return app
 
     def loop(self):
