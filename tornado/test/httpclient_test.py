@@ -18,7 +18,7 @@ from tornado.log import gen_log
 from tornado import netutil
 from tornado.stack_context import ExceptionStackContext, NullContext
 from tornado.testing import AsyncHTTPTestCase, bind_unused_port, gen_test, ExpectLog
-from tornado.test.util import unittest
+from tornado.test.util import unittest, skipOnTravis
 from tornado.util import u, bytes_type
 from tornado.web import Application, RequestHandler, url
 
@@ -110,6 +110,7 @@ class HTTPClientCommonTestCase(AsyncHTTPTestCase):
             url("/all_methods", AllMethodsHandler),
         ], gzip=True)
 
+    @skipOnTravis
     def test_hello_world(self):
         response = self.fetch("/hello")
         self.assertEqual(response.code, 200)
@@ -309,7 +310,7 @@ Transfer-Encoding: chunked
         self.assertIs(exc_info[0][0], ZeroDivisionError)
 
     def test_configure_defaults(self):
-        defaults = dict(user_agent='TestDefaultUserAgent')
+        defaults = dict(user_agent='TestDefaultUserAgent', allow_ipv6=False)
         # Construct a new instance of the configured client class
         client = self.http_client.__class__(self.io_loop, force_instance=True,
                                             defaults=defaults)
@@ -355,11 +356,10 @@ Transfer-Encoding: chunked
 
     @gen_test
     def test_future_http_error(self):
-        try:
+        with self.assertRaises(HTTPError) as context:
             yield self.http_client.fetch(self.get_url('/notfound'))
-        except HTTPError as e:
-            self.assertEqual(e.code, 404)
-            self.assertEqual(e.response.code, 404)
+        self.assertEqual(context.exception.code, 404)
+        self.assertEqual(context.exception.response.code, 404)
 
     @gen_test
     def test_reuse_request_from_response(self):
@@ -386,6 +386,19 @@ Transfer-Encoding: chunked
         response = self.fetch('/all_methods', method='OTHER',
                               allow_nonstandard_methods=True)
         self.assertEqual(response.body, b'OTHER')
+
+    @gen_test
+    def test_body(self):
+        hello_url = self.get_url('/hello')
+        with self.assertRaises(AssertionError) as context:
+            yield self.http_client.fetch(hello_url, body='data')
+
+        self.assertTrue('must be empty' in str(context.exception))
+
+        with self.assertRaises(AssertionError) as context:
+            yield self.http_client.fetch(hello_url, method='POST')
+
+        self.assertTrue('must not be empty' in str(context.exception))
 
 
 class RequestProxyTest(unittest.TestCase):
@@ -433,17 +446,22 @@ class HTTPResponseTestCase(unittest.TestCase):
 
 class SyncHTTPClientTest(unittest.TestCase):
     def setUp(self):
-        if IOLoop.configured_class().__name__ == 'TwistedIOLoop':
+        if IOLoop.configured_class().__name__ in ('TwistedIOLoop',
+                                                  'AsyncIOMainLoop'):
             # TwistedIOLoop only supports the global reactor, so we can't have
             # separate IOLoops for client and server threads.
+            # AsyncIOMainLoop doesn't work with the default policy
+            # (although it could with some tweaks to this test and a
+            # policy that created loops for non-main threads).
             raise unittest.SkipTest(
-                'Sync HTTPClient not compatible with TwistedIOLoop')
+                'Sync HTTPClient not compatible with TwistedIOLoop or '
+                'AsyncIOMainLoop')
         self.server_ioloop = IOLoop()
 
         sock, self.port = bind_unused_port()
         app = Application([('/', HelloWorldHandler)])
-        server = HTTPServer(app, io_loop=self.server_ioloop)
-        server.add_socket(sock)
+        self.server = HTTPServer(app, io_loop=self.server_ioloop)
+        self.server.add_socket(sock)
 
         self.server_thread = threading.Thread(target=self.server_ioloop.start)
         self.server_thread.start()
@@ -451,7 +469,10 @@ class SyncHTTPClientTest(unittest.TestCase):
         self.http_client = HTTPClient()
 
     def tearDown(self):
-        self.server_ioloop.add_callback(self.server_ioloop.stop)
+        def stop_server():
+            self.server.stop()
+            self.server_ioloop.stop()
+        self.server_ioloop.add_callback(stop_server)
         self.server_thread.join()
         self.http_client.close()
         self.server_ioloop.close(all_fds=True)
@@ -469,3 +490,28 @@ class SyncHTTPClientTest(unittest.TestCase):
         with self.assertRaises(HTTPError) as assertion:
             self.http_client.fetch(self.get_url('/notfound'))
         self.assertEqual(assertion.exception.code, 404)
+
+
+class HTTPRequestTestCase(unittest.TestCase):
+    def test_headers(self):
+        request = HTTPRequest('http://example.com', headers={'foo': 'bar'})
+        self.assertEqual(request.headers, {'foo': 'bar'})
+
+    def test_headers_setter(self):
+        request = HTTPRequest('http://example.com')
+        request.headers = {'bar': 'baz'}
+        self.assertEqual(request.headers, {'bar': 'baz'})
+
+    def test_null_headers_setter(self):
+        request = HTTPRequest('http://example.com')
+        request.headers = None
+        self.assertEqual(request.headers, {})
+
+    def test_body(self):
+        request = HTTPRequest('http://example.com', body='foo')
+        self.assertEqual(request.body, utf8('foo'))
+
+    def test_body_setter(self):
+        request = HTTPRequest('http://example.com')
+        request.body = 'foo'
+        self.assertEqual(request.body, utf8('foo'))

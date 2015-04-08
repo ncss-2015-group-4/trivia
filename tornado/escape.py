@@ -49,12 +49,22 @@ try:
 except NameError:
     unichr = chr
 
-_XHTML_ESCAPE_RE = re.compile('[&<>"]')
-_XHTML_ESCAPE_DICT = {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}
+_XHTML_ESCAPE_RE = re.compile('[&<>"\']')
+_XHTML_ESCAPE_DICT = {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;',
+                      '\'': '&#39;'}
 
 
 def xhtml_escape(value):
-    """Escapes a string so it is valid within HTML or XML."""
+    """Escapes a string so it is valid within HTML or XML.
+
+    Escapes the characters ``<``, ``>``, ``"``, ``'``, and ``&``.
+    When used in attribute values the escaped strings must be enclosed
+    in quotes.
+
+    .. versionchanged:: 3.2
+
+       Added the single quote to the list of escaped characters.
+    """
     return _XHTML_ESCAPE_RE.sub(lambda match: _XHTML_ESCAPE_DICT[match.group(0)],
                                 to_basestring(value))
 
@@ -65,7 +75,7 @@ def xhtml_unescape(value):
 
 
 # The fact that json_encode wraps json.dumps is an implementation detail.
-# Please see https://github.com/facebook/tornado/pull/706
+# Please see https://github.com/tornadoweb/tornado/pull/706
 # before sending a pull request that adds **kwargs to this function.
 def json_encode(value):
     """JSON-encodes the given Python object."""
@@ -188,8 +198,10 @@ def utf8(value):
     """
     if isinstance(value, _UTF8_TYPES):
         return value
-    assert isinstance(value, unicode_type), \
-        "Expected bytes, unicode, or None; got %r" % type(value)
+    if not isinstance(value, unicode_type):
+        raise TypeError(
+            "Expected bytes, unicode, or None; got %r" % type(value)
+        )
     return value.encode("utf-8")
 
 _TO_UNICODE_TYPES = (unicode_type, type(None))
@@ -203,8 +215,10 @@ def to_unicode(value):
     """
     if isinstance(value, _TO_UNICODE_TYPES):
         return value
-    assert isinstance(value, bytes_type), \
-        "Expected bytes, unicode, or None; got %r" % type(value)
+    if not isinstance(value, bytes_type):
+        raise TypeError(
+            "Expected bytes, unicode, or None; got %r" % type(value)
+        )
     return value.decode("utf-8")
 
 # to_unicode was previously named _unicode not because it was private,
@@ -232,8 +246,10 @@ def to_basestring(value):
     """
     if isinstance(value, _BASESTRING_TYPES):
         return value
-    assert isinstance(value, bytes_type), \
-        "Expected bytes, unicode, or None; got %r" % type(value)
+    if not isinstance(value, bytes_type):
+        raise TypeError(
+            "Expected bytes, unicode, or None; got %r" % type(value)
+        )
     return value.decode("utf-8")
 
 

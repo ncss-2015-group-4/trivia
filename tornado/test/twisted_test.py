@@ -470,14 +470,17 @@ if have_twisted:
         'twisted.internet.test.test_core.ObjectModelIntegrationTest': [],
         'twisted.internet.test.test_core.SystemEventTestsBuilder': [
             'test_iterate',  # deliberately not supported
-            'test_runAfterCrash',  # fails because TwistedIOLoop uses the global reactor
-        ] if issubclass(IOLoop.configured_class(), TwistedIOLoop) else [
-            'test_iterate',  # deliberately not supported
+            # Fails on TwistedIOLoop and AsyncIOLoop.
+            'test_runAfterCrash',
         ],
         'twisted.internet.test.test_fdset.ReactorFDSetTestsBuilder': [
             "test_lostFileDescriptor",  # incompatible with epoll and kqueue
         ],
         'twisted.internet.test.test_process.ProcessTestsBuilder': [
+            # Only work as root.  Twisted's "skip" functionality works
+            # with py27+, but not unittest2 on py26.
+            'test_changeGID',
+            'test_changeUID',
         ],
         # Process tests appear to work on OSX 10.7, but not 10.6
         #'twisted.internet.test.test_process.PTYProcessTestsBuilder': [

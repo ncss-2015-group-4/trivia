@@ -35,11 +35,11 @@ class TestRequestHandler(RequestHandler):
         logging.debug('in part3()')
         raise Exception('test exception')
 
-    def get_error_html(self, status_code, **kwargs):
-        if 'exception' in kwargs and str(kwargs['exception']) == 'test exception':
-            return 'got expected exception'
+    def write_error(self, status_code, **kwargs):
+        if 'exc_info' in kwargs and str(kwargs['exc_info'][1]) == 'test exception':
+            self.write('got expected exception')
         else:
-            return 'unexpected failure'
+            self.write('unexpected failure')
 
 
 class HTTPStackContextTest(AsyncHTTPTestCase):
@@ -219,16 +219,22 @@ class StackContextTest(AsyncTestCase):
     def test_yield_in_with(self):
         @gen.engine
         def f():
+            self.callback = yield gen.Callback('a')
             with StackContext(functools.partial(self.context, 'c1')):
                 # This yield is a problem: the generator will be suspended
                 # and the StackContext's __exit__ is not called yet, so
                 # the context will be left on _state.contexts for anything
                 # that runs before the yield resolves.
-                yield gen.Task(self.io_loop.add_callback)
+                yield gen.Wait('a')
 
         with self.assertRaises(StackContextInconsistentError):
             f()
             self.wait()
+        # Cleanup: to avoid GC warnings (which for some reason only seem
+        # to show up on py33-asyncio), invoke the callback (which will do
+        # nothing since the gen.Runner is already finished) and delete it.
+        self.callback()
+        del self.callback
 
     @gen_test
     def test_yield_outside_with(self):
@@ -256,12 +262,13 @@ class StackContextTest(AsyncTestCase):
             self.io_loop.add_callback(cb)
         yield gen.Wait('k1')
 
+    @gen_test
     def test_run_with_stack_context(self):
         @gen.coroutine
         def f1():
             self.assertEqual(self.active_contexts, ['c1'])
             yield run_with_stack_context(
-                StackContext(functools.partial(self.context, 'c1')),
+                StackContext(functools.partial(self.context, 'c2')),
                 f2)
             self.assertEqual(self.active_contexts, ['c1'])
 
@@ -272,7 +279,7 @@ class StackContextTest(AsyncTestCase):
             self.assertEqual(self.active_contexts, ['c1', 'c2'])
 
         self.assertEqual(self.active_contexts, [])
-        run_with_stack_context(
+        yield run_with_stack_context(
             StackContext(functools.partial(self.context, 'c1')),
             f1)
         self.assertEqual(self.active_contexts, [])
