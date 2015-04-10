@@ -144,16 +144,15 @@ class Server:
     def set_default_handler(self, default_handler):
         self.default_handler = default_handler
 
-    def app(self, **kwargs):
+    def app(self, cookie_secret=None, **kwargs):
         # Randomise the cookie secret upon reload if it's not already set.
-        if 'cookie_secret' not in kwargs:
+        if cookie_secret is None:
             if self.cookie_secret is None:
                 m = hashlib.md5()
                 m.update((str(random.random()) + str(random.random())).encode('utf-8'))
                 cookie_secret = m.digest()
             else:
                 cookie_secret = self.cookie_secret
-            kwargs['cookie_secret'] = cookie_secret
 
         # Create a default handler if the user wants one.
         me = self
@@ -184,10 +183,11 @@ class Server:
         else:
             default_handler_class = None
 
-        # Create the app in debug mode (autoreload)
+        # Create the app, in debug mode (autoreload) as requested.
         app = tornado.web.Application(
             self.handlers,
-            debug=True,
+            cookie_secret=cookie_secret,
+            debug=self.debug,
             default_handler_class=default_handler_class,
             static_path=self.static_path,
             **kwargs
