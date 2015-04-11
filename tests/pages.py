@@ -62,7 +62,8 @@ cookies=''
 class HTTPTestCase(AsyncHTTPTestCase):
     def get_app(self):
         from trivia import server
-        self.app = server.app(cookie_secret='test')
+        server.set_cookie_secret('test')
+        self.app = server.app()
         return self.app
         
     def test_00_homepage_tests(self):
