@@ -144,15 +144,14 @@ class Server:
     def set_default_handler(self, default_handler):
         self.default_handler = default_handler
 
-    def app(self, cookie_secret=None, **kwargs):
+    def app(self, **kwargs):
         # Randomise the cookie secret upon reload if it's not already set.
-        if cookie_secret is None:
-            if self.cookie_secret is None:
-                m = hashlib.md5()
-                m.update((str(random.random()) + str(random.random())).encode('utf-8'))
-                cookie_secret = m.digest()
-            else:
-                cookie_secret = self.cookie_secret
+        if self.cookie_secret is None:
+            m = hashlib.md5()
+            m.update((str(random.random()) + str(random.random())).encode('utf-8'))
+            cookie_secret = m.digest()
+        else:
+            cookie_secret = self.cookie_secret
 
         # Create a default handler if the user wants one.
         me = self
