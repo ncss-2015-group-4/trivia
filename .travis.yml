@@ -1,7 +1,14 @@
-# Language and language version
 language: python
 python:
   - "3.4"
 
-# Command to run tests
-script: ./test.sh
+before_script:
+  - cd db
+  - python ./create_db.py
+  - python ./dummy_data.py
+  - cd ..
+
+script:
+  - python ./templating.py
+  - python -mdb.models
+  - python -mtornado.testing tests/pages.py
