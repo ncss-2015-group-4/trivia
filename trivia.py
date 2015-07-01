@@ -3,7 +3,6 @@
 import argparse
 
 from tornado.ncss import Server
-from templating import render_template
 
 from handlers.index import index_handler
 from handlers.profile import profile_handler
@@ -18,7 +17,6 @@ from handlers.leaderboard import leaderboard_handler
 from handlers.category import category_handler, category_list_handler
 from handlers.question import new_question_handler, new_question_form, edit_question_handler
 from handlers.logout import logout_handler
-from handlers.error import error_handler, create_error
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -47,7 +45,6 @@ server.register('/user', user_handler, post=signup_handler_post)
 # server.register('/user/([0-9]+)', edit_user_handler)
 server.register('/categories', category_list_handler)
 server.register('/logout', logout_handler)
-server.register('/error/(.*)', create_error)
 server.register('/.*', error_handler)
 
 if __name__ == '__main__':
