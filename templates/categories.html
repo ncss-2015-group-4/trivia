@@ -11,7 +11,7 @@
             <h1>Categories</h1>
         </div>
         <div align="center">
-            {% for category in list_of_categories %}
+            {% for category in categories %}
             <a href="/category/{{category.id}}"><button class="category-button">{{category.name}}</button></a></br>
             
             {% end for %}
