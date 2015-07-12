@@ -457,10 +457,11 @@ class Game(Model):
         random.shuffle(question_ids)
         question_ids = question_ids[:n]
 
+        curr_time = time.time()
         cur.execute('INSERT INTO games VALUES(NULL, ?, ?, 0, ?, 0, ?, ?, 0)',
-                    (user_id, ','.join(map(str, question_ids)), time.time(), category_id, difficulty))
+                    (user_id, ','.join(map(str, question_ids)), curr_time, category_id, difficulty))
         conn.commit()
-        return cls(cur.lastrowid, user_id, question_ids, 0, time.time(), 0, difficulty, category_id, 0)
+        return cls(cur.lastrowid, user_id, question_ids, 0, curr_time, 0, difficulty, category_id, 0)
 
     def submit_answer(self, question_id, answer_id):
         correct = 0
