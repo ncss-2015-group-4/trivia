@@ -247,7 +247,7 @@ input:focus {
     padding-bottom: 10px;
 }
 
-.headerlinks {
+#header a {
     color: #068BBC;
     padding-right: 30px;
     padding-left: 30px;

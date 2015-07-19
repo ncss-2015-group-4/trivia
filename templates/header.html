@@ -1,1 +1,15 @@
-<div id="header">	<header>			<a href ="/" class="headerlinks">Home</a>			<a href ="/pre_game" class="headerlinks">Play</a>			<a href ="/categories" class="headerlinks">Categories</a>            <a href ="/leaderboard" class="headerlinks">Leaderboard</a>			<a href ="/question" class="headerlinks">Submit</a>            			            {% if user_name != "" %}                <a href="/profile" class="headerlinks">{{user_name}}</a>                <a href="/logout" class="headerlinks">Logout</a>            {% end if %}            {% if user_name == "" %}                <a href="/login" class="headerlinks">Login</a>            {% end if %}	<header></div>
+<header id="header">
+	<a href="/">Home</a>
+	<a href="/pre_game">Play</a>
+	<a href="/categories">Categories</a>
+	<a href="/leaderboard">Leaderboard</a>
+	<a href="/question">Submit</a>
+
+	{% if user_name %}
+		<a href="/profile">{{user_name}}</a>
+		<a href="/logout">Logout</a>
+	{% end if %}
+	{% if not user_name %}
+		<a href="/login">Login</a>
+	{% end if %}
+<header>
