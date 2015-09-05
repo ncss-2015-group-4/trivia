@@ -45,9 +45,10 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='The Quizzi server, a social trivia website.')
     parser.add_argument('-p', '--port', type=int, default=8888, help='port to listen on')
     parser.add_argument('-H', '--hostname', default='', help='hostname to bind to')
+    parser.add_argument('--prod', action='store_true', default=False, help='turn debug mode off')
     args = parser.parse_args()
 
-    server = new_server(port=args.port, hostname=args.hostname)
+    server = new_server(port=args.port, hostname=args.hostname, debug=not args.prod)
     server.run()
 else:
     server = new_server(debug=False)
