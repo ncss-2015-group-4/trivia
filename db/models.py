@@ -173,8 +173,8 @@ class User(Model):
     def check_login(self, password):
         """Check whether a provided password is the user's password."""
 
-        result = User._query("SELECT password, salt", id=self.id)
-        return hasher.hash(password, result['salt']) == result['password']
+        passhash, salt = User._query("SELECT password, salt", id=self.id)
+        return hasher.hash(password, salt) == passhash
 
     @classmethod
     def create(cls, username, password, email):
@@ -480,8 +480,8 @@ class Game(Model):
     def create(cls, user_id, category_id, difficulty, n=5):
         cur = conn.cursor()
         question_ids = []
-        for row in cur.execute('SELECT question_id FROM questions WHERE category = ? AND difficulty =?', (category_id, difficulty)):
-            question_ids.append(row["question_id"])
+        for qid, in cur.execute('SELECT question_id FROM questions WHERE category = ? AND difficulty =?', (category_id, difficulty)):
+            question_ids.append(qid)
 
         if not question_ids:
             return None
