@@ -331,6 +331,9 @@ class Flag(Model):
         conn.commit()
         return cls(cur.lastrowid, question_id)
 
+    def get_question(self):
+        return Question.find(id=self.question_id)
+
 
 class Answer(Model):
     """
@@ -358,6 +361,9 @@ class Answer(Model):
         cur.execute('INSERT INTO answers VALUES(NULL,?,?,?)', (question_id, correct, text))
         conn.commit()
         return cls(cur.lastrowid, question_id, correct, text)
+
+    def get_question(self):
+        return Question.find(id=self.question_id)
 
 
 class Score(Model):
@@ -392,6 +398,12 @@ class Score(Model):
         cur.execute('UPDATE scores SET num_answered=?,num_correct=? WHERE user_id=? AND category_id=?',
                     (self.num_answered, self.num_correct, self.user_id, self.category_id))
         conn.commit()
+
+    def get_user(self):
+        return User.find(id=self.user_id)
+
+    def get_category(self):
+        return Category.find(id=self.category_id)
 
 
 class QuestionResult(Model):
@@ -504,6 +516,10 @@ class Game(Model):
 
         return correct
 
+    def is_end(self):
+        """Return a boolean indicating whether the game has ended."""
+        return self.question_index >= len(self.question_ids)
+
     def get_question_results(self):
         """Returns the list of results for each question answered."""
         # TODO: Make this the same order as the questions were asked (currently random order)
@@ -517,6 +533,9 @@ class Game(Model):
             questions.append(Question.find(question_id=id))
 
         return questions
+
+    def get_curr_question(self):
+        return self.get_question(self.question_index)
 
     def get_question(self, index):
         current_question_id = self.question_ids[index]
