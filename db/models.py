@@ -100,7 +100,9 @@ class Model(object):
     @classmethod
     def find(cls, **kwargs):
         """
-        A shortcut for `Model(*Model._query("SELECT *", **kwargs))`.
+        Return an object corresponding to the first row that match the
+        given criteria.  Criteria are specified by keyword arguments to
+        this function, and are treated as (field, value) pairs.
 
         >>> Question.find(question_id=1).question == Question.find(id=1).question
         True
@@ -112,17 +114,37 @@ class Model(object):
 
     @classmethod
     def delete_where(cls, **kwargs):
+        """
+        Delete rows in the database matching the given criteria.
+
+        Criteria are specified in a similar manner to Model.find().
+        """
+
         cls._query("DELETE", **kwargs)
 
     def delete(self):
+        """
+        Delete the object from the database.
+        """
+
         self.delete_where(id=self.id)
 
     @classmethod
     def find_all(cls, **kwargs):
+        """
+        Like Model.find(), but returns a list of Models for all rows
+        that match the criteria.
+        """
+
         return [cls(*row) for row in cls._query("SELECT *", single=False, **kwargs)]
 
     @classmethod
     def find_iter(cls, **kwargs):
+        """
+        Like Model.find_all(), but is a generator, rather than
+        returning a list.
+        """
+
         for row in cls._query("SELECT *", single=False, _iter=True, **kwargs):
             yield cls(*row)
 
