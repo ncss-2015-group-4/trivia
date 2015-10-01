@@ -1,9 +1,9 @@
 CREATE TABLE users (
     user_id INTEGER PRIMARY KEY,
-    username TEXT NOT NULL,
+    username TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL,
     salt TEXT NOT NULL,
-    email TEXT NOT NULL
+    email TEXT UNIQUE NOT NULL
 );
 
 CREATE TABLE questions (
@@ -17,7 +17,7 @@ CREATE TABLE questions (
 
 CREATE TABLE categories (
     category_id INTEGER PRIMARY KEY,
-    category TEXT NOT NULL
+    category TEXT UNIQUE NOT NULL
 );
 
 CREATE TABLE answers (
