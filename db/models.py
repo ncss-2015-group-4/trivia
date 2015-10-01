@@ -34,6 +34,8 @@ __all__ = ['User', 'Question', 'Category', 'Flag', 'Answer', 'Score', 'QuestionR
 class Model(object):
     """Base class for models defined in this module."""
 
+    _exposed_fields = '*'
+
     def __init__(self):
         raise NotImplementedError()
 
@@ -106,9 +108,13 @@ class Model(object):
 
         >>> Question.find(question_id=1).question == Question.find(id=1).question
         True
+        >>> User.find(username='awesomealex').email
+        'dummy@example.com'
+        >>> User.find(user_id=1).username
+        'awesomealex'
         """
 
-        row = cls._query("SELECT *", **kwargs)
+        row = cls._query("SELECT " + cls._exposed_fields, single=True, **kwargs)
         if row:
             return cls(*row)
 
@@ -136,7 +142,7 @@ class Model(object):
         that match the criteria.
         """
 
-        return [cls(*row) for row in cls._query("SELECT *", single=False, **kwargs)]
+        return [cls(*row) for row in cls._query("SELECT " + cls._exposed_fields, single=False, **kwargs)]
 
     @classmethod
     def find_iter(cls, **kwargs):
@@ -145,7 +151,7 @@ class Model(object):
         returning a list.
         """
 
-        for row in cls._query("SELECT *", single=False, _iter=True, **kwargs):
+        for row in cls._query("SELECT " + cls._exposed_fields, single=False, _iter=True, **kwargs):
             yield cls(*row)
 
     @classmethod
@@ -169,28 +175,14 @@ class User(Model):
 
     Class methods:
     * User.create(username, password, email)
-    * User.find(**kwargs)
     """
+
+    _exposed_fields = 'user_id, username, email'
 
     def __init__(self, user_id, username, email):
         self.id = user_id
         self.username = username
         self.email = email
-
-    @classmethod
-    def find(cls, **kwargs):
-        """
-        Find and return a user where the kwargs match their records.
-
-        >>> User.find(username='awesomealex').email
-        'dummy@example.com'
-        >>> User.find(user_id=1).username
-        'awesomealex'
-        """
-
-        row = cls._query("SELECT user_id, username, email", **kwargs)
-        if row:
-            return cls(*row)
 
     def check_login(self, password):
         """Check whether a provided password is the user's password."""
