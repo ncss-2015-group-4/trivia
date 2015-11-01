@@ -18,9 +18,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-'''
-Provides an interface to the database.
-'''
+"""Provides an object-oriented interface to the database."""
 
 import sqlite3
 import random
@@ -28,7 +26,7 @@ import time
 
 from . import hasher
 
-__all__ = ['User', 'Question', 'Category', 'Flag', 'Answer', 'Score', 'QuestionResult', 'Game']
+__all__ = ('User', 'Question', 'Category', 'Flag', 'Answer', 'Score', 'QuestionResult', 'Game')
 
 
 class Model(object):
@@ -57,12 +55,13 @@ class Model(object):
     @classmethod
     def _query(cls, action, single=True, _iter=False, **kwargs):
         """
-        Execute a query against the class' database table (given by
-        `cls._table_name()`) of a specified action (e.g. `SELECT columns`,
-        `DELETE`) where each keyword argument is treated as a corresponding
-        (field, value) pair in the table, returning results as necessary.
+        Execute a query against the class' database table.
 
-        If 'id' is given as a field name, it is translated to the correct id
+        The query executed is of the specified action (e.g. SELECT columns, DELETE).
+        Each keyword argument is treated as a (field, value) pair to search,
+        returning results as necessary.
+
+        If 'id' is given as a field name, it is interpreted as the actual id
         field of the table, for example, `user_id` for the users table.
 
         NB: This should not be called directly outside of any Model class,
@@ -102,9 +101,17 @@ class Model(object):
     @classmethod
     def find(cls, **kwargs):
         """
-        Return an object corresponding to the first row that match the
-        given criteria.  Criteria are specified by keyword arguments to
-        this function, and are treated as (field, value) pairs.
+        Return an object for the first row matching the given crieria.
+
+        Criteria are specified by keyword arguments to this function,
+        and are treated as (field, value) pairs.
+
+        If 'id' is specified as a field, it is treated as the real id
+        field in the database, e.g. game_id for games.
+
+        This also accepts the keyword arguments, besides single and join,
+        that Model._query() takes, however usage of keyword arguments
+        beginning with _ are heavily discouraged.
 
         >>> Question.find(question_id=1).question == Question.find(id=1).question
         True
@@ -131,6 +138,8 @@ class Model(object):
     def delete(self):
         """
         Delete the object from the database.
+
+        This only works for models that have an 'id' attribute.
         """
 
         self.delete_where(id=self.id)
@@ -138,8 +147,9 @@ class Model(object):
     @classmethod
     def find_all(cls, **kwargs):
         """
-        Like Model.find(), but returns a list of Models for all rows
-        that match the criteria.
+        Return a list of objects matching the given criteria.
+
+        Criteria are given in a similar fashion as Model.find().
         """
 
         return [cls(*row) for row in cls._query("SELECT " + cls._exposed_fields, single=False, **kwargs)]
@@ -147,8 +157,9 @@ class Model(object):
     @classmethod
     def find_iter(cls, **kwargs):
         """
-        Like Model.find_all(), but is a generator, rather than
-        returning a list.
+        Return an iterator that yields Models matching the crieria.
+
+        See also: Model.find_all().
         """
 
         for row in cls._query("SELECT " + cls._exposed_fields, single=False, _iter=True, **kwargs):
@@ -254,6 +265,8 @@ class Question(Model):
     * question     - the question text
     * questions_answered - the number of times the question has been answered
     * questions_correct  - the number of times the question has been answered correctly
+    * category
+    * difficulty
 
     Methods:
     * question.flag()
@@ -356,7 +369,7 @@ class Answer(Model):
     Properties:
     * id          - the unique answer ID
     * question_id - the question ID
-    * correct     - True if the answer is the correct answer, False otherwise.
+    * correct     - true if the answer is the correct answer, false otherwise.
     * text        - the answer text
 
     Class methods:
@@ -462,7 +475,7 @@ class QuestionResult(Model):
 
 class Game(Model):
     """
-    A model that represents a Game that a user is/was playing
+    A model that represents a Game that a user is/was playing.
 
     Properties:
     * id                - the games id
@@ -535,7 +548,7 @@ class Game(Model):
         return self.question_index >= len(self.question_ids)
 
     def get_question_results(self):
-        """Returns the list of results for each question answered."""
+        """Return a list of results for each question answered."""
         # TODO: Make this the same order as the questions were asked (currently random order)
         # We probably need to store the index in the db as well.
         results = QuestionResult.find_all(game_id=self.id)
