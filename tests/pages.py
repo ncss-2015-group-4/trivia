@@ -5,22 +5,20 @@ import random
 from db.models import User
 from db.models import Category
 from db.models import Question
-from db.models import Answer
 import html
-import os
 import sqlite3
-#define regex patters to search for nav bar links
+# Define regex patters to search for nav bar links
 pre_game_pattern = re.compile(r'href\ *\=\ *\"\/pre_game\"')
 submit_pattern = re.compile(r'href\ *\=\ *\"\/question\"')
-#prifile will need to take into account whether the user is logged in
-#profile_pattern = re.compile(r'href\ *\=\ *\"\/profile\"')
+profile_pattern = re.compile(r'href\ *\=\ *\"\/profile\"')
 home_pattern = re.compile(r'href\ *\=\ *\"\/"')
 logout_pattern = re.compile(r'href\ *\=\ *\"\/logout"')
-link_patterns = {'pre_game': pre_game_pattern, 'submit': submit_pattern, 'home':home_pattern, 'logout':logout_pattern}
-#Apparently some questions end with a newline.
+link_patterns = {'pre_game': pre_game_pattern, 'submit': submit_pattern, 'home': home_pattern, 'logout': logout_pattern, 'profile': profile_pattern}
+# Apparently some questions end with a newline.
 question_pattern = re.compile(r'\<p\ id\=\"question\"\>(.+\n?)\<\/p\>')
 score_pattern = re.compile(r'([0-9]*)\ \/\ ([0-9]*)')
 question_results_pattern = re.compile(r'<li>(.+?)&nbsp;<a\ href\=\"\/flag\/([0-9]+?)\">Flag\?<\/a>&nbsp;(.+?)\ ?<\/li>', re.DOTALL)
+
 class MissingLink(Exception):
     '''
     Exception for if a link is missing in page_html
@@ -50,224 +48,196 @@ class SubmitError(Exception):
     Exception for submitting questions
     '''
     pass
-    
-def check_link(page_html, link, page):
-    '''
-    Checks if a link is in some page_html
-    '''
-    if not link_patterns[link].search(page_html):
-        raise MissingLink("The "+link+" link is missing from the "+page+" page.")
 
-cookies=''
+cookies = ''
+
 class HTTPTestCase(AsyncHTTPTestCase):
     def get_app(self):
         from trivia import server
         server.set_cookie_secret('test')
         self.app = server.app()
         return self.app
-        
+
     def test_00_homepage_tests(self):
-        url = '/'
-        headers = {'method': 'GET'}
-        page_html = self.check_page(url, **headers)
-        check_link(page_html, "home", "home")
-        check_link(page_html, "pre_game", "home")
-        check_link(page_html, "submit", "home")
-        #check_link(page_html, "logout", "home")
-        #check_link(page_html, "profile", "home")
-         
+        page_html = self.check_page('/', method='GET')
+        self.check_link(page_html, "home", "home")
+        self.check_link(page_html, "pre_game", "home")
+        self.check_link(page_html, "submit", "home")
+
     def test_01_register(self):
+        '''
+        Check that a new user can register
+        Note: the registration page is /login but the form is posted to /user
+        '''
         global cookies
-        url = '/user'
-        headers = {'method': 'GET'}
-        page_html = self.check_page(url, **headers)#test if the user page can be accessed
-        '''
-        check_link(page_html,"home","user")
-        check_link(page_html,"pre_game","user")
-        check_link(page_html,"submit","user")
-        check_link(page_html, "submit", "user")
-        #check_link(page_html,"profile","user")
-        '''
-        #test registration
-        url= '/user'
         headers = {'method': 'POST', 'body': b'username=testUser&password=testPass&email=testUser%40someDomain.com'}
-        page_html=self.check_page(url, **headers)
-        user_id=User.find(username='testUser').id
+        page_html = self.check_page('/user', **headers)
+        # Make the cookie
+        user_id = User.find(username='testUser').id  # get the user id from the database
         cookie_value = create_signed_value(self.app.settings['cookie_secret'], 'user_id', str(user_id))
         cookies = 'user_id='+cookie_value.decode('utf-8')
-        #check if user name appears on homepage
-        url='/'
+        # Check if username appears on the homepage
         headers = {'method': 'GET', 'headers': {'Cookie': cookies}}
-        page_html = self.check_page(url, **headers)
+        page_html = self.check_page('/', **headers)
         if 'testUser' not in page_html:
             raise LoginError('Username not on the homepage')
-        else:
-            print('Logged in after registering')
-    
+        # Check that the logout and profile links are now on the home page
+        self.check_link(page_html, "logout", "home")
+        self.check_link(page_html, "profile", "home")
+
     def test_02_login(self):
-        url = '/login'
-        headers = {'method': 'GET'}
-        page_html = self.check_page(url, **headers)#test if the login page can be accessed
-        check_link(page_html, "home", "login")
-        check_link(page_html, "pre_game", "login")
-        check_link(page_html, "submit", "login")
-        #check_link(page_html, "logout", "login")
-        #check_link(page_html, "profile", "login")
+        '''
+        Check that the login page can be accessed
+        '''
+        page_html = self.check_page('/login', method='GET')
+        self.check_link(page_html, "home", "login")
+        self.check_link(page_html, "pre_game", "login")
+        self.check_link(page_html, "submit", "login")
 
     def test_03_profile_tests(self):
+        '''
+        Check that the profile page can be accessed
+        '''
         global cookies
-        url = '/profile'
         headers = {'method': 'GET', 'headers': {'Cookie': cookies}}
-        page_html = self.check_page(url, **headers)
-        check_link(page_html, "home", "profile")
-        check_link(page_html,"pre_game", "profile")
-        check_link(page_html, "submit", "profile")
-        #check_link(page_html, "logout", "profile")
-        #check_link(page_html, "profile", "profile")
-        
-    def test_04_question_submission_tests(self):
-        global cookies
-        url = '/submit'
-        headers = {'method': 'GET', 'headers': {'Cookie':cookies}}
-        page_html = self.check_page(url, **headers)
-        check_link(page_html, "home", "sumbission")
-        check_link(page_html, "pre_game", "submission")
-        check_link(page_html, "submit", "submission")
+        page_html = self.check_page('/profile', **headers)
+        self.check_link(page_html, "home", "profile")
+        self.check_link(page_html, "pre_game", "profile")
+        self.check_link(page_html, "submit", "profile")
 
-        #Try making a question in each category
-        for i,category in enumerate(Category.find_all()):
-            print("Making a test question for category "+str(category.id))
-            url= '/question'
-            headers = {'method': 'POST', 'body': b'categories='+bytes(str(category.id),'utf-8')+b'&question=testQuestion'+bytes(str(i),"utf-8")+b'&correct_answer=correct&wrong_answer_1=wrong1&wrong_answer_2=wrong2&wrong_answer_3=wrong3'}
-            page_html=self.check_page(url, **headers)
+    def test_04_question_submission_tests(self):
+        '''
+        Check that questions can be submitted
+        '''
+        global cookies
+        headers = {'method': 'GET', 'headers': {'Cookie': cookies}}
+        page_html = self.check_page('/submit', **headers)
+        self.check_link(page_html, "home", "sumbission")
+        self.check_link(page_html, "pre_game", "submission")
+        self.check_link(page_html, "submit", "submission")
+        # Try making a question in each category
+        for i, category in enumerate(Category.find_all()):
+            query = (b'categories=' + str(category.id).encode() +
+                     b'&question=testQuestion' + str(i).encode() +
+                     b'&correct_answer=correct' +
+                     b'&wrong_answer_1=wrong&wrong_answer_2=wrong2&wrong_answer_3=wrong3')
+            headers = {'method': 'POST', 'body': query}
+            page_html = self.check_page('/question', **headers)
             if 'testQuestion' not in page_html:
-                raise SubmitError('testQuestion was not submitted to category '+str(category.id))
-        
+                raise SubmitError('testQuestion was not submitted to category ' + str(category.id))
+
     def test_05_category_tests(self):
-        url = '/categories'
-        headers = {'method': 'GET'}
-        page_html = self.check_page(url, **headers)
-        check_link(page_html, "home", "categories")
-        check_link(page_html, "pre_game", "categories")
-        check_link(page_html, "submit", "categories")
-        #check if all the categories are listed
+        '''
+        Check that the categories and questions are being displayed
+        '''
+        page_html = self.check_page('/categories', method='GET')
+        self.check_link(page_html, "home", "categories")
+        self.check_link(page_html, "pre_game", "categories")
+        self.check_link(page_html, "submit", "categories")
+        # Check that all the categories are listed
         list_of_categories = Category.find_all()
-        #Checking that all the categories are listed
         for category in list_of_categories:
-            print('Checking if category '+str(category.id)+' is listed on the categories page')
-            if not re.search(r'\<a href\=\"\/category\/'+str(category.id)+r'\"\>\<button class\=\"category\-button\"\>'+re.escape(html.escape(category.name))+r'\<\/button\>\<\/a>\<\/br\>', page_html):
-                raise PageError(category.name+' is missing from the categoties page.')
-        #Check that all the questions are listed
+            cat = re.search(('\<a href\=\"\/category\/' +
+                             str(category.id) +
+                             r'\"\>\<button class\=\"category\-button\"\>' +
+                             re.escape(html.escape(category.name)) +
+                             r'\<\/button\>\<\/a>\<\/br\>'), page_html)
+            if not cat:
+                raise PageError(category.name+' is missing from the categories page.')
+        # Check that all the questions are listed in the category pages
         for category in list_of_categories:
-            print('Checking question list in category '+str(category.id))
             list_of_questions = Question.find_all(category=category.id)
             url = '/category/'+str(category.id)
-            page_html = self.check_page(url, **{'method': 'GET'})
+            page_html = self.check_page(url, method='GET')
             for question in list_of_questions:
                 if not re.search(r'\<li\>'+re.escape(html.escape(question.question))+r'\<\/li\>', page_html):
                     raise PageError(str(question.question)+' is missing from '+url)
 
     def test_06_game_tests(self):
-        # Todo: Document this mess, I am too lazy to do it right now
+        '''
+        Check submitting questions and scoring
+        '''
         global cookies
-        print("Testing game")
-        game_cookie = ''
-        game_id = 0
-        # there is no function in the models.Question class to get the all the question answers. As I do not want to access the game directly I will use sql
         conn = sqlite3.connect('db/trivia.db')
         cur = conn.cursor()
-        # for each category
+        # The database is reset before running the tests so the first game id should be 1
+        game_id = 0
         for category in Category.find_all():
-            # for each difficulty
             for difficulty in range(3):
-                # Some combinations of categories and difficulties may have less than 5 questions
-                # if this is the case the quiz will be shorter
-                cur.execute('SELECT * FROM questions WHERE category = ? AND difficulty = ?', (category.id, difficulty))
-                max_questions = len(cur.fetchall())
-                if max_questions > 5:
-                    max_questions = 5
-                print('Max questions: {}'.format(max_questions))
-                # score to test
-                final_scores = []
-                if max_questions > 0:
-                    final_scores.append(0)
-                if max_questions > 1:
-                    final_scores.append(1)
-                final_scores.append(max_questions)
+                cur.execute('SELECT COUNT(question_id) FROM questions WHERE category = ? AND difficulty = ?', (category.id, difficulty))
+                num_questions = cur.fetchone()
+                num_questions = 5 if num_questions[0] > 5 else num_questions[0]
+                # Scores to test
+                final_scores = [0, 1]
+                if num_questions > 1:
+                    final_scores.append(num_questions)
                 for final_score in final_scores:
-                    questions=[]
-                    if max_questions == 0:
-                        break  # If there are no questions in the category there will be a 404 error when accessing /game/0
+                    if num_questions == 0:
+                        # If the category and difficulty is empty there will be an internal server error when accessing /game/0 since a game could not be created
+                        # TODO: Write some proper testing code for empty games
+                        break
                     game_id += 1
                     url = '/game/create'
-                    headers = {'method': 'POST', 'body': b'category_id='+bytes(str(category.id), 'utf-8')+b'&difficulty='+bytes(str(difficulty), 'utf-8'), 'headers': {'Cookie': cookies}}
-                    self.fetch(url, **headers).body.decode()  # Start the game, this will result in a 404 error as the redirect to /game/0 will be missing the game_id cookie. This is due to AsyncHTTPTestCase lack of cookie support (same reason why I am calculating the cookies rather then retreving them from the responce.)
+                    query = (b'category_id=' + str(category.id).encode() +
+                             b'&difficulty=' + str(difficulty).encode())
+                    headers = {'method': 'POST', 'body': query, 'headers': {'Cookie': cookies}}
+                    self.fetch(url, **headers).body.decode()
                     cookie_value = create_signed_value(self.app.settings['cookie_secret'], 'game_id', str(game_id))
-                    game_cookie = 'game_id='+cookie_value.decode('utf-8')
-                    # for each question to get correct
-                    question_number = 0
-                    game_headers = {'method': 'GET', 'headers': {'Cookie': game_cookie+'; '+cookies}}
-                    for i in range(final_score):
-                        page_html = self.check_page('/game/'+str(question_number), **game_headers)
-                        print("Submitting correct answer")
+                    game_cookie = 'game_id='+cookie_value.decode()
+                    game_headers = {'method': 'GET', 'headers': {'Cookie': game_cookie+';'+cookies}}
+                    questions = []
+                    for i in range(num_questions):
+                        page_html = self.check_page('/game/'+str(i), **game_headers)
                         question_text = html.unescape(question_pattern.search(page_html).groups()[0])
                         question_id = Question.find(question=question_text).id
-                        print("question_id = {}".format(question_id))
-                        cur.execute('SELECT * FROM answers WHERE question_id = ?', (question_id,))  # get the answers to the question
+                        cur.execute('SELECT * FROM answers WHERE question_id = ? ORDER BY correct DESC', (question_id,))
                         answers = cur.fetchall()
-                        for answer in answers:  # check if the answers are on the page
-                            if html.escape(answer[3]) not in page_html:
-                                raise GameError('Answer {} missing from question {}'.format(answer[0], question_id))
-                        answers.sort(key=lambda x: x[2], reverse=True)  # sort the answers so that the correct answer is first
-                        questions.append((html.escape(question_text), str(question_id), "Correct!"))
-                        url = '/game/submit/'+str(answers[0][0])
-                        self.fetch(url, **game_headers)
-                        question_number += 1
-
-                    for i in range(max_questions-final_score):
-                        page_html = self.check_page('/game/'+str(question_number), **game_headers)
-                        print("Submitting incorrect answer")
-                        if question_pattern.search(page_html) is None:
-                            print(page_html)
-                        question_text = html.unescape(question_pattern.search(page_html).groups()[0])
-                        question_id = Question.find(question=question_text).id
-                        print("question_id = {}".format(question_id))
-                        cur.execute('SELECT * FROM answers WHERE question_id = ?', (question_id,))
-                        answers = cur.fetchall()
+                        # Check if the answers are displayed
                         for answer in answers:
                             if html.escape(answer[3]) not in page_html:
                                 raise GameError('Answer {} missing from question {}'.format(answer[0], question_id))
-                        answers.sort(key=lambda x: x[2], reverse=True)
-                        # chose a random incorrect answer to submit
-                        answer_index = random.randrange(1, len(answers))
-                        questions.append((html.escape(question_text), str(question_id), "Your answer: "+html.escape(answers[answer_index][3])+", Correct answer: "+html.escape(answers[0][3])))
-                        url = '/game/submit/'+str(answers[answer_index][0])
+
+                        if i < final_score:
+                            questions.append((html.escape(question_text), str(question_id), "Correct!"))
+                            url = '/game/submit/'+str(answers[0][0])
+                        else:
+                            answer_index = random.randrange(1, len(answers))
+                            result_text = ("Your answer: " +
+                                           html.escape(answers[answer_index][3]) +
+                                           ", Correct answer: " +
+                                           html.escape(answers[0][3]))
+                            questions.append((html.escape(question_text), str(question_id), result_text))
+                            url = '/game/submit/'+str(answers[answer_index][0])
                         self.fetch(url, **game_headers)
-                        question_number += 1
+
                     page_html = self.check_page("/post_game", **game_headers)
                     returned_score = score_pattern.search(page_html)
                     if int(returned_score.group(1)) != final_score:
-                        raise GameError("Incorrect final game score\n {} returned, expecting {} for category:{} diffculty{}".format(returned_score.group(1), final_score, category.id, difficulty))
-                    if int(returned_score.group(2)) != max_questions:
-                        raise GameError("Incorrect final game score denominator\n {} returned, expecting {} for category:{} diffculty{}".format(returned_score.group(2), max_questions, category.id, difficulty))
+                        raise GameError(('Incorrect final game score\n'
+                                         'Returned: {}\n'
+                                         'Expecting: {}\n'
+                                         'For category: {}, diffculty: {}').format(returned_score.group(1), final_score, category.id, difficulty))
+
+                    if int(returned_score.group(2)) != num_questions:
+                        raise GameError(('Incorrect final game score denominator\n'
+                                         'Returned: {}\n'
+                                         'Expecting {}\n'
+                                         'For category: {}, diffculty: {}').format(returned_score.group(2), num_questions, category.id, difficulty))
+
                     matches = question_results_pattern.findall(page_html)
                     for question in questions:
                             if question not in matches:
-                                raise GameError("Incorrect question result text.\nmatch groups found:\n{}\nmatch groups expected:\n{}\n".format(matches, questions))
+                                raise GameError(('Incorrect question result text.\n'
+                                                 'match groups found:\n{}\n'
+                                                 'match groups expected:\n{}\n').format(matches, questions))
                     extra = [question for question in matches if question not in questions]  # Find unexpected question results
                     if extra != []:
                         raise GameError("Unexpected question result(s) in postgame.\nmatch groups:\n{}".format(extra))
-                    print("Finished game category:{} difficulty:{} final score:{}".format(category.id, difficulty, final_score))
 
     def test_07_logout_tests(self):
-        print("Checking logout tests")
-        url = '/logout'
-        headers = {'method': 'GET'}
-        page_html = self.check_page(url, **headers)
-        check_link(page_html, "home", "logout")
-        check_link(page_html, "pre_game", "logout")
-        #check_link(page_html, "submit", "logout")
-        #check_link(page_html, "profile", "logout")
+        page_html = self.check_page('/logout', method='GET')
+        self.check_link(page_html, "home", "logout")
+        self.check_link(page_html, "pre_game", "logout")
 
     def check_page(self, url, **headers):
         response = self.fetch(url, **headers)
@@ -276,3 +246,9 @@ class HTTPTestCase(AsyncHTTPTestCase):
         else:
             return response.body.decode()
 
+    def check_link(self, page_html, link, page):
+        '''
+        Checks if a link is in a page
+        '''
+        if not link_patterns[link].search(page_html):
+            raise MissingLink("The {} link is missing from the {} page.".format(link, page))
