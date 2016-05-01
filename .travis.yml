@@ -5,7 +5,7 @@ python:
 before_script:
   - cd db
   - python ./create_db.py
-  - python ./dummy_data.py
+  - python ../tests/test_data.py
   - cd ..
 
 script:
