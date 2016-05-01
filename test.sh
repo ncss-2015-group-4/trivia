@@ -26,7 +26,7 @@ trap cleanup_exit EXIT HUP INT TERM
 
 echo 'Initialising database...'
 python3 create_db.py
-python3 dummy_data.py
+python3 ../tests/test_data.py
 cd ..
 
 echo 'Running tests...'

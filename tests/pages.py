@@ -115,16 +115,15 @@ class HTTPTestCase(AsyncHTTPTestCase):
         self.check_link(page_html, "home", "sumbission")
         self.check_link(page_html, "pre_game", "submission")
         self.check_link(page_html, "submit", "submission")
-        # Try making a question in each category
-        for i, category in enumerate(Category.find_all()):
-            query = (b'categories=' + str(category.id).encode() +
-                     b'&question=testQuestion' + str(i).encode() +
-                     b'&correct_answer=correct' +
-                     b'&wrong_answer_1=wrong&wrong_answer_2=wrong2&wrong_answer_3=wrong3')
-            headers = {'method': 'POST', 'body': query}
-            page_html = self.check_page('/question', **headers)
-            if 'testQuestion' not in page_html:
-                raise SubmitError('testQuestion was not submitted to category ' + str(category.id))
+        # Try making a question in category 1
+        query = (b'categories=1'
+                 b'&question=testQuestion' +
+                 b'&correct_answer=correct' +
+                 b'&wrong_answer_1=wrong&wrong_answer_2=wrong2&wrong_answer_3=wrong3')
+        headers = {'method': 'POST', 'body': query}
+        page_html = self.check_page('/question', **headers)
+        if 'testQuestion' not in page_html:
+            raise SubmitError('testQuestion was not submitted to category ' + str(category.id))
 
     def test_05_category_tests(self):
         '''
@@ -162,77 +161,84 @@ class HTTPTestCase(AsyncHTTPTestCase):
         cur = conn.cursor()
         # The database is reset before running the tests so the first game id should be 1
         game_id = 0
-        for category in Category.find_all():
-            for difficulty in range(3):
-                cur.execute('SELECT COUNT(question_id) FROM questions WHERE category = ? AND difficulty = ?', (category.id, difficulty))
-                num_questions = cur.fetchone()
-                num_questions = 5 if num_questions[0] > 5 else num_questions[0]
-                # Scores to test
-                final_scores = [0, 1]
-                if num_questions > 1:
-                    final_scores.append(num_questions)
-                for final_score in final_scores:
-                    if num_questions == 0:
-                        # If the category and difficulty is empty there will be an internal server error when accessing /game/0 since a game could not be created
-                        # TODO: Write some proper testing code for empty games
-                        break
-                    game_id += 1
-                    url = '/game/create'
-                    query = (b'category_id=' + str(category.id).encode() +
-                             b'&difficulty=' + str(difficulty).encode())
-                    headers = {'method': 'POST', 'body': query, 'headers': {'Cookie': cookies}}
-                    self.fetch(url, **headers).body.decode()
-                    cookie_value = create_signed_value(self.app.settings['cookie_secret'], 'game_id', str(game_id))
-                    game_cookie = 'game_id='+cookie_value.decode()
-                    game_headers = {'method': 'GET', 'headers': {'Cookie': game_cookie+';'+cookies}}
-                    questions = []
-                    for i in range(num_questions):
-                        page_html = self.check_page('/game/'+str(i), **game_headers)
-                        question_text = html.unescape(question_pattern.search(page_html).groups()[0])
-                        question_id = Question.find(question=question_text).id
-                        cur.execute('SELECT * FROM answers WHERE question_id = ? ORDER BY correct DESC', (question_id,))
-                        answers = cur.fetchall()
-                        # Check if the answers are displayed
-                        for answer in answers:
-                            if html.escape(answer[3]) not in page_html:
-                                raise GameError('Answer {} missing from question {}'.format(answer[0], question_id))
+        tests = [(0, 0), (0, 1), (0, 2), (1, 0)]
+        for category, difficulty in tests:
+            cur.execute('SELECT COUNT(question_id) FROM questions WHERE category = ? AND difficulty = ?', (category, difficulty))
+            num_questions = cur.fetchone()
+            num_questions = 5 if num_questions[0] > 5 else num_questions[0]
+            # Scores to test
+            final_scores = [0]
+            if num_questions > 0:
+                final_scores.append(1)
+            if num_questions > 1:
+                final_scores.append(num_questions)
 
-                        if i < final_score:
-                            questions.append((html.escape(question_text), str(question_id), "Correct!"))
-                            url = '/game/submit/'+str(answers[0][0])
-                        else:
-                            answer_index = random.randrange(1, len(answers))
-                            result_text = ("Your answer: " +
-                                           html.escape(answers[answer_index][3]) +
-                                           ", Correct answer: " +
-                                           html.escape(answers[0][3]))
-                            questions.append((html.escape(question_text), str(question_id), result_text))
-                            url = '/game/submit/'+str(answers[answer_index][0])
-                        self.fetch(url, **game_headers)
+            for final_score in final_scores:
+                url = '/game/create'
+                query = (b'category_id=' + str(category).encode() +
+                         b'&difficulty=' + str(difficulty).encode())
+                headers = {'method': 'POST', 'body': query, 'headers': {'Cookie': cookies}}
+                page_html = self.fetch(url, **headers).body.decode()
+                # Test if category and difficulty is empty
+                if num_questions == 0:
+                    if 'There are no questions in this category and difficulty. :(' not in page_html:
+                        raise GameError('Message not displayed for empty category and difficulty')
+                    # skip to the next test case
+                    break
 
-                    page_html = self.check_page("/post_game", **game_headers)
-                    returned_score = score_pattern.search(page_html)
-                    if int(returned_score.group(1)) != final_score:
-                        raise GameError(('Incorrect final game score\n'
-                                         'Returned: {}\n'
-                                         'Expecting: {}\n'
-                                         'For category: {}, diffculty: {}').format(returned_score.group(1), final_score, category.id, difficulty))
+                game_id += 1
+                cookie_value = create_signed_value(self.app.settings['cookie_secret'], 'game_id', str(game_id))
+                game_cookie = 'game_id='+cookie_value.decode()
+                game_headers = {'method': 'GET', 'headers': {'Cookie': game_cookie+';'+cookies}}
+                questions = []
+                for i in range(num_questions):
+                    page_html = self.check_page('/game/'+str(i), **game_headers)
+                    question_text = html.unescape(question_pattern.search(page_html).groups()[0])
+                    question_id = Question.find(question=question_text).id
+                    cur.execute('SELECT * FROM answers WHERE question_id = ? ORDER BY correct DESC', (question_id,))
+                    answers = cur.fetchall()
+                    # Check if the answers are displayed
+                    for answer in answers:
+                        if html.escape(answer[3]) not in page_html:
+                            print(page_html)
+                            raise GameError('Answer {} missing from question {}'.format(answer[0], question_id))
 
-                    if int(returned_score.group(2)) != num_questions:
-                        raise GameError(('Incorrect final game score denominator\n'
-                                         'Returned: {}\n'
-                                         'Expecting {}\n'
-                                         'For category: {}, diffculty: {}').format(returned_score.group(2), num_questions, category.id, difficulty))
+                    if i < final_score:
+                        questions.append((html.escape(question_text), str(question_id), "Correct!"))
+                        url = '/game/submit/'+str(answers[0][0])
+                    else:
+                        answer_index = random.randrange(1, len(answers))
+                        result_text = ("Your answer: " +
+                                       html.escape(answers[answer_index][3]) +
+                                       ", Correct answer: " +
+                                       html.escape(answers[0][3]))
+                        questions.append((html.escape(question_text), str(question_id), result_text))
+                        url = '/game/submit/'+str(answers[answer_index][0])
+                    self.fetch(url, **game_headers)
 
-                    matches = question_results_pattern.findall(page_html)
-                    for question in questions:
-                            if question not in matches:
-                                raise GameError(('Incorrect question result text.\n'
-                                                 'match groups found:\n{}\n'
-                                                 'match groups expected:\n{}\n').format(matches, questions))
-                    extra = [question for question in matches if question not in questions]  # Find unexpected question results
-                    if extra != []:
-                        raise GameError("Unexpected question result(s) in postgame.\nmatch groups:\n{}".format(extra))
+                page_html = self.check_page("/post_game", **game_headers)
+                returned_score = score_pattern.search(page_html)
+                if int(returned_score.group(1)) != final_score:
+                    raise GameError(('Incorrect final game score\n'
+                                     'Returned: {}\n'
+                                     'Expecting: {}\n'
+                                     'For category: {}, diffculty: {}').format(returned_score.group(1), final_score, category, difficulty))
+
+                if int(returned_score.group(2)) != num_questions:
+                    raise GameError(('Incorrect final game score denominator\n'
+                                     'Returned: {}\n'
+                                     'Expecting {}\n'
+                                     'For category: {}, diffculty: {}').format(returned_score.group(2), num_questions, category, difficulty))
+
+                matches = question_results_pattern.findall(page_html)
+                for question in questions:
+                    if question not in matches:
+                        raise GameError(('Incorrect question result text.\n'
+                                         'match groups found:\n{}\n'
+                                         'match groups expected:\n{}\n').format(matches, questions))
+                extra = [question for question in matches if question not in questions]  # Find unexpected question results
+                if extra != []:
+                    raise GameError("Unexpected question result(s) in postgame.\nmatch groups:\n{}".format(extra))
 
     def test_07_logout_tests(self):
         page_html = self.check_page('/logout', method='GET')

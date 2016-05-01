@@ -10,7 +10,9 @@ if exist trivia.db (
 
 echo Initialising database...
 py -3 create_db.py
-py -3 dummy_data.py
+cd ..
+cd tests
+py -3 test_data.py
 cd ..
 
 echo Running tests...
