@@ -117,9 +117,9 @@ class HTTPTestCase(AsyncHTTPTestCase):
         self.check_link(page_html, "submit", "submission")
         # Try making a question in category 1
         query = (b'categories=1'
-                 b'&question=testQuestion' +
-                 b'&correct_answer=correct' +
-                 b'&wrong_answer_1=wrong&wrong_answer_2=wrong2&wrong_answer_3=wrong3')
+                 + b'&question=testQuestion'
+                 + b'&correct_answer=correct'
+                 + b'&wrong_answer_1=wrong&wrong_answer_2=wrong2&wrong_answer_3=wrong3')
         headers = {'method': 'POST', 'body': query}
         page_html = self.check_page('/question', **headers)
         if 'testQuestion' not in page_html:
@@ -136,11 +136,11 @@ class HTTPTestCase(AsyncHTTPTestCase):
         # Check that all the categories are listed
         list_of_categories = Category.find_all()
         for category in list_of_categories:
-            cat = re.search(('\<a href\=\"\/category\/' +
-                             str(category.id) +
-                             r'\"\>\<button class\=\"category\-button\"\>' +
-                             re.escape(html.escape(category.name)) +
-                             r'\<\/button\>\<\/a>\<\/br\>'), page_html)
+            cat = re.search(('\<a href\=\"\/category\/'
+                             + str(category.id)
+                             + r'\"\>\<button class\=\"category\-button\"\>'
+                             + re.escape(html.escape(category.name))
+                             + r'\<\/button\>\<\/a>\<\/br\>'), page_html)
             if not cat:
                 raise PageError(category.name+' is missing from the categories page.')
         # Check that all the questions are listed in the category pages
@@ -167,8 +167,8 @@ class HTTPTestCase(AsyncHTTPTestCase):
             num_questions = cur.fetchone()
             num_questions = 5 if num_questions[0] > 5 else num_questions[0]
             url = '/game/create'
-            query = (b'category_id=' + str(category).encode() +
-                     b'&difficulty=' + str(difficulty).encode())
+            query = (b'category_id=' + str(category).encode()
+                     + b'&difficulty=' + str(difficulty).encode())
             headers = {'method': 'POST', 'body': query, 'headers': {'Cookie': cookies}}
             page_html = self.fetch(url, **headers).body.decode()
             # Test if category and difficulty is empty
@@ -198,15 +198,15 @@ class HTTPTestCase(AsyncHTTPTestCase):
 
                 if i < final_score:
                     questions.append((html.escape(question_text), str(question_id), "Correct!"))
-                    url = '/game/submit/'+str(answers[0][0])
+                    url = '/game/submit/' + str(answers[0][0])
                 else:
                     answer_index = random.randrange(1, len(answers))
-                    result_text = ("Your answer: " +
-                                   html.escape(answers[answer_index][3]) +
-                                   ", Correct answer: " +
-                                   html.escape(answers[0][3]))
+                    result_text = ("Your answer: "
+                                   + html.escape(answers[answer_index][3])
+                                   + ", Correct answer: "
+                                   + html.escape(answers[0][3]))
                     questions.append((html.escape(question_text), str(question_id), result_text))
-                    url = '/game/submit/'+str(answers[answer_index][0])
+                    url = '/game/submit/' + str(answers[answer_index][0])
                 self.fetch(url, **game_headers)
 
             page_html = self.check_page("/post_game", **game_headers)
